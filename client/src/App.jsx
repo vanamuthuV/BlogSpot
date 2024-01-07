@@ -1,5 +1,4 @@
 import React from "react";
-import { ContentBody } from "./assets/body/body";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { Layout } from "./Layout";
 import { Login } from "./assets/Login/Login";
@@ -16,7 +15,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<ContentBody />} />
+          <Route path="/" element={<PostRequester />} />
           <Route path="/createpost" element={<CreatePost />} />
           <Route path="/SignUp" element={<SignUpLayout />}>
             <Route path="/SignUp" element={<SignUp />} />

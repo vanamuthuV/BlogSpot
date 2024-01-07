@@ -9,14 +9,20 @@ import pool from "./db.js";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import reloadRouter from "./routes/reloaduser.js"
+import ReadBlog from "./routes/readblog.js"
+import path from "path"
 
 const Base_URL = "http://localhost:5173"
-
 dotenv.config();
 
 const app = express();
-
-const corOptions = { Credential: true, origin: process.env.url || Base_URL};
+const __dirname = path.resolve();
+const corOptions = {
+  Credential: true,
+  origin: process.env.url || Base_URL,
+  methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
 app.use(cors(corOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,6 +32,8 @@ app.use("/SignUp", signUpRouter);
 app.use("/login", loginRouter);
 app.use("/post", postRouter);
 app.use("/reloaduser", reloadRouter)
+app.use("/readblog", ReadBlog)
+app.use("/uploads", express.static(__dirname + '/uploads'))
 
 // app.post("/users", Authentication , async (req, res) => {
 //   try {
