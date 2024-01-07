@@ -31,24 +31,26 @@ export const Login = () => {
         email: Gmail.current.value,
         passcode: Passcode.current.value,
       });
+      setSuccess(true);
       console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.accessToken;
       const user_name = response?.data?.user_name;
       console.log(response?.data?.user_details[0].user_name);
       console.log(user_name);
       console.log(accessToken);
+      localStorage.setItem('accessToken', accessToken);
       setAuth({
         Gmail: Gmail.current.value,
         Passcode: Passcode.current.value,
         accessToken,
       });
-      setSuccess(true);
+      
       setUser({
         Gmail: Gmail.current.value,
         Passcode: Passcode.current.value,
         user_name: response?.data?.user_details[0].user_name,
       });
-      navigate("/SignUp/users");
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -59,7 +61,6 @@ export const Login = () => {
   return (
     <>
       {success && <p>Login Success</p>}
-
       <div className="Login">
         <h1>Login Page</h1>
         {/* <p ref={errMsg} aria-live="assertive">
@@ -119,6 +120,7 @@ export const ForgetUsername = () => {
       <h1>Finding Your User Name</h1>
       <form className="Gmail-form" onSubmit={(event) => SubmitHandler(event)}>
         <input
+          type="email"
           ref={Gmail}
           placeholder="Enter Your Gmail"
           className="input"
@@ -187,6 +189,7 @@ export const ForgetPasscode = () => {
           name="SendMeCode"
           className="input"
           form="CodeSender"
+          type="eamil"
           ref={Gmail}
         ></input>
         <button onClick={Caller} type="Submit" className="Submit">
@@ -276,5 +279,9 @@ export const GetUsers = () => {
     }
   };
 
-  return <button onClick={ClickHandler}>GetUsers</button>;
+  return (
+    <>
+      <button onClick={ClickHandler}>GetUsers</button>
+    </>
+  );
 };

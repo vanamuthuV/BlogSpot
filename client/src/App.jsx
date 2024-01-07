@@ -8,6 +8,8 @@ import { SignUpLayout } from "./Layout";
 import { ForgetPasscode } from "./assets/Login/Login";
 import { ForgetUsername } from "./assets/Login/Login";
 import { GetUsers } from "./assets/Login/Login";
+import { CreatePost } from "./assets/createpost/createpost";
+import { PostRequester } from "./assets/PostRequester/PostRequester";
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<ContentBody />} />
+          <Route path="/createpost" element={<CreatePost />} />
           <Route path="/SignUp" element={<SignUpLayout />}>
             <Route path="/SignUp" element={<SignUp />} />
               <Route path="/SignUp/login" element={<Login />} />
@@ -22,6 +25,7 @@ function App() {
             <Route path="/SignUp/forgetpasscode" element={<ForgetPasscode />} />
             <Route path="/SignUp/users" element={<GetUsers />} />
           </Route>
+          <Route path="/Read Blog" element={<PostRequester />} />
         </Route>
       </Routes>
     </BrowserRouter>

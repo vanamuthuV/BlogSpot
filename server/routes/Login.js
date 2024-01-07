@@ -12,13 +12,13 @@ router.post("/", async (req, res) => {
     if ((email == undefined) | (passcode == undefined))
       return res
         .status(403)
-        .json({ message: "Please Enter The Credentials To Verify !!" });
+        .json({ login_status : "Please Enter the credentials to proceed" });
     const User = await pool.query("SELECT * from users WHERE user_email = $1", [
       email
     ]);
 
     if (User.rows.length == 0)
-      return res.status(404).json({ message: `No User Found On ${email}` });
+      return res.status(404).json({ login_status : "Not Yet Registered!!" });
 
     const valid = await bcrypt.compare(passcode, User.rows[0].user_password);
     if (valid) {
@@ -28,11 +28,10 @@ router.post("/", async (req, res) => {
         sameSite: "none",
         secure: true,
       });
-      console.log(Token);
-      res.status(200).json({ accessToken: Token.accessToken, refreshToken: Token.refreshToken, user_details: User.rows });
+      res.status(200).json({ accessToken: Token.accessToken, refreshToken: Token.refreshToken, user_details: User.rows, login_status : true});
     } else return res.status(401).json({ message: "Incorrect Credentials" });
   } catch (error) {
-    res.status(401).json({ error: error.message });
+    res.status(401).json({ error: error.message , login_status : "Problem at our end, sorry!!"});
   }
 });
 

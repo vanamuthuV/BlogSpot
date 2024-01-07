@@ -18,6 +18,7 @@ export const SignUp = () => {
       username: UserName.current.value,
       email: Gmail.current.value,
       passcode: Passcode.current.value,
+      
     });
     setVisibleModel((prev) => !prev);
   };
