@@ -11,6 +11,7 @@ import bodyParser from "body-parser";
 import reloadRouter from "./routes/reloaduser.js"
 import ReadBlog from "./routes/readblog.js"
 import path from "path"
+import PostDetails from "./routes/postdetails.js"
 
 const Base_URL = "http://localhost:5173"
 dotenv.config();
@@ -34,6 +35,7 @@ app.use("/post", postRouter);
 app.use("/reloaduser", reloadRouter)
 app.use("/readblog", ReadBlog)
 app.use("/uploads", express.static(__dirname + '/uploads'))
+app.use("/postdetails", PostDetails);
 
 // app.post("/users", Authentication , async (req, res) => {
 //   try {

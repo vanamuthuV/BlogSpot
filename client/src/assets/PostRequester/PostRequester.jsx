@@ -27,7 +27,12 @@ export const PostRequester = () => {
       {loading ? (
         <h1>Loading...</h1>
       ) : (
-        <div id="Post_Frame">
+        <div className="flex flex-col items-center justify-center">
+          <h1
+            className="w-9/12 pt-5 pb-5 mt-10 mb-10 text-6xl text-center border-t-2 border-b-2 border-gray-900 border-solid"
+          >
+            Blogs
+          </h1>
           {data.map((post) => (
             <Post {...post} />
           ))}

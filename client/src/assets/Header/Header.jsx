@@ -60,7 +60,7 @@ export const Navbar = () => {
 
   return (
     <userUpdater.Provider value={setUserFunc}>
-      <AppBar position="static">
+      <AppBar sx={{backgroundColor : "black"}} position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <BookIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -207,7 +207,7 @@ export const Navbar = () => {
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Typography
-                      sx={{ my: 2, color: "white", display: "block" }}
+                      sx={{ my: 2, color: "white", display: "block", fontFamily : "Fira Code"}}
                     >
                       {user.user_name}
                     </Typography>
@@ -217,7 +217,7 @@ export const Navbar = () => {
                 <Link to={"/SignUp"}>
                   <Tooltip title="SignUp / Login">
                     <Typography
-                      sx={{ my: 2, color: "white", display: "block" }}
+                      sx={{ my: 2, color: "white", display: "block", fontFamily : "Fira Code"}}
                     >
                       Sign Up
                     </Typography>

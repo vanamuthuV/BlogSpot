@@ -77,11 +77,13 @@ export const CreatePost = () => {
   const category = useRef(null);
   const tags = useRef(null);
   const summary = useRef(null);
+  const type = useRef(null);
 
   const [alignment, setAlignment] = React.useState("public");
   const navigate = useNavigate();
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
+
+  const handleChange = () => {
+    setAlignment(type.current.value);
     console.log(alignment);
   };
 
@@ -118,63 +120,94 @@ export const CreatePost = () => {
   };
 
   return (
-    <>
-      <form
-        className="flex-col"
-        onSubmit={SubmitHandler}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-        enctype="multipart/form-data"
-      >
-        <input type="title" ref={title} placeholder="Title" required></input>
-        <input ref={media} type="file" id="images" />
-        <ReactQuill modules={modules} formats={formats} ref={content} />
-        <input ref={category} type="text" placeholder="Category ?"></input>
-        <input ref={tags} type="text" placeholder="Tags"></input>
-        <input ref={summary} type="summary" placeholder="Summary"></input>
-
-        <ToggleButtonGroup
-          color="primary"
-          value={alignment}
-          exclusive
-          onChange={handleChange}
-          aria-label="Platform"
+    <div className="flex flex-col items-center justify-center">
+      <h1 className="m-5 text-3xl font-bold">Writing on Blogspot</h1>
+      <div className="w-10/12">
+        <form
+          className="flex flex-col items-center justify-center"
+          onSubmit={SubmitHandler}
+          enctype="multipart/form-data"
         >
-          <ToggleButton value="public">PUBLIC</ToggleButton>
-          <ToggleButton value="private">PRIVATE</ToggleButton>
-        </ToggleButtonGroup>
+          <input
+            className="w-3/4 border-2 border-#303030-500 border-solid rounded-lg pt-2 pb-2 pl-5 pr-5 m-5"
+            type="title"
+            ref={title}
+            placeholder="Title"
+            required
+          ></input>
+          <input
+            className="pb-5 cursor-pointer border-2-gray"
+            ref={media}
+            type="file"
+            id="images"
+          />
+          <ReactQuill
+            className="w-3/4 min-h-5"
+            modules={modules}
+            formats={formats}
+            ref={content}
+          />
+          <input
+            className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg"
+            ref={category}
+            type="text"
+            placeholder="Category ?"
+          ></input>
+          <input
+            className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg"
+            ref={tags}
+            type="text"
+            placeholder="Tags"
+          ></input>
+          <input
+            className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg"
+            ref={summary}
+            type="summary"
+            placeholder="Summary"
+          ></input>
 
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Typography
-            fontFamily={"Fira Code"}
-            fontSize={"20px"}
-            sx={{ marginRight: "20px" }}
+          {/* <ToggleButtonGroup
+            color="primary"
+            value={alignment}
+            exclusive
+            onChange={handleChange}
+            aria-label="Platform"
           >
-            Comments
-          </Typography>
-          <Typography fontFamily={"Fira Code"} fontSize={"18px"}>
-            Off
-          </Typography>
-          <label class="switch">
-            <input
-              value={comments}
-              checked={comments}
-              onChange={handleComment}
-              type="checkbox"
-            />
-            <span class="slider round"></span>
+            <ToggleButton value="public">PUBLIC</ToggleButton>
+            <ToggleButton value="private">PRIVATE</ToggleButton>
+          </ToggleButtonGroup> */}
+          <label className="font-semibold text-md" htmlFor="type">
+            Select the post visibility
           </label>
-          <Typography fontFamily={"Fira Code"} fontSize={"18px"}>
-            On
-          </Typography>
-        </Stack>
+          <select
+            id="type"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-2/4 p-2.5 dark:bg-gray-500 dark:border-gray-600 dark:placeholder-gray-500 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-5 mb-5"
+            ref={type}
+            value={alignment}
+            onChange={handleChange}
+          >
+            <option value={"public"}>Public</option>
+            <option value={"private"}>Private</option>
+          </select>
 
-        <button type="submit">Create Post</button>
-      </form>
-    </>
+          <Stack direction="row" spacing={1} alignItems="center" sx={{ marginTop: "10px", marginBottom : "10px"}} >
+            <p className="pr-5 text-lg font-bold">Comments</p>
+            <p className="pl-2 pr-2 text-lg">Off</p>
+            <label class="switch">
+              <input
+                value={comments}
+                checked={comments}
+                onChange={handleComment}
+                type="checkbox"
+              />
+              <span class="slider round"></span>
+            </label>
+            <p className="pl-2 pr-2 text-lg">On</p>
+          </Stack>
+
+          <button className="pt-2 pb-2 pl-5 pr-5 mt-2 mb-5 text-lg text-white bg-gray-400 border-2 border-gray-600 hover:text-gray-600 rounded-xl hover:bg-white" type="submit">Create Post</button>
+        </form>
+      </div>
+    </div>
   );
 };

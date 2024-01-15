@@ -9,6 +9,7 @@ import { ForgetUsername } from "./assets/Login/Login";
 import { GetUsers } from "./assets/Login/Login";
 import { CreatePost } from "./assets/createpost/createpost";
 import { PostRequester } from "./assets/PostRequester/PostRequester";
+import { PostDetails } from "./assets/postdetails/postdetails";
 
 function App() {
   return (
@@ -19,12 +20,13 @@ function App() {
           <Route path="/createpost" element={<CreatePost />} />
           <Route path="/SignUp" element={<SignUpLayout />}>
             <Route path="/SignUp" element={<SignUp />} />
-              <Route path="/SignUp/login" element={<Login />} />
+            <Route path="/SignUp/login" element={<Login />} />
             <Route path="/SignUp/forgetusername" element={<ForgetUsername />} />
             <Route path="/SignUp/forgetpasscode" element={<ForgetPasscode />} />
             <Route path="/SignUp/users" element={<GetUsers />} />
           </Route>
           <Route path="/Read Blog" element={<PostRequester />} />
+          <Route path="/Read Blog/:id" element={<PostDetails />} />
         </Route>
       </Routes>
     </BrowserRouter>

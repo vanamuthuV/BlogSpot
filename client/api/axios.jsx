@@ -1,7 +1,5 @@
 import axios from "axios";
 // import { auth } from "../hooks/useAuth";
-
-import useAuth from "../hooks/useAuth";
 const BASE_URL = "http://localhost:5000";
 
 export default axios.create({
