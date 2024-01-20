@@ -11,7 +11,6 @@ import Typography from "@mui/material/Typography";
 import "react-quill/dist/quill.snow.css";
 import "./createpost.css";
 import axios from "../../../api/axios";
-import "./createpost.css";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +21,6 @@ const modules = {
     ["blockquote", "code-block"],
     [{ list: "ordered" }, { list: "bullet" }],
     [{ indent: "-1" }, { indent: "+1" }],
-    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
     [{ font: ["Fira Code"] }],
     [{ align: [] }][("link", "image")],
     ["clean"],
@@ -122,7 +120,7 @@ export const CreatePost = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <h1 className="m-5 text-3xl font-bold">Writing on Blogspot</h1>
-      <div className="w-10/12">
+      <div className="w-full">
         <form
           className="flex flex-col items-center justify-center"
           onSubmit={SubmitHandler}
@@ -190,7 +188,12 @@ export const CreatePost = () => {
             <option value={"private"}>Private</option>
           </select>
 
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ marginTop: "10px", marginBottom : "10px"}} >
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            sx={{ marginTop: "10px", marginBottom: "10px" }}
+          >
             <p className="pr-5 text-lg font-bold">Comments</p>
             <p className="pl-2 pr-2 text-lg">Off</p>
             <label class="switch">
@@ -205,7 +208,12 @@ export const CreatePost = () => {
             <p className="pl-2 pr-2 text-lg">On</p>
           </Stack>
 
-          <button className="pt-2 pb-2 pl-5 pr-5 mt-2 mb-5 text-lg text-white bg-gray-400 border-2 border-gray-600 hover:text-gray-600 rounded-xl hover:bg-white" type="submit">Create Post</button>
+          <button
+            className="pt-1 pb-1 pl-2 pr-2 ml-2.5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg"
+            type="submit"
+          >
+            Create Post
+          </button>
         </form>
       </div>
     </div>

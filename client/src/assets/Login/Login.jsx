@@ -42,6 +42,7 @@ export const Login = () => {
       setAuth({
         Gmail: Gmail.current.value,
         Passcode: Passcode.current.value,
+        user_id : response?.data?.user_details[0].user_id,
         accessToken,
       });
       
@@ -49,6 +50,7 @@ export const Login = () => {
         Gmail: Gmail.current.value,
         Passcode: Passcode.current.value,
         user_name: response?.data?.user_details[0].user_name,
+        user_id: response?.data?.user_details[0].user_id,
       });
       navigate("/");
     } catch (err) {

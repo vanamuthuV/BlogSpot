@@ -10,6 +10,7 @@ import { GetUsers } from "./assets/Login/Login";
 import { CreatePost } from "./assets/createpost/createpost";
 import { PostRequester } from "./assets/PostRequester/PostRequester";
 import { PostDetails } from "./assets/postdetails/postdetails";
+import { EditCaller } from "./assets/Edit/Edit";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           </Route>
           <Route path="/Read Blog" element={<PostRequester />} />
           <Route path="/Read Blog/:id" element={<PostDetails />} />
+          <Route path="/edit/:post_ids" element={<EditCaller />} />
         </Route>
       </Routes>
     </BrowserRouter>

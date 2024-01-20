@@ -39,10 +39,16 @@ export const SignUp = () => {
           className="input"
           placeholder="Enter Your Username "
           ref={UserName}
+          pattern="^[a-z0-9]+$"
+          title="This field is won't Allow White Spces and required"
+          required
         ></input>
         <input
           className="input"
           ref={Gmail}
+          required
+          pattern="^[a-z0-9]+(?:[._][a-z0-9]+)*@[a-z]+\.[a-z]+$"
+          title="This field won't allow whitespaces and required"
           placeholder="What Is Your Gmail ? "
         ></input>
         <input
@@ -50,6 +56,7 @@ export const SignUp = () => {
           type="password"
           ref={Passcode}
           placeholder="Give Me A Passcode "
+          required
         ></input>
         <button className="Submit" type="Submit">
           Register

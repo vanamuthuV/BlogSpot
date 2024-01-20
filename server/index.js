@@ -12,6 +12,9 @@ import reloadRouter from "./routes/reloaduser.js"
 import ReadBlog from "./routes/readblog.js"
 import path from "path"
 import PostDetails from "./routes/postdetails.js"
+import EditResource from "./routes/EditResource.js"
+import ImageUpdater from "./routes/imageupdater.js"
+import PostEditor from "./routes/EditPost.js"
 
 const Base_URL = "http://localhost:5173"
 dotenv.config();
@@ -36,6 +39,9 @@ app.use("/reloaduser", reloadRouter)
 app.use("/readblog", ReadBlog)
 app.use("/uploads", express.static(__dirname + '/uploads'))
 app.use("/postdetails", PostDetails);
+app.use("/editresource", EditResource)
+app.use("/imageupdate", ImageUpdater);
+app.use("/edit", PostEditor);
 
 // app.post("/users", Authentication , async (req, res) => {
 //   try {

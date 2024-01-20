@@ -26,31 +26,37 @@ export const Post = ({
   console.log(post_images);
   return (
     <div className="flex flex-row items-center justify-center w-5/6 border-t-2 max-md:flex-wrap">
-      <img
-        src={`http://localhost:5000/${post_images}`}
-        width={"350px"}
-        height={"300px"}
-        alt={post_title}
-        className="mt-5 mb-5 rounded-xl"
-      />
-
-      <Link to={`/Read Blog/${post_id}`}>
+      <div
+        className="flex flex-row items-center justify-center mt-5"
+        style={{ minWidth: "350px", maxWidth: "350px", height: "250px" }}
+      >
+        <img
+          src={`http://localhost:5000/${post_images}`}
+          alt={post_title}
+          className="mt-5 mb-5 rounded-xl"
+        />
+      </div>
+      <div>
         <div className="m-5">
-          <h3 className="p-3 text-xl font-bold text-justify">{post_title}</h3>
+          <Link to={`/Read Blog/${post_id}`}>
+            <h3 className="inline-block p-3 text-xl font-bold text-justify hover:underline">
+              {post_title}
+            </h3>
+          </Link>
           <div
             className="p-3 text-justify"
             dangerouslySetInnerHTML={{
               __html:
-                post_summary.length <= 270
+                post_summary.length <= 290
                   ? post_summary
-                  : post_summary.substring(0, 270) + "...",
+                  : post_summary.substring(0, 290) + "...",
             }}
           ></div>
           <div className="flex flex-row items-center justify-between p-5">
             <p>
               By
-              <Link style={{ display: "inline-block" }} to={"/"} className="">
-                <p className="pl-3 pr-3 font-bold text-gray-900 underline">
+              <Link style={{ display: "inline-block" }} to={`/${user_name}`} className="">
+                <p className="inline-block pl-3 pr-3 font-bold text-gray-900 hover:underline">
                   {user_name}
                 </p>
               </Link>
@@ -62,7 +68,7 @@ export const Post = ({
             <p className="max-md:hidden">Country : Unkown</p>
           </div>
         </div>
-      </Link>
+      </div>
     </div>
   );
 };

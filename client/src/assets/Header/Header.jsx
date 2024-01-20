@@ -22,8 +22,6 @@ import BookIcon from "@mui/icons-material/Book";
 const pages = ["Read Blog", "Contact", "About"];
 const settings = ["Profile", "Account", "Dashboard"];
 
-const NavElements = [];
-
 const userUpdater = createContext({});
 
 export const Navbar = () => {
@@ -60,7 +58,7 @@ export const Navbar = () => {
 
   return (
     <userUpdater.Provider value={setUserFunc}>
-      <AppBar sx={{backgroundColor : "black"}} position="static">
+      <AppBar sx={{ backgroundColor: "black" }} position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <BookIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -121,7 +119,7 @@ export const Navbar = () => {
                       sx={{
                         marginRight: "2px",
                         marginLeft: "2px",
-                        fontFamily: "Fira Code",
+                        fontFamily: "Space Mono",
                       }}
                       textAlign="center"
                     >
@@ -135,7 +133,7 @@ export const Navbar = () => {
                       sx={{
                         marginRight: "2px",
                         marginLeft: "2px",
-                        fontFamily: "Fira Code",
+                        fontFamily: "Space Mono",
                       }}
                       textAlign="center"
                     >
@@ -155,7 +153,7 @@ export const Navbar = () => {
                 mr: 2,
                 display: { xs: "flex", md: "none" },
                 flexGrow: 1,
-                fontFamily: "Fira Code",
+                fontFamily: "Space Mono",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
                 color: "inherit",
@@ -178,7 +176,8 @@ export const Navbar = () => {
                     mt: 2,
                     color: "white",
                     display: "block",
-                    fontFamily: "Fira Code",
+                    fontFamily: "Space Mono",
+                    fontSize: "14px",
                   }}
                 >
                   Create Post
@@ -193,7 +192,8 @@ export const Navbar = () => {
                       my: 2,
                       color: "white",
                       display: "block",
-                      fontFamily: "Fira Code",
+                      fontFamily: "Space Mono",
+                      fontSize: "14px",
                     }}
                   >
                     {page}
@@ -207,7 +207,12 @@ export const Navbar = () => {
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Typography
-                      sx={{ my: 2, color: "white", display: "block", fontFamily : "Fira Code"}}
+                      sx={{
+                        my: 2,
+                        color: "white",
+                        display: "block",
+                        fontFamily: "Space Mono",
+                      }}
                     >
                       {user.user_name}
                     </Typography>
@@ -217,7 +222,12 @@ export const Navbar = () => {
                 <Link to={"/SignUp"}>
                   <Tooltip title="SignUp / Login">
                     <Typography
-                      sx={{ my: 2, color: "white", display: "block", fontFamily : "Fira Code"}}
+                      sx={{
+                        my: 2,
+                        color: "white",
+                        display: "block",
+                        fontFamily: "Space Mono",
+                      }}
                     >
                       Sign Up
                     </Typography>
@@ -248,7 +258,7 @@ export const Navbar = () => {
                 >
                   {settings.map((setting) => (
                     <Typography
-                      sx={{ mt: "6px", mb: "6px" }}
+                      sx={{ mt: "6px", mb: "6px", fontFamily: "Space Mono" }}
                       textAlign="center"
                     >
                       {setting}
@@ -257,7 +267,7 @@ export const Navbar = () => {
                   <Typography
                     onClick={handleLogout}
                     variant="body1"
-                    sx={{ mt: "6px", mb: "6px" }}
+                    sx={{ mt: "6px", mb: "6px", fontFamily: "Space Mono" }}
                     textAlign="center"
                   >
                     Logout
