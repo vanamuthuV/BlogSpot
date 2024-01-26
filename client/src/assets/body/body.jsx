@@ -25,26 +25,26 @@ export const Post = ({
 }) => {
   console.log(post_images);
   return (
-    <div className="flex flex-row items-center justify-center w-5/6 border-t-2 max-md:flex-wrap">
+    <div className="flex flex-row items-center justify-center w-5/6 border-t-2 max-md:flex-wrap max-md:w-11/12">
       <div
-        className="flex flex-row items-center justify-center mt-5"
-        style={{ minWidth: "350px", maxWidth: "350px", height: "250px" }}
+        className="flex flex-row items-center justify-center mt-5 mb-5 max-md:mt-2 max-md:mb-2 min-w-80 max-w-80 h-60"
+
       >
         <img
           src={`http://localhost:5000/${post_images}`}
           alt={post_title}
-          className="mt-5 mb-5 rounded-xl"
+          className="max-w-full max-h-full rounded-xl max-md:w-full"
         />
       </div>
       <div>
-        <div className="m-5">
+        <div className="m-5 max-md:m-0">
           <Link to={`/Read Blog/${post_id}`}>
             <h3 className="inline-block p-3 text-xl font-bold text-justify hover:underline">
               {post_title}
             </h3>
           </Link>
           <div
-            className="p-3 text-justify"
+            className="p-3 text-justify max-md:text-sm"
             dangerouslySetInnerHTML={{
               __html:
                 post_summary.length <= 290

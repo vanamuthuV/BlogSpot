@@ -4,8 +4,6 @@ import dotenv from "dotenv";
 import signUpRouter from "./routes/SignUp.js";
 import loginRouter from "./routes/Login.js";
 import postRouter from "./routes/post.js"
-import Authentication from "./middleware/authorization.js";
-import pool from "./db.js";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import reloadRouter from "./routes/reloaduser.js"
@@ -15,6 +13,12 @@ import PostDetails from "./routes/postdetails.js"
 import EditResource from "./routes/EditResource.js"
 import ImageUpdater from "./routes/imageupdater.js"
 import PostEditor from "./routes/EditPost.js"
+import Comment from "./routes/comment.js"
+import GetComments from "./routes/getcomments.js"
+import SetCoverImage from "./routes/coverimage.js"
+import SetProfileImage from "./routes/profileimage.js"
+import GetProfileIamge from "./routes/getprofileimages.js"
+import AddPersonalDetails from "./routes/addpersonaldetails.js"
 
 const Base_URL = "http://localhost:5173"
 dotenv.config();
@@ -38,28 +42,18 @@ app.use("/post", postRouter);
 app.use("/reloaduser", reloadRouter)
 app.use("/readblog", ReadBlog)
 app.use("/uploads", express.static(__dirname + '/uploads'))
+app.use("/coverimages", express.static(__dirname + "/coverimages"));
+app.use("/profileimages", express.static(__dirname + "/profileimages"));
 app.use("/postdetails", PostDetails);
 app.use("/editresource", EditResource)
 app.use("/imageupdate", ImageUpdater);
 app.use("/edit", PostEditor);
-
-// app.post("/users", Authentication , async (req, res) => {
-//   try {
-//     const users = await pool.query("SELECT * FROM users");
-//     console.log(users.rows)
-//     res.status(200).json({users : users.rows})
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// });
-
-
-
-// app.get("/fetchuserdata", Authentication, (req, res) => {
-//   console.log(req);
-//   console.log("hit");
-//   res.json({message : "Success"})
-// })
+app.use("/comment", Comment);
+app.use("/getcomment", GetComments)
+app.use("/setcoverimage", SetCoverImage)
+app.use("/setprofileimage", SetProfileImage)
+app.use("/getprofileimage", GetProfileIamge);
+app.use("/addpersonaldetails", AddPersonalDetails);
 
 app.listen(5000, () => {
   console.log("Connected to postgres...")
@@ -67,5 +61,5 @@ app.listen(5000, () => {
 });
 
 /*
- * You May Exprience a Error So Called SCRAM which is nothing but you didm't import the dotenv in the file where you are using the .env variables
+ * You May Exprience a Error So Called SCRAM which is nothing but you didn't import the dotenv in the file where you are using the .env variables
  */

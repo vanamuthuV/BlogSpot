@@ -3,7 +3,7 @@ import pool from "../db.js";
 import multer from "multer";
 import fs from "fs";
 import Authentication from "../middleware/authorization.js";
-import { log } from "console";
+
 
 const router = express.Router()
 const UploadMiddleware = multer({ dest: "uploads/" });

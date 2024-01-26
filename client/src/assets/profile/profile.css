@@ -1,0 +1,8 @@
+.quill.ql-error {
+  .ql-toolbar {
+    border : 2px solid #4B5563;
+  }
+  .ql-container {
+   border : 2px solid #4B5563;
+  }
+}

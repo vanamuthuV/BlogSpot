@@ -2,29 +2,79 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "../../../api/axios";
 import Button from "@mui/material/Button";
-import SendIcon from "@mui/icons-material/Send";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import AddIcon from "@mui/icons-material/Add";
 import "./postdetails.css";
 import TextField from "@mui/material/TextField";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import Box from "@mui/material/Box";
 import { formatISO9075, format } from "date-fns";
 import { ReactionBarSelector } from "@charkour/react-reactions";
 import { YoutubeCounter } from "@charkour/react-reactions";
 import TwitterLikeButton from "twitter-like-button";
 import Tooltip from "@mui/material/Tooltip";
 import useAuth from "../../../hooks/useAuth";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useRef } from "react";
+import ReactTimeAgo from "react-time-ago";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en.json";
+import ru from "javascript-time-ago/locale/ru.json";
+
+TimeAgo.addDefaultLocale(en);
+TimeAgo.addLocale(ru);
+
 const POSTDETAIL_URL = "/postdetails";
+const COMMENT = "/comment";
+const GETCOMMENT = "/getcomment";
 
 export const PostDetails = () => {
   const { id } = useParams();
-
+  const [commentLoading, setcommentLoading] = useState(true);
+  const [comments, setComments] = useState([]);
   const { user } = useAuth();
-
+  const [option, setOption] = useState(false);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
+
+  const comment = useRef(null);
+
+  const UploadComment = async () => {
+    console.log(comment.current.value);
+
+    const data = {
+      comment: comment.current.value,
+      user_id: user.user_id,
+      post_id: id,
+    };
+
+    comment.current.value = "";
+
+    try {
+      const response = await axios.post(COMMENT, {
+        data,
+        headers: {
+          "Content-Type": "multipart/form-data", // Adjust the content type as needed
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
+        },
+      });
+      console.log(response?.data?.data);
+      setComments(response?.data?.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.post(GETCOMMENT, { id });
+        console.log(response?.data?.data);
+        setComments(response?.data?.data);
+        setcommentLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
 
   console.log(data);
   useEffect(() => {
@@ -151,20 +201,96 @@ export const PostDetails = () => {
                 </div>
 
                 {data.post_comment_type === "true" ? (
-                  <div className="flex flex-col items-start w-full m-3 mt-5 justify-evenly">
-                    <h1 className="mb-3 text-2xl font-bold">24 Comments</h1>
-                    <div className="flex flex-row items-center justify-center w-full mt-5 mb-5">
-                      <AccountCircle
-                        sx={{ color: "action.active", mr: "10px" }}
-                      />
-                      <input
-                        style={{ width: "100%" }}
-                        className="flex pt-1 pb-1 pl-2 pr-2 focus:outline-none"
-                        placeholder="Add a comment..."
-                      />
-                      <button className="pt-1 pb-1 pl-2 pr-2 ml-2.5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg">
-                        Comment
-                      </button>
+                  <div className="flex flex-col items-start justify-center w-full mt-5">
+                    <div className="flex flex-col items-start w-full mt-5 justify-evenly">
+                        <h1 className="mb-3 text-2xl font-bold">{comments.length === 0 ? 0 : comments.length} Comments</h1>
+                      <div className="flex flex-row items-center justify-center w-full mt-5 mb-5">
+                        <AccountCircle
+                          fontSize="large"
+                          sx={{ color: "action.active", mr: "10px" }}
+                        />
+                        {/* <input
+                            ref={comment}
+                          className="flex w-full pt-3 pb-3 pl-2 pr-2 "
+                            placeholder="Add a comment..."
+                        /> */}
+                        <TextField
+                          id="standard-textarea"
+                          inputRef={comment}
+                          sx={{ width: "100%", fontFamily: "Space Mono" }}
+                          placeholder="Add a comment..."
+                          multiline
+                          variant="standard"
+                        />
+                        <button
+                          onClick={UploadComment}
+                          className="pt-1 pb-1 pl-2 pr-2 ml-2.5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg"
+                        >
+                          Comment
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col items-center justify-center w-full mt-3 mb-10">
+                      {commentLoading ? (
+                        <h1>Loading...</h1>
+                      ) : comments.length === 0 ? (
+                        <p>No Comments Yet</p>
+                      ) : (
+                        comments.map((com) => {
+                          return (
+                            <div className="flex flex-row items-center justify-between w-full mt-2 mb-2">
+                              <div className="flex flex-row items-center justify-center w-1/12">
+                                <AccountCircle
+                                  fontSize="large"
+                                  sx={{ color: "action.active" }}
+                                />
+                              </div>
+                              <div className="flex flex-col items-start justify-center w-10/12 ml-3 mr-3">
+                                <div className="flex flex-row items-center justify-center">
+                                  <Link to={`/${com.user_name}`}>
+                                    <p className="pr-5 font-bold hover:underline">
+                                      {com.user_name}
+                                    </p>
+                                  </Link>
+
+                                  <time className="pl-5 text-gray-500">
+                                    <span className="text-xl font-bold">
+                                      &middot;
+                                    </span>
+                                    {
+                                      <ReactTimeAgo
+                                        date={com.comment_time}
+                                        locale="en-IN"
+                                      />
+                                    }
+                                  </time>
+                                </div>
+                                <div className="flex flex-col items-center justify-center">
+                                  <p>{com.comment}</p>
+                                </div>
+                              </div>
+                              <div className="relative flex flex-row items-center justify-center w-1/12">
+                                <button value={com.comment_id} onClick={() => {
+                                  console.log(com.comment_id);
+                                  
+                                }}>
+                                  <MoreVertIcon />
+                                </button>
+                                <div
+                                  className="absolute left-3/4"
+                                  style={{ display: option ? "block" : "none" }}
+                                >
+                                  <li className="list-none">Report</li>
+                                  {com.user_id === user.user_id && (
+                                    <li className="list-none">Delete</li>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })
+                      )}
                     </div>
                   </div>
                 ) : (

@@ -23,8 +23,12 @@ export const SignUp = () => {
     setVisibleModel((prev) => !prev);
   };
 
+  useEffect(() => {
+    UserName.current.focus();
+  }, [])
+
   return (
-    <div div className="Login">
+    <div div className=" Login">
       <h1>Sign Up Page</h1>
       <form
         className="Gmail-form"

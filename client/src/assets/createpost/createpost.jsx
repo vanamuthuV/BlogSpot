@@ -119,46 +119,48 @@ export const CreatePost = () => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <h1 className="m-5 text-3xl font-bold">Writing on Blogspot</h1>
-      <div className="w-full">
+      <h1 className="m-5 text-3xl font-bold max-md:text-2xl">
+        Writing on Blogspot
+      </h1>
+      <div className="flex flex-col items-center justify-center w-full mb-10">
         <form
-          className="flex flex-col items-center justify-center"
+          className="flex flex-col items-center justify-center w-full"
           onSubmit={SubmitHandler}
           enctype="multipart/form-data"
         >
           <input
-            className="w-3/4 border-2 border-#303030-500 border-solid rounded-lg pt-2 pb-2 pl-5 pr-5 m-5"
+            className="w-3/4 border-2 border-#303030-500 border-solid rounded-lg pt-2 pb-2 pl-5 pr-5 m-5 max-md:w-5/6"
             type="title"
             ref={title}
             placeholder="Title"
             required
           ></input>
           <input
-            className="pb-5 cursor-pointer border-2-gray"
+            className="pb-5 cursor-pointer border-2-gray max-md:w-5/6"
             ref={media}
             type="file"
             id="images"
           />
           <ReactQuill
-            className="w-3/4 min-h-5"
+            className="w-3/4 min-h-5 max-md:w-5/6"
             modules={modules}
             formats={formats}
             ref={content}
           />
           <input
-            className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg"
+            className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg max-md:w-5/6"
             ref={category}
             type="text"
             placeholder="Category ?"
           ></input>
           <input
-            className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg"
+            className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg max-md:w-5/6"
             ref={tags}
             type="text"
             placeholder="Tags"
           ></input>
           <input
-            className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg"
+            className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg max-md:w-5/6"
             ref={summary}
             type="summary"
             placeholder="Summary"
@@ -209,7 +211,7 @@ export const CreatePost = () => {
           </Stack>
 
           <button
-            className="pt-1 pb-1 pl-2 pr-2 ml-2.5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg"
+            className="pt-1 pb-1 pl-2 pr-2 ml-2.5 mt-5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg"
             type="submit"
           >
             Create Post

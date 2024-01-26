@@ -58,7 +58,7 @@ export const Navbar = () => {
 
   return (
     <userUpdater.Provider value={setUserFunc}>
-      <AppBar sx={{ backgroundColor: "black" }} position="static">
+      <AppBar sx={{ backgroundColor: "#171717" }} position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <BookIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -81,7 +81,7 @@ export const Navbar = () => {
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
-                size="large"
+                size="small"
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
@@ -127,18 +127,20 @@ export const Navbar = () => {
                     </Typography>
                   </Link>
                   {pages.map((page) => (
-                    <Typography
-                      mt={"6px"}
-                      mb={"6px"}
-                      sx={{
-                        marginRight: "2px",
-                        marginLeft: "2px",
-                        fontFamily: "Space Mono",
-                      }}
-                      textAlign="center"
-                    >
-                      {page}
-                    </Typography>
+                    <Link to={`/${page}`}>
+                      <Typography
+                        mt={"6px"}
+                        mb={"6px"}
+                        sx={{
+                          marginRight: "2px",
+                          marginLeft: "2px",
+                          fontFamily: "Space Mono",
+                        }}
+                        textAlign="center"
+                      >
+                        {page}
+                      </Typography>
+                    </Link>
                   ))}
                 </MenuItem>
               </Menu>
@@ -229,7 +231,7 @@ export const Navbar = () => {
                         fontFamily: "Space Mono",
                       }}
                     >
-                      Sign Up
+                      SignUp
                     </Typography>
                   </Tooltip>
                 </Link>
@@ -257,12 +259,14 @@ export const Navbar = () => {
                   onClick={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <Typography
-                      sx={{ mt: "6px", mb: "6px", fontFamily: "Space Mono" }}
-                      textAlign="center"
-                    >
-                      {setting}
-                    </Typography>
+                    <Link to={`/${user.user_name}`}>
+                      <Typography
+                        sx={{ mt: "6px", mb: "6px", fontFamily: "Space Mono" }}
+                        textAlign="center"
+                      >
+                        {setting}
+                      </Typography>
+                    </Link>
                   ))}
                   <Typography
                     onClick={handleLogout}
