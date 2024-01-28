@@ -5,4 +5,8 @@
   .ql-container {
    border : 2px solid #4B5563;
   }
+
+  .ql-container:focus {
+    outline: none;
+  }
 }

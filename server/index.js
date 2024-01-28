@@ -19,6 +19,7 @@ import SetCoverImage from "./routes/coverimage.js"
 import SetProfileImage from "./routes/profileimage.js"
 import GetProfileIamge from "./routes/getprofileimages.js"
 import AddPersonalDetails from "./routes/addpersonaldetails.js"
+import DeletePost from "./routes/deletepost.js"
 
 const Base_URL = "http://localhost:5173"
 dotenv.config();
@@ -54,6 +55,7 @@ app.use("/setcoverimage", SetCoverImage)
 app.use("/setprofileimage", SetProfileImage)
 app.use("/getprofileimage", GetProfileIamge);
 app.use("/addpersonaldetails", AddPersonalDetails);
+app.use("/deletepost", DeletePost);
 
 app.listen(5000, () => {
   console.log("Connected to postgres...")

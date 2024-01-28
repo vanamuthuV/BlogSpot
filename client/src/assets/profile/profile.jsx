@@ -26,12 +26,19 @@ import ru from "javascript-time-ago/locale/ru.json";
 import DEFAULT from "../../../public/BLOGSPOT.png";
 import DeFAULTPROF from "../../../public/Profile.jpeg";
 import { format } from "date-fns";
-import "./profile.css"
+import Tooltip from "@mui/material/Tooltip";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import DeleteIcon from "@mui/icons-material/Delete";
+import "./profile.css";
 
 const SETPERSONALDETAILS = "/addpersonaldetails";
 const SETPROFILE = "/setprofileimage";
 const SETCOVER = "/setcoverimage";
 const GETPROFILEIMAGE = "/getprofileimage";
+const DELETEPOST = "/deletepost";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -71,6 +78,18 @@ export const Profile = (user_name) => {
 
   const data = {
     user_name: user_name,
+  };
+
+  const [openDelete, setOpenDelete] = React.useState(false);
+
+  const handleClickOpenDelete = () => {
+    setOpenDelete(true);
+  };
+
+ 
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
   };
 
   useEffect(() => {
@@ -454,6 +473,41 @@ export const Profile = (user_name) => {
     }
   };
 
+  const [deleteVar, setDeleteVar] = useState('');
+  const [deleteID, setDeleteID] = useState('');
+
+  
+   const handleDeletePost = async (post_id) => {
+     console.log(post_id);
+     try {
+       const response = await axios.delete(
+         `/deletepost/${post_id + "." + user.user_name}`,
+         {
+           headers: {
+             "Content-Type": "multipart/form-data",
+             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+           },
+         }
+       );
+       console.log(response?.data?.data);
+       setPublicPost(response?.data?.data?.PublicPost);
+       setPrivatePost(response?.data?.data?.PrivatePost);
+     } catch (error) {
+       console.error(error);
+     }
+     setOpenDelete(false);
+   };
+
+  const handleClickDeleteManager = (ev) => {
+    const post_id = ev.target.value
+    const PostArray = post_id.split('/../')
+    console.log(PostArray);
+    setDeleteVar(PostArray[1])
+    setDeleteID(PostArray[0])
+    console.log(post_id);
+    setOpenDelete(true);
+  };
+
   const [ShowEditable, setShowEditable] = useState(false);
 
   return (
@@ -477,6 +531,7 @@ export const Profile = (user_name) => {
                   {/* <Button variant="outlined" onClick={handleClickOpen}>
                   Open full-screen dialog
                 </Button> */}
+
                   <button
                     className="flex flex-row items-center justify-center pt-1 pb-1 pl-2 pr-2 border border-gray-600 rounded max-md:text-xs"
                     onClick={handleClickOpen}
@@ -532,7 +587,7 @@ export const Profile = (user_name) => {
                       <div className="flex flex-col items-center justify-center w-3/4 mt-5">
                         <form
                           onSubmit={PersonalDetails}
-                          className="flex flex-col w-full"
+                          className="flex flex-col items-center justify-center w-full"
                         >
                           <label
                             htmlFor="name"
@@ -558,7 +613,7 @@ export const Profile = (user_name) => {
                                 {ShowEditable && "Old "}Date Of Birth{" "}
                               </label>
                               <p
-                                className="flex flex-row items-center w-full mb-5"
+                                className="flex flex-row items-center mb-5"
                                 ref={DOF}
                                 contentEditable={false}
                               >
@@ -608,14 +663,14 @@ export const Profile = (user_name) => {
 
                           <label
                             htmlFor="role"
-                            className="pb-5 text-xl font-bold"
+                            className="pb-5 text-xl font-bold text-justify "
                           >
                             Who are you? (eg : Student, Professor, Developer
                             etc...)
                           </label>
 
                           <textarea
-                            className="p-4 mb-5 text-xl border-2 border-gray-600 resize-none rounded-xl focus:outline-none"
+                            className="w-full p-4 mb-5 text-xl border-2 border-gray-600 resize-none rounded-xl focus:outline-none"
                             rows={"1"}
                             ref={Role}
                             onChange={() => setRole(Role.current.value)}
@@ -633,13 +688,7 @@ export const Profile = (user_name) => {
                             className="w-3/4 ql-error min-h-5 max-md:w-5/6"
                             modules={modules}
                             formats={formats}
-                            style={{
-                              padding: "20px",
-                              width: "100%",
-                              border: "2px solid #4B5563",
-                              borderRadius: "12px",
-                              fontFamily: "Space Mono",
-                            }}
+                            style={{ width: "100%" }}
                             value={bio}
                             ref={BIO}
                             onChange={() => {
@@ -661,7 +710,12 @@ export const Profile = (user_name) => {
                             {bio}
                           </textarea> */}
 
-                          <button type="submit">Update</button>
+                          <button
+                            className="w-24 pt-2 pb-2 pl-5 pr-5 mt-10 mb-10 text-white bg-gray-700 border-2 border-gray-900 rounded-xl hover:bg-white hover:text-gray-700"
+                            type="submit"
+                          >
+                            Update
+                          </button>
                         </form>
                       </div>
                     </div>
@@ -706,30 +760,33 @@ export const Profile = (user_name) => {
                 {user.user_name === userDetails.user_name &&
                   ["bottom"].map((anchor) => (
                     <React.Fragment key={anchor}>
-                      <button
-                        onClick={ProfileToggle(anchor, true)}
-                        className="absolute flex-row justify-center pt-2 pb-2 pl-2 pr-2 font-bold text-white bg-gray-900 rounded-full opacity-50 -right-1 bottom-10 items-9-center hover:opacity-100 max-md:-bottom-1 max-md:-right-5 max-md:pt-1.5 max-md:pb-1 max-md:pr-1 max-md:pl-1"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          class="w-7 h-7 pb-1 max-md:w-5 max-md:h-5"
+                      <Tooltip title="Change Profile Image">
+                        <button
+                          onClick={ProfileToggle(anchor, true)}
+                          className="absolute flex-row justify-center pt-2 pb-2 pl-2 pr-2 font-bold text-white bg-gray-900 rounded-full opacity-50 -right-1 bottom-10 items-9-center hover:opacity-100 max-md:-bottom-1 max-md:-right-5 max-md:pt-1.5 max-md:pb-1 max-md:pr-1 max-md:pl-1"
                         >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
-                          />
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
-                          />
-                        </svg>
-                      </button>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-7 h-7 pb-1 max-md:w-5 max-md:h-5"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
+                            />
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
+                            />
+                          </svg>
+                        </button>
+                      </Tooltip>
+
                       <Drawer
                         anchor={anchor}
                         open={profilestate[anchor]}
@@ -744,30 +801,33 @@ export const Profile = (user_name) => {
                 {user.user_name === userDetails.user_name &&
                   ["bottom"].map((anchor) => (
                     <React.Fragment key={anchor}>
-                      <button
-                        onClick={toggleDrawer(anchor, true)}
-                        className="flex-row justify-center pt-2 pb-2 pl-2 pr-2 font-bold text-white bg-gray-900 rounded-full opacity-50 items-9-center hover:opacity-100"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          class="w-7 h-7 pb-1"
+                      <Tooltip title="Change Cover Image">
+                        <button
+                          onClick={toggleDrawer(anchor, true)}
+                          className="flex-row justify-center pt-2 pb-2 pl-2 pr-2 font-bold text-white bg-gray-900 rounded-full opacity-50 items-9-center hover:opacity-100"
                         >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
-                          />
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
-                          />
-                        </svg>
-                      </button>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-7 h-7 pb-1"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
+                            />
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
+                            />
+                          </svg>
+                        </button>
+                      </Tooltip>
+
                       <Drawer
                         anchor={anchor}
                         open={state[anchor]}
@@ -810,9 +870,10 @@ export const Profile = (user_name) => {
                     </div>
                   )}
 
-                  <h1 className="text-xl font-normal tex-gray-600 max-md:text-base">
+                  <h1 className="text-xl font-semibold tex-gray-600 max-md:text-base">
                     @{userDetails.user_name}
                   </h1>
+                  <h1 className="text-gray-600">{ProfileInfo.role}</h1>
                   {ProfileInfo.bio && (
                     <div
                       className="mt-3 mb-1 max-md:text-sm"
@@ -869,110 +930,164 @@ export const Profile = (user_name) => {
                     </time>
                   </div>
 
-                  {user.user_name === username && (
-                    // (Object.keys(ProfileInfo).length === 0 ||
-                    //   (Object.keys(ProfileInfo).length >= 0 &&
-                    //     CompleteProfileChecker === true)) && (
-                    <div className="flex flex-col items-center justify-center">
-                      {/* {ShowDialogCP && (
-                        <div className="flex flex-col items-center justify-center">
-                          <form
-                            onSubmit={PersonalDetails}
-                            className="flex flex-col"
-                          >
-                            <label htmlFor="name"></label>
-                            <input
-                              value={name}
-                              onChange={(e) => {
-                                setName(Name.current.value);
-                              }}
-                              contentEditable={true}
-                              ref={Name}
-                              type="text"
-                              id="name"
-                              placeholder="Name"
-                            />
-                            <label htmlFor="dof">Date Of Birth </label>
-                            <input
-                              value={Date(birthDay)}
-                              ref={DOF}
-                              onChange={DOFUpdater}
-                              type="date"
-                              id="dof"
-                              required
-                            ></input>
-                            <label htmlFor="role">
-                              Who are you? (eg : Student, Professor, Developer
-                              etc...)
-                            </label>
-                            <input
-                              value={role}
-                              type="text"
-                              ref={Role}
-                              id="role"
-                              placeholder="Who are you?"
-                              contentEditable={true}
-                            ></input>
-
-                            <label htmlFor=""></label>
-                            <TextField
-                              value={bio}
-                              id="standard-textarea"
-                              sx={{ width: "100%", fontFamily: "Space Mono" }}
-                              inputRef={BIO}
-                              placeholder="Write Your Bio"
-                              multiline
-                              variant="standard"
-                            />
-                            <button type="submit">Update</button>
-                          </form>
-                        </div>
-                      )} */}
-                    </div>
-                  )}
+                  <div className="flex flex-row items-center justify-center mt-5 mb-5">
+                    <button className="w-2/4 pt-2 pb-2 text-xl text-white border-none max-md:text-lg max-md:pb-1 max-md:pt-1 rounded-xl bg-sky-600">
+                      Follow
+                    </button>
+                  </div>
 
                   <div className="flex flex-col items-center justify-center mt-10 mb-10">
-                    <h1 className="text-3xl font-bold">
+                    <h1 className="text-3xl font-bold max-md:text-lg">
                       {user.user_name === userDetails.user_name && "Public "}
                       Posts
                     </h1>
-                    <div className="mt-5">
+                    <div className="mt-5 max-md:mt-2">
                       {publicPost.length === 0 ? (
                         <div>
                           <h1>
                             No Posts Yet{" "}
-                            <span className="text-lg font-blue-400">
-                              <Link to={"/createpost"}>Create One</Link>
-                            </span>
+                            {user.user_name === userDetails.user_name && (
+                              <span className="text-lg text-blue-400 hover:underline">
+                                <Link to={"/createpost"}>Create One</Link>
+                              </span>
+                            )}
                           </h1>
                         </div>
                       ) : (
                         publicPost.map((items) => {
                           return (
-                            <div className="flex flex-row items-center border-b border-gray-400">
-                              <div className="flex flex-row items-center justify-center pr-5 min-h-40 min-w-48 max-w-48 max-h-40">
+                            <div className="flex flex-row items-center pb-2 border-b border-gray-400">
+                              <div className="flex flex-row items-center justify-center pr-5 max-md:pr-2 min-h-40 min-w-48 max-w-48 max-h-40 max-md:max-w-24 max-md:min-w-24 max-md:max-h-24 max-md:min-h-24">
                                 <img
                                   className="object-scale-down w-full h-full"
                                   src={`http://localhost:5000/${items.post_images}`}
                                 />
                               </div>
-                              <div className="flex flex-col justify-center pl-5">
+                              <div className="flex flex-col justify-center pl-5 pr-5 max-md:pl-2 max-md:pr-2">
                                 <Link to={`/Read Blog/${items.post_id}`}>
-                                  <p className="text-xl font-semibold text-justify hover:underline">
-                                    {items.post_title.length > 100
-                                      ? items.post_title.substring(0, 100) +
+                                  <p className="text-xl font-semibold text-justify hover:underline max-md:text-xs">
+                                    {window.innerWidth >= 769
+                                      ? items.post_title.length > 100
+                                        ? items.post_title.substring(0, 100) +
+                                          "..."
+                                        : items.post_title
+                                      : items.post_title.length > 28
+                                      ? items.post_title.substring(0, 28) +
                                         "..."
                                       : items.post_title}
                                   </p>
                                 </Link>
 
-                                <p className="text-justify">
-                                  {items.post_summary.length > 250
-                                    ? items.post_summary.substring(0, 250) +
+                                <p className="text-justify max-md:text-xs">
+                                  {window.innerWidth >= 769
+                                    ? items.post_summary.length > 250
+                                      ? items.post_summary.substring(0, 250) +
+                                        "..."
+                                      : items.post_summary
+                                    : items.post_summary.length > 120
+                                    ? items.post_summary.substring(0, 120) +
                                       "..."
                                     : items.post_summary}
                                 </p>
                               </div>
+                              {user.user_name === userDetails.user_name && (
+                                <div className="flex flex-row items-center justify-center pl-5 max-md:pl-2">
+                                  <Link to={`/edit/${items.post_id}`}>
+                                    <Tooltip title="Edit">
+                                      <button className="pr-2 max-md:pr-1">
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke-width="1.5"
+                                          stroke="currentColor"
+                                          class="w-6 h-6 max-md:w-4 max-md:h-4"
+                                        >
+                                          <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                                          />
+                                        </svg>
+                                      </button>
+                                    </Tooltip>
+                                  </Link>
+                                  <Tooltip title="Delete">
+                                    <button
+                                      value={`${items.post_id}/../${items.post_title}`}
+                                      onClick={handleClickDeleteManager}
+                                      className="pl-2 text-red-600 max-md:pl-1"
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        stroke="currentColor"
+                                        class="w-6 h-6 max-md:w-4 max-md:h-4"
+                                      >
+                                        <path
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                                        />
+                                      </svg>
+                                    </button>
+                                    <Dialog
+                                      open={openDelete}
+                                      onClose={handleCloseDelete}
+                                      aria-labelledby="alert-dialog-title"
+                                      aria-describedby="alert-dialog-description"
+                                    >
+                                      <DialogTitle
+                                        id="alert-dialog-title"
+                                        style={{ fontFamily: "Space Mono" }}
+                                      >
+                                        {
+                                          "Are you sure you want to delete the post?"
+                                        }
+                                      </DialogTitle>
+                                      <DialogContent>
+                                        <DialogContentText
+                                          style={{
+                                            fontFamily: "Space Mono",
+                                            textAlign: "justify",
+                                          }}
+                                          id="alert-dialog-description"
+                                        >
+                                          This action cannot be undone, and the
+                                          post will be permanently removed.
+                                          Please confirm your decision before
+                                          proceeding. If you have any concerns
+                                          or need assistance, feel free to let
+                                          us know.
+                                          <span className="font-semibold">
+                                            Post Title : {deleteVar}
+                                          </span>
+                                        </DialogContentText>
+                                      </DialogContent>
+                                      <DialogActions>
+                                        <Button
+                                          style={{ fontFamily: "Space Mono" }}
+                                          onClick={handleCloseDelete}
+                                        >
+                                          Cancel
+                                        </Button>
+                                        <Button
+                                          style={{
+                                            fontFamily: "Space Mono",
+                                            color: "red",
+                                          }}
+                                          onClick={() => { handleDeletePost(deleteID)}}
+                                          autoFocus
+                                        >
+                                          Delete
+                                        </Button>
+                                      </DialogActions>
+                                    </Dialog>
+                                  </Tooltip>
+                                </div>
+                              )}
                             </div>
                           );
                         })
@@ -982,46 +1097,159 @@ export const Profile = (user_name) => {
 
                   {user.user_name === userDetails.user_name && (
                     <div className="flex flex-col items-center justify-center mt-10 mb-10">
-                      <h1 className="text-3xl font-bold">
+                      <h1 className="text-3xl font-bold max-md:text-lg">
                         Private Posts
                       </h1>
-                      <div className="mt-5">
+                      <div className="mt-5 max-md:mt-2">
                         {privatePost.length === 0 ? (
                           <div>
                             <h1>
                               No Posts Yet{" "}
-                              <span className="text-lg font-blue-400">
-                                <Link to={"/createpost"}>Create One</Link>
-                              </span>
+                              {user.user_name === userDetails.user_name && (
+                                <span className="text-lg text-blue-400 hover:underline">
+                                  <Link to={"/createpost"}>Create One</Link>
+                                </span>
+                              )}
                             </h1>
                           </div>
                         ) : (
                           privatePost.map((items) => {
                             return (
                               <div className="flex flex-row items-center border-b border-gray-400">
-                                <div className="flex flex-row items-center justify-center pr-5 min-h-40 min-w-48 max-w-48 max-h-40">
+                                <div className="flex flex-row items-center justify-center pr-5 max-md:pr-2 min-h-40 min-w-48 max-w-48 max-h-40 max-md:max-w-24 max-md:min-w-24 max-md:max-h-24 max-md:min-h-24">
                                   <img
                                     className="object-scale-down w-full h-full"
                                     src={`http://localhost:5000/${items.post_images}`}
                                   />
                                 </div>
-                                <div className="flex flex-col justify-center pl-5">
+                                <div className="flex flex-col justify-center pl-5 pr-5 max-md:pl-2 max-md:pr-2">
                                   <Link to={`/Read Blog/${items.post_id}`}>
-                                    <p className="text-xl font-semibold text-justify hover:underline">
-                                      {items.post_title.length > 100
-                                        ? items.post_title.substring(0, 100) +
+                                    <p className="text-xl font-semibold text-justify hover:underline max-md:text-xs">
+                                      {window.innerWidth >= 769
+                                        ? items.post_title.length > 100
+                                          ? items.post_title.substring(0, 100) +
+                                            "..."
+                                          : items.post_title
+                                        : items.post_title.length > 28
+                                        ? items.post_title.substring(0, 28) +
                                           "..."
                                         : items.post_title}
                                     </p>
                                   </Link>
 
-                                  <p className="text-justify">
-                                    {items.post_summary.length > 250
-                                      ? items.post_summary.substring(0, 250) +
+                                  <p className="text-justify max-md:text-xs">
+                                    {window.innerWidth >= 769
+                                      ? items.post_summary.length > 250
+                                        ? items.post_summary.substring(0, 250) +
+                                          "..."
+                                        : items.post_summary
+                                      : items.post_summary.length > 120
+                                      ? items.post_summary.substring(0, 120) +
                                         "..."
                                       : items.post_summary}
                                   </p>
                                 </div>
+                                {user.user_name === userDetails.user_name && (
+                                  <div className="flex flex-row items-center justify-center pl-5 max-md:pl-2">
+                                    <Link to={`/edit/${items.post_id}`}>
+                                      <Tooltip title="Edit">
+                                        <button className="pr-2 max-md:pr-1">
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            class="w-6 h-6 max-md:w-4 max-md:h-4"
+                                          >
+                                            <path
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                                            />
+                                          </svg>
+                                        </button>
+                                      </Tooltip>
+                                    </Link>
+                                    <Tooltip title="Delete">
+                                      <button
+                                        value={`${items.post_id}/../${items.post_title}`}
+                                        onClick={handleClickDeleteManager}
+                                        className="pl-2 text-red-600 max-md:pl-1"
+                                      >
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke-width="1.5"
+                                          stroke="currentColor"
+                                          class="w-6 h-6 max-md:w-4 max-md:h-4"
+                                        >
+                                          <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                                          />
+                                        </svg>
+                                      </button>
+                                      <Dialog
+                                        open={openDelete}
+                                        onClose={handleCloseDelete}
+                                        aria-labelledby="alert-dialog-title"
+                                        aria-describedby="alert-dialog-description"
+                                      >
+                                        <DialogTitle
+                                          id="alert-dialog-title"
+                                          style={{ fontFamily: "Space Mono" }}
+                                        >
+                                          {
+                                            "Are you sure you want to delete the post?"
+                                          }
+                                        </DialogTitle>
+                                        <DialogContent>
+                                          <DialogContentText
+                                            style={{
+                                              fontFamily: "Space Mono",
+                                              textAlign: "justify",
+                                            }}
+                                            id="alert-dialog-description"
+                                          >
+                                            This action cannot be undone, and
+                                            the post will be permanently
+                                            removed. Please confirm your
+                                            decision before proceeding. If you
+                                            have any concerns or need
+                                            assistance, feel free to let us
+                                            know.
+                                            <span className="font-semibold">
+                                              Post Title : {deleteVar}
+                                            </span>
+                                          </DialogContentText>
+                                        </DialogContent>
+                                        <DialogActions>
+                                          <Button
+                                            style={{ fontFamily: "Space Mono" }}
+                                            onClick={handleCloseDelete}
+                                          >
+                                            Cancel
+                                          </Button>
+                                          <Button
+                                            style={{
+                                              fontFamily: "Space Mono",
+                                              color: "red",
+                                            }}
+                                            onClick={() => {
+                                              handleDeletePost(deleteID);
+                                            }}
+                                            autoFocus
+                                          >
+                                            Delete
+                                          </Button>
+                                        </DialogActions>
+                                      </Dialog>
+                                    </Tooltip>
+                                  </div>
+                                )}
                               </div>
                             );
                           })
