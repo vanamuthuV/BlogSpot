@@ -4,6 +4,11 @@ import axios from "../../../api/axios";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import "./postdetails.css";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { formatISO9075, format } from "date-fns";
@@ -12,6 +17,7 @@ import { YoutubeCounter } from "@charkour/react-reactions";
 import TwitterLikeButton from "twitter-like-button";
 import Tooltip from "@mui/material/Tooltip";
 import useAuth from "../../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useRef } from "react";
 import ReactTimeAgo from "react-time-ago";
@@ -25,6 +31,7 @@ TimeAgo.addLocale(ru);
 const POSTDETAIL_URL = "/postdetails";
 const COMMENT = "/comment";
 const GETCOMMENT = "/getcomment";
+const DELETEPOST = "/deletesinglepost";
 
 export const PostDetails = () => {
   const { id } = useParams();
@@ -34,6 +41,8 @@ export const PostDetails = () => {
   const [option, setOption] = useState(false);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
+
+  const navigate = useNavigate();
 
   const comment = useRef(null);
 
@@ -63,6 +72,35 @@ export const PostDetails = () => {
     }
   };
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = async() => {
+    console.log("Hello");
+
+    try {
+      const response = await axios.delete(DELETEPOST+`/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      console.log(response?.data?.data);
+    } catch (error) {
+      console.error(error)
+    }
+
+    setOpen(false);
+    navigate("/")
+  }
+  
   useEffect(() => {
     (async () => {
       try {
@@ -200,10 +238,75 @@ export const PostDetails = () => {
                   <ReactionBarSelector iconSize={"24px"} />
                 </div>
 
+                {user.user_id === data.user_id && (
+                  <div>
+                    <button
+                      className="pt-2 pb-2 pl-5 pr-5 font-light text-white transition duration-300 bg-red-600 border border-red-600 rounded-lg hover:text-red-600 hover:bg-white active:text-red-600 active:bg-white"
+                      onClick={handleClickOpen}
+                    >
+                      Delete This Post
+                    </button>
+                    <Dialog
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description"
+                    >
+                      <DialogTitle
+                        id="alert-dialog-title"
+                        style={{ fontFamily: "Space Mono" }}
+                      >
+                        {"Are you sure you want to delete the post?"}
+                      </DialogTitle>
+                      <DialogContent>
+                        <DialogContentText
+                          style={{
+                            fontFamily: "Space Mono",
+                            textAlign: "justify",
+                          }}
+                          id="alert-dialog-description"
+                        >
+                          This action cannot be undone, and the post will be
+                          permanently removed. Please confirm your decision
+                          before proceeding. If you have any concerns or need
+                          assistance, feel free to let us know.
+                          <span className="font-bold">
+                            Post Title : {data.post_title}
+                          </span>
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button
+                          style={{ fontFamily: "Space Mono" }}
+                          onClick={handleClose}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          style={{
+                            fontFamily: "Space Mono",
+                            color: "red",
+                          }}
+                          // onClick={() => {
+                          //   handleDeletePost(deleteID);
+                          // }}
+                          onClick={handleDelete}
+                          autoFocus
+                        >
+                          Delete
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                    
+                  </div>
+                )}
+
                 {data.post_comment_type === "true" ? (
                   <div className="flex flex-col items-start justify-center w-full mt-5">
                     <div className="flex flex-col items-start w-full mt-5 justify-evenly">
-                        <h1 className="mb-3 text-2xl font-bold">{comments.length === 0 ? 0 : comments.length} Comments</h1>
+                      <h1 className="mb-3 text-2xl font-bold">
+                        {comments.length === 0 ? 0 : comments.length} Comments
+                      </h1>
                       <div className="flex flex-row items-center justify-center w-full mt-5 mb-5">
                         <AccountCircle
                           fontSize="large"
@@ -271,10 +374,12 @@ export const PostDetails = () => {
                                 </div>
                               </div>
                               <div className="relative flex flex-row items-center justify-center w-1/12">
-                                <button value={com.comment_id} onClick={() => {
-                                  console.log(com.comment_id);
-                                  
-                                }}>
+                                <button
+                                  value={com.comment_id}
+                                  onClick={() => {
+                                    console.log(com.comment_id);
+                                  }}
+                                >
                                   <MoreVertIcon />
                                 </button>
                                 <div
