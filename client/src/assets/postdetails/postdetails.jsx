@@ -24,6 +24,7 @@ import ReactTimeAgo from "react-time-ago";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en.json";
 import ru from "javascript-time-ago/locale/ru.json";
+import EditIcon from "@mui/icons-material/Edit";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -32,6 +33,8 @@ const POSTDETAIL_URL = "/postdetails";
 const COMMENT = "/comment";
 const GETCOMMENT = "/getcomment";
 const DELETEPOST = "/deletesinglepost";
+const EDITCOMMENT = "/editcomment";
+const DELETECOMMENT = "/deletecomment";
 
 export const PostDetails = () => {
   const { id } = useParams();
@@ -72,6 +75,29 @@ export const PostDetails = () => {
     }
   };
 
+  const handleDeleteComment = async(ev) => {
+    console.log(ev.target.value);
+    const commentid = ev.target.value
+
+    try {
+      const response = await axios.delete(DELETECOMMENT + "/" + commentid+"-."+id, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Adjust the content type as needed
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
+        },
+      });
+      console.log(response?.data?.data);
+      setComments(response?.data?.data);
+    } catch (error) {
+      console.log(error)
+    }
+
+  };
+
+  const handleReportComment = (ev) => {
+    console.log(ev.target);
+  };
+
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -82,11 +108,11 @@ export const PostDetails = () => {
     setOpen(false);
   };
 
-  const handleDelete = async() => {
+  const handleDelete = async () => {
     console.log("Hello");
 
     try {
-      const response = await axios.delete(DELETEPOST+`/${id}`, {
+      const response = await axios.delete(DELETEPOST + `/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -94,13 +120,13 @@ export const PostDetails = () => {
       });
       console.log(response?.data?.data);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
 
     setOpen(false);
-    navigate("/")
-  }
-  
+    navigate("/");
+  };
+
   useEffect(() => {
     (async () => {
       try {
@@ -130,6 +156,21 @@ export const PostDetails = () => {
       }
     })();
   }, []);
+
+
+  const [commentID, setCommentID] = useState('');
+
+  const [openEdit, setOpenEdit] = React.useState(false);
+
+  const handleClickOpenEdit = (ev) => {
+    setCommentID(ev.target.value)
+    console.log(ev.target.value);
+    setOpenEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
 
   const [like, setLike] = useState(0);
   const [dislike, setDisLike] = useState(0);
@@ -297,7 +338,6 @@ export const PostDetails = () => {
                         </Button>
                       </DialogActions>
                     </Dialog>
-                    
                   </div>
                 )}
 
@@ -308,10 +348,24 @@ export const PostDetails = () => {
                         {comments.length === 0 ? 0 : comments.length} Comments
                       </h1>
                       <div className="flex flex-row items-center justify-center w-full mt-5 mb-5">
-                        <AccountCircle
+                        {Object.keys(user).length === 0 ? (
+                          <AccountCircle
+                            fontSize="large"
+                            sx={{ color: "action.active", mr: "10px" }}
+                          />
+                        ) : (
+                          <Link to={`/${user.user_name}`}>
+                            <img
+                              className="mr-2 rounded-full min-h-10 min-w-10 max-h-10 max-w-10"
+                              src={`http://localhost:5000/${user.profileImg}`}
+                            />
+                          </Link>
+                        )}
+
+                        {/* <AccountCircle
                           fontSize="large"
                           sx={{ color: "action.active", mr: "10px" }}
-                        />
+                        /> }
                         {/* <input
                             ref={comment}
                           className="flex w-full pt-3 pb-3 pl-2 pr-2 "
@@ -321,13 +375,13 @@ export const PostDetails = () => {
                           id="standard-textarea"
                           inputRef={comment}
                           sx={{ width: "100%", fontFamily: "Space Mono" }}
-                          placeholder="Add a comment..."
+                          placeholder="Leave a comment..."
                           multiline
                           variant="standard"
                         />
                         <button
                           onClick={UploadComment}
-                          className="pt-1 pb-1 pl-2 pr-2 ml-2.5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg"
+                          className="pt-1 pb-1 pl-2 pr-2 ml-2.5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg max-md:text-xs"
                         >
                           Comment
                         </button>
@@ -343,21 +397,27 @@ export const PostDetails = () => {
                         comments.map((com) => {
                           return (
                             <div className="flex flex-row items-center justify-between w-full mt-2 mb-2">
-                              <div className="flex flex-row items-center justify-center w-1/12">
-                                <AccountCircle
+                              <div className="flex flex-row items-start justify-center w-1/12">
+                                {/* <AccountCircle
                                   fontSize="large"
                                   sx={{ color: "action.active" }}
-                                />
+                                /> */}
+                                <Link to={`/${com.user_name}`}>
+                                  <img
+                                    className="rounded-full max-h-8 min-w-8 min-h-8 max-w-8"
+                                    src={`http://localhost:5000/${com.profileimage}`}
+                                  />
+                                </Link>
                               </div>
-                              <div className="flex flex-col items-start justify-center w-10/12 ml-3 mr-3">
+                              <div className="flex flex-col items-start justify-center w-10/12 ml-3 mr-3 max-md:w-9/12">
                                 <div className="flex flex-row items-center justify-center">
                                   <Link to={`/${com.user_name}`}>
-                                    <p className="pr-5 font-bold hover:underline">
+                                    <p className="pr-5 font-bold max-md:pr-2 max-md:text-xs hover:underline">
                                       {com.user_name}
                                     </p>
                                   </Link>
 
-                                  <time className="pl-5 text-gray-500">
+                                  <time className="flex flex-row items-center pl-5 text-gray-500 max-md:pl-2 max-md:text-xs">
                                     <span className="text-xl font-bold">
                                       &middot;
                                     </span>
@@ -368,30 +428,213 @@ export const PostDetails = () => {
                                       />
                                     }
                                   </time>
-                                </div>
-                                <div className="flex flex-col items-center justify-center">
-                                  <p>{com.comment}</p>
-                                </div>
-                              </div>
-                              <div className="relative flex flex-row items-center justify-center w-1/12">
-                                <button
-                                  value={com.comment_id}
-                                  onClick={() => {
-                                    console.log(com.comment_id);
-                                  }}
-                                >
-                                  <MoreVertIcon />
-                                </button>
-                                <div
-                                  className="absolute left-3/4"
-                                  style={{ display: option ? "block" : "none" }}
-                                >
-                                  <li className="list-none">Report</li>
-                                  {com.user_id === user.user_id && (
-                                    <li className="list-none">Delete</li>
+                                  {com.isedited === true && (
+                                    <p className="flex flex-row items-center pl-5 text-gray-700 max-md:pl-2 max-md:text-xs">
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        stroke="currentColor"
+                                        class="w-5 h-5 pr-1"
+                                      >
+                                        <path
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+                                        />
+                                      </svg>
+                                      edited
+                                    </p>
                                   )}
                                 </div>
+                                <div className="flex flex-col items-center justify-center">
+                                  <p className="max-md:text-xs">
+                                    {com.comment}
+                                  </p>
+                                </div>
                               </div>
+
+                              {Object.keys(user).length !== 0 && (
+                                <div className="relative flex flex-row items-center justify-center w-1/12">
+                                  {com.user_id === user.user_id && (
+                                    <>
+                                      <button
+                                        onClick={handleClickOpenEdit}
+                                        value={com.comment_id}
+                                      >
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke-width="1.5"
+                                          stroke="currentColor"
+                                          class="w-8 h-8 pl-1 pr-1 max-md:w-5 max-md:h-5 max-md:pr-0.5 max-md:pl-0.5"
+                                        >
+                                          <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+                                          />
+                                        </svg>
+                                      </button>
+                                      <Dialog
+                                        open={openEdit}
+                                        onClose={handleCloseEdit}
+                                        PaperProps={{
+                                          component: "form",
+                                          onSubmit: async (event) => {
+                                            event.preventDefault();
+                                            const formData = new FormData(
+                                              event.currentTarget
+                                            );
+                                            const formJson = Object.fromEntries(
+                                              formData.entries()
+                                            );
+                                            const newComment = formJson.email;
+                                            console.log(newComment);
+
+                                            const data = {
+                                              newComment: newComment,
+                                              commentID: commentID,
+                                              postID: id,
+                                            };
+
+                                            try {
+                                              const response = await axios.put(
+                                                EDITCOMMENT,
+                                                data,
+                                                {
+                                                  headers: {
+                                                    "Content-Type":
+                                                      "application/json",
+                                                    Authorization: `Bearer ${localStorage.getItem(
+                                                      "accessToken"
+                                                    )}`,
+                                                  },
+                                                }
+                                              );
+                                              console.log(response?.data?.data);
+                                              setComments(response?.data?.data)
+                                            } catch (error) {
+                                              console.log(error);
+                                            }
+
+                                            handleCloseEdit();
+                                          },
+                                        }}
+                                      >
+                                        <DialogTitle
+                                          sx={{ fontFamily: "Space Mono" }}
+                                        >
+                                          Editting Comment
+                                        </DialogTitle>
+                                        <DialogContent>
+                                          <DialogContentText
+                                            sx={{
+                                              fontFamily: "Space Mono",
+                                              fontSize: "10px",
+                                            }}
+                                          >
+                                            🚨 Attention INKWELLIFY Community!{" "}
+                                            <br></br>🚨 Respectful and
+                                            constructive dialogue is vital.
+                                            Please adhere to guidelines:
+                                            <br></br> 1. Be respectful.{" "}
+                                            <br></br>2. Stay on topic.<br></br>{" "}
+                                            3. No offensive language or hate
+                                            speech.<br></br>
+                                            5. Protect privacy avoid sharing
+                                            personal information. <br></br>
+                                            <br></br>Let's maintain a positive
+                                            and inclusive environment for all.
+                                            Non-compliance may lead to comment
+                                            removal or restrictions. Your
+                                            cooperation ensures an enjoyable
+                                            experience for everyone. Thank you
+                                            for contributing meaningfully to the
+                                            [Your Blog Name] community! 🌐✨
+                                          </DialogContentText>
+                                          <TextField
+                                            autoFocus
+                                            required
+                                            margin="dense"
+                                            id="name"
+                                            name="email"
+                                            label="Write Your New Comment"
+                                            type="text"
+                                            fullWidth
+                                            variant="standard"
+                                            sx={{ fontFamily: "Space Mono" }}
+                                          />
+                                        </DialogContent>
+                                        <DialogActions>
+                                          <Button
+                                            sx={{ fontFamily: "Space Mono" }}
+                                            onClick={handleCloseEdit}
+                                          >
+                                            Cancel
+                                          </Button>
+                                          <Button
+                                            sx={{ fontFamily: "Space Mono" }}
+                                            type="submit"
+                                          >
+                                            Comment
+                                          </Button>
+                                        </DialogActions>
+                                      </Dialog>
+                                    </>
+                                  )}
+
+                                  {(com.user_id === user.user_id ||
+                                    data.user_id === user.user_id) && (
+                                    <button
+                                      onClick={handleDeleteComment}
+                                      value={com.comment_id}
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        stroke="currentColor"
+                                        class="w-8 h-8 pl-1 pr-1 max-md:w-5 max-md:h-5 max-md:pr-0.5 max-md:pl-0.5 text-red-500"
+                                      >
+                                        <path
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                                        />
+                                      </svg>
+                                    </button>
+                                  )}
+
+                                  {!(
+                                    com.user_id === user.user_id ||
+                                    data.user_id === user.user_id
+                                  ) && (
+                                    <button
+                                      onClick={handleReportComment}
+                                      values={com.comment_id}
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        stroke="currentColor"
+                                        class="w-8 h-8 pl-1 pr-1 max-md:w-5 max-md:h-5 max-md:pr-0.5 max-md:pl-0.5"
+                                      >
+                                        <path
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+                                        />
+                                      </svg>
+                                    </button>
+                                  )}
+                                </div>
+                              )}
                             </div>
                           );
                         })
@@ -411,3 +654,13 @@ export const PostDetails = () => {
     </>
   );
 };
+
+export default function FormDialog() {
+  
+
+  return (
+    <React.Fragment>
+      
+    </React.Fragment>
+  );
+}

@@ -21,6 +21,8 @@ import GetProfileIamge from "./routes/getprofileimages.js"
 import AddPersonalDetails from "./routes/addpersonaldetails.js"
 import DeletePost from "./routes/deletepost.js"
 import DeleteSinglepPost from "./routes/deletesinglepost.js"
+import EditComment from "./routes/updatecomment.js"
+import DeleteComment from "./routes/deletecomment.js"
 
 const Base_URL = "http://localhost:5173"
 dotenv.config();
@@ -58,6 +60,8 @@ app.use("/getprofileimage", GetProfileIamge);
 app.use("/addpersonaldetails", AddPersonalDetails);
 app.use("/deletepost", DeletePost);
 app.use("/deletesinglepost", DeleteSinglepPost);
+app.use("/editcomment", EditComment)
+app.use("/deletecomment", DeleteComment);
 
 app.listen(5000, () => {
   console.log("Connected to postgres...")
