@@ -3,9 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {},
-    ontFamily: {
+    fontFamily: {
       'sans': ['ui-sans-serif', 'system-ui'],
-      'fira' : ['Fira Code'],
+      'Mono':['Space Mono', 'Fira Code']
     }
   },
   plugins: [],

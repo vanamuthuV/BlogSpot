@@ -36,7 +36,7 @@ export const Navbar = () => {
     localStorage.clear();
     setAuth({});
     setUser({});
-    return <Navigate to={'/'} />
+    return <Navigate to={"/"} />;
   };
 
   const handleOpenNavMenu = (event) => {
@@ -60,7 +60,7 @@ export const Navbar = () => {
     <userUpdater.Provider value={setUserFunc}>
       <AppBar
         elevation={0}
-        sx={{ backgroundColor: "#f5f5f5", border: "1px solid #303030" }}
+        sx={{ backgroundColor: "#f5f5f5", borderBottom: "1px solid #303030" }}
         position="sticky"
       >
         <Container maxWidth="xl">
@@ -73,7 +73,6 @@ export const Navbar = () => {
             }}
           >
             <Typography
-              variant="h6"
               noWrap
               component="a"
               href="/"
@@ -82,8 +81,10 @@ export const Navbar = () => {
                 mr: 2,
                 display: { xs: "none", md: "flex" },
                 alignItems: "center",
+                fontSize: "26px",
                 fontWeight: 700,
-                letterSpacing: "1rem",
+                fontFamily: "Space Mono",
+                letterSpacing: ".6rem",
                 color: "#303030",
                 textDecoration: "none",
               }}
@@ -99,76 +100,84 @@ export const Navbar = () => {
               INKWELLIFY
             </Typography>
 
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="small"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="#303030"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: "block", md: "none" },
-                }}
-              >
-                <MenuItem
-                  sx={{ display: "flex", flexDirection: "column" }}
-                  onClick={handleCloseNavMenu}
+            {user.user_name && (
+              <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+                <IconButton
+                  size="small"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenNavMenu}
+                  color="#303030"
                 >
-                  <Link to={"/createpost"}>
-                    <Typography
-                      mt={"6px"}
-                      mb={"6px"}
-                      sx={{
-                        marginRight: "2px",
-                        marginLeft: "2px",
-                        fontFamily: "Space Mono",
-                        fontSize: "12px",
-                        color: "#303030",
-                      }}
-                      textAlign="center"
-                    >
-                      Create Post
-                    </Typography>
-                  </Link>
-                  {pages.map((page) => (
-                    <Link to={`/${page}`}>
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorElNav}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  open={Boolean(anchorElNav)}
+                  onClose={handleCloseNavMenu}
+                  sx={{
+                    display: { xs: "block", md: "none" },
+                  }}
+                >
+                  <MenuItem
+                    sx={{ display: "flex", flexDirection: "column" }}
+                    onClick={handleCloseNavMenu}
+                  >
+                    <Link to={"/createpost"}>
                       <Typography
                         mt={"6px"}
                         mb={"6px"}
                         sx={{
                           marginRight: "2px",
                           marginLeft: "2px",
-                          fontSize: "12px",
                           fontFamily: "Space Mono",
+                          fontSize: "12px",
+                          color: "#303030",
                         }}
                         textAlign="center"
                       >
-                        {page}
+                        Create Post
                       </Typography>
                     </Link>
-                  ))}
-                </MenuItem>
-              </Menu>
-            </Box>
-            <BookIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+                    {pages.map((page) => (
+                      <Link to={`/${page}`}>
+                        <Typography
+                          mt={"6px"}
+                          mb={"6px"}
+                          sx={{
+                            marginRight: "2px",
+                            marginLeft: "2px",
+                            fontSize: "12px",
+                            fontFamily: "Space Mono",
+                          }}
+                          textAlign="center"
+                        >
+                          {page}
+                        </Typography>
+                      </Link>
+                    ))}
+                  </MenuItem>
+                </Menu>
+              </Box>
+            )}
+
+            <BookIcon
+              sx={{
+                display: { xs: "flex", md: "none", color: "#303030" },
+                mr: 1,
+              }}
+            />
             <Typography
               variant="h5"
               noWrap
@@ -188,25 +197,43 @@ export const Navbar = () => {
               INKWELLIFY
             </Typography>
 
-            <div id="create" className="flex justify-center itms-center flaex-row ">
-              <Link to={"/createpost"}>
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    color: "#303030",
-                    display: "block",
-                    fontFamily: "Space Mono",
-                    fontSize: "16px",
-                  }}
-                >
-                  Create Post
-                </Button>
-              </Link>
-            </div>
-            <div id="sign" className="flex flex-row items-center justify-center">
+            {user.user_name && (
+              <div
+                id="create"
+                className="flex flex-row items-center justify-center"
+              >
+                <Link to={"/createpost"}>
+                  <button
+                    onClick={handleCloseNavMenu}
+                    className="flex flex-row items-center justify-center pt-1 pb-1 pl-3 pr-3 text-lg text-gray-700 transition duration-300 ease-in-out delay-300 border-2 border-gray-700 rounded-xl font-Mono"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-6 h-6 pr-1"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 4.5v15m7.5-7.5h-15"
+                      />
+                    </svg>
+                    CREATE POST
+                  </button>
+                </Link>
+              </div>
+            )}
+
+            <div
+              id="sign"
+              className="flex flex-row items-center justify-center"
+            >
               {user.user_name ? (
                 <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Typography
                       sx={{
                         my: 2,
@@ -217,24 +244,24 @@ export const Navbar = () => {
                     >
                       {user.user_name}
                     </Typography>
-                  </IconButton>
+                  </IconButton> */}
+                  <button
+                    className="w-10 h-10"
+                    onClick={handleOpenUserMenu}
+                  >
+                    <img
+                      className="w-full h-full rounded-full"
+                      color="#303030"
+                      alt={user.user_name}
+                      src={`http://localhost:5000/${user.profileImg}`}
+                    />
+                  </button>
                 </Tooltip>
               ) : (
                 <Link to={"/SignUp"}>
                   <Tooltip title="SignUp / Login">
-                    <button
-                      className="pt-1 pb-1 pl-2 pr-2 font-light text-gray-900 border border-gray-900 rounded-xl"
-                      // sx={{
-                      //   my: 2,
-                      //   color: "#303030",
-                      //   display: "block",
-                      //     fontFamily: "Space Mono",
-                      //     fontWeight : "500",
-                      //   fontSize: "12px",
-
-                      // }}
-                    >
-                      Sign Up
+                    <button className="pt-1 pb-1 pl-2 pr-2 font-light text-white transition duration-300 delay-100 bg-gray-800 border border-gray-700 rounded-lg hover:text-gray-800 hover:bg-white active:bg-white active:text-gray-800">
+                      SIGN UP
                     </button>
                   </Tooltip>
                 </Link>
@@ -243,7 +270,6 @@ export const Navbar = () => {
 
             <Box
               sx={{
-                // flexGrow: 1,
                 width: "40%",
                 display: { xs: "none", md: "flex" },
                 alignItems: "center",
@@ -253,55 +279,47 @@ export const Navbar = () => {
                 },
               }}
             >
-              {pages.map((page) => (
-                <Link to={`/${page}`}>
-                  <Button
-                    key={page}
-                    onClick={handleCloseNavMenu}
-                    sx={{
-                      my: 2,
-                      color: "#303030",
-                      display: "block",
-                      fontFamily: "Space Mono",
-                      fontSize: "14px",
-                    }}
-                  >
-                    {page}
-                  </Button>
-                </Link>
-              ))}
-              <Box sx={{ flexGrow: 0, cursor: "pointer" }}>
+              {user.user_name &&
+                pages.map((page) => (
+                  <Link to={`/${page}`}>
+                    <Button
+                      key={page}
+                      onClick={handleCloseNavMenu}
+                      sx={{
+                        my: 2,
+                        color: "#303030",
+                        display: "block",
+                        fontFamily: "Space Mono",
+                        fontSize: "16px",
+                        paddingRight: "10px",
+                      }}
+                    >
+                      {page}
+                    </Button>
+                  </Link>
+                ))}
+
+              <Box sx={{ flexGrow: 0, cursor: "pointer" , alignItems : "center"}}>
                 {user.user_name ? (
                   <Tooltip title="Open settings">
-                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Typography
-                        sx={{
-                          my: 2,
-                          color: "#303030",
-                          display: "block",
-                          fontFamily: "Space Mono",
-                        }}
-                      >
-                        {user.user_name}
-                      </Typography>
-                    </IconButton>
+                    <button
+                      className="w-10 h-10"
+                      onClick={handleOpenUserMenu}
+                      sx={{ p: 0 }}
+                    >
+                      <img
+                        className="w-full h-full rounded-full"
+                        color="#303030"
+                        alt={user.user_name}
+                        src={`http://localhost:5000/${user.profileImg}`}
+                      />
+                    </button>
                   </Tooltip>
                 ) : (
                   <Link to={"/SignUp"}>
                     <Tooltip title="SignUp / Login">
-                      <button
-                        className="pt-1 pb-1 pl-2 pr-2 font-light text-gray-900 border border-gray-900 rounded-xl"
-                        // sx={{
-                        //   my: 2,
-                        //   color: "#303030",
-                        //   display: "block",
-                        //     fontFamily: "Space Mono",
-                        //     fontWeight : "500",
-                        //   fontSize: "12px",
-
-                        // }}
-                      >
-                        Sign Up
+                      <button className="pt-1 pb-1 pl-3 pr-3 text-lg font-medium text-white transition duration-500 bg-gray-800 border border-gray-800 rounded-lg hover:bg-white hover:text-gray-800 active:bg-white active:text-gray-800">
+                        SIGN UP
                       </button>
                     </Tooltip>
                   </Link>
@@ -357,57 +375,6 @@ export const Navbar = () => {
           </Toolbar>
         </Container>
       </AppBar>
-
-      {/* <nav>
-        <div className="flex items-center justify-between row-auto mt-5 mb-5 ml-3 mr-3">
-          <Link to={"/"}>
-            <div className="flex items-center justify-between row-auto">
-              <img
-                width={28}
-                className="ml-3 mr-3"
-                src="../public/navbar/BlogSpot.svg"
-                alt="BlogSpot-Logo"
-              />
-              <h1 className="text-2xl font-medium">BLOGSPOT</h1>
-            </div>
-          </Link>
-          <div>
-            <Link to={'/createpost'}>
-              <p>Create Blog</p>
-            </Link>
-          </div>
-          <div className="flex row-auto ">
-            {NavElements.map((items) => {
-              return (
-                <Link to={`/${items}`}>
-                  <li className="ml-5 mr-5 text-lg font-normal list-none cursor-pointer">
-                    <a href="">{items}</a>
-                  </li>
-                </Link>
-              );
-            })}
-              {user.user_name ? (
-                <div className="flex-col justify-center align-middle">
-                  <li
-                    onClick={() => {
-                      setUserFunc((prev) => !prev);
-                    }}
-                    className="pl-10 pr-10 ml-5 mr-5 text-lg font-normal list-none border cursor-pointer"
-                  >
-                    {user.user_name} <span style={{ color: "gray" }}>v</span>{" "}
-                  </li>
-                  {userFunc && <UserFunctionality />}
-                </div>
-              ) : (
-                <Link to={"/SignUp"}>
-                  <li className="ml-5 mr-5 text-lg font-normal list-none cursor-pointer">
-                    Sign Up
-                  </li>
-                </Link>
-              )}
-          </div>
-        </div>
-      </nav> */}
     </userUpdater.Provider>
   );
 };

@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
       return res
         .status(403)
         .json({ login_status : "Please Enter the credentials to proceed" });
-    const User = await pool.query("SELECT * from users WHERE user_email = $1", [
+    const User = await pool.query("SELECT * from users join profilepicture on users.user_id = profilepicture.user_id WHERE users.user_email = $1", [
       email
     ]);
 

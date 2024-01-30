@@ -51,6 +51,7 @@ export const Login = () => {
         Passcode: Passcode.current.value,
         user_name: response?.data?.user_details[0].user_name,
         user_id: response?.data?.user_details[0].user_id,
+        profileImg: response?.data?.user_details[0].profileimage
       });
       navigate("/");
     } catch (err) {
