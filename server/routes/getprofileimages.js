@@ -37,7 +37,6 @@ router.post("/", async (req, res) => {
   const PublicPost = await pool.query(query4, [user_name])
   const PrivatePost = await pool.query(query5, [user_name])
 
-  console.log(ProfileInfo.rows.length);
 
   if (ProfilePictureExist.rows.length === 0 && CoverPictureExist.rows.length === 0) {
     res.status(200).json({

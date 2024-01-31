@@ -12,6 +12,7 @@ import { PostRequester } from "./assets/PostRequester/PostRequester";
 import { PostDetails } from "./assets/postdetails/postdetails";
 import { EditCaller } from "./assets/Edit/Edit";
 import { ProfileCaller } from "./assets/profile/profile";
+import { Search } from "./assets/search/search";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/Read Blog/:id" element={<PostDetails />} />
           <Route path="/edit/:post_ids" element={<EditCaller />} />
           <Route path="/:user_name" element={<ProfileCaller />} />
+          <Route path="/Search" element={<Search />} />
         </Route>
       </Routes>
     </BrowserRouter>

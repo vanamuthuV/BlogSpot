@@ -846,7 +846,7 @@ export const Profile = (user_name) => {
                 <div className="w-full">
                   {(ProfileInfo.userfullname !== undefined || "") && (
                     <div className="flex flex-row items-center justify-start">
-                      <h1 className="text-2xl font-black">
+                      <h1 className="text-2xl font-black max-md:text-lg">
                         {ProfileInfo.userfullname}
                       </h1>
                       {/* {user.user_name === userDetails.user_name && (
@@ -870,13 +870,13 @@ export const Profile = (user_name) => {
                     </div>
                   )}
 
-                  <h1 className="text-xl font-semibold tex-gray-600 max-md:text-base">
+                  <h1 className="text-xl font-semibold tex-gray-600 max-md:text-sm">
                     @{userDetails.user_name}
                   </h1>
-                  <h1 className="text-gray-600">{ProfileInfo.role}</h1>
+                  <h1 className="text-gray-600 max-md:text-sm">{ProfileInfo.role}</h1>
                   {ProfileInfo.bio && (
                     <div
-                      className="mt-3 mb-1 max-md:text-sm"
+                      className="mt-3 mb-1 max-md:text-xs max-md:mt-1"
                       dangerouslySetInnerHTML={{ __html: ProfileInfo.bio }}
                     >
                       {/* {ProfileInfo.bio} */}
@@ -965,14 +965,14 @@ export const Profile = (user_name) => {
                               </div>
                               <div className="flex flex-col justify-center pl-5 pr-5 max-md:pl-2 max-md:pr-2">
                                 <Link to={`/Read Blog/${items.post_id}`}>
-                                  <p className="text-xl font-semibold text-justify hover:underline max-md:text-xs">
+                                  <p className="pb-1 text-xl font-semibold text-justify hover:underline max-md:text-xs">
                                     {window.innerWidth >= 769
                                       ? items.post_title.length > 100
                                         ? items.post_title.substring(0, 100) +
                                           "..."
                                         : items.post_title
-                                      : items.post_title.length > 28
-                                      ? items.post_title.substring(0, 28) +
+                                      : items.post_title.length > 22
+                                      ? items.post_title.substring(0, 22) +
                                         "..."
                                       : items.post_title}
                                   </p>
@@ -984,8 +984,8 @@ export const Profile = (user_name) => {
                                       ? items.post_summary.substring(0, 250) +
                                         "..."
                                       : items.post_summary
-                                    : items.post_summary.length > 120
-                                    ? items.post_summary.substring(0, 120) +
+                                    : items.post_summary.length > 60
+                                    ? items.post_summary.substring(0, 60) +
                                       "..."
                                     : items.post_summary}
                                 </p>

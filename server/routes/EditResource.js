@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.post('/', Authentication, async (req, res) => {
     const { post_ids } = req?.body?.data
-    console.log(post_ids)
 
     const querey = `select * from posts where post_id = $1`
 

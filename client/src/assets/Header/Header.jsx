@@ -19,7 +19,7 @@ import useAuth from "../../../hooks/useAuth";
 import { createContext } from "react";
 import BookIcon from "@mui/icons-material/Book";
 
-const pages = ["Read Blog", "Contact", "About"];
+const pages = ["Search", "Read Blog", "Contact"];
 const settings = ["Profile", "Account", "Dashboard"];
 
 const userUpdater = createContext({});
@@ -205,7 +205,7 @@ export const Navbar = () => {
                 <Link to={"/createpost"}>
                   <button
                     onClick={handleCloseNavMenu}
-                    className="flex flex-row items-center justify-center pt-1 pb-1 pl-3 pr-3 text-lg text-gray-700 transition duration-300 ease-in-out delay-300 border-2 border-gray-700 rounded-xl font-Mono"
+                    className="flex flex-row items-center justify-center pt-1 pb-1 pl-3 pr-3 text-lg text-gray-700 shadow-md rounded-xl font-Mono"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -245,15 +245,12 @@ export const Navbar = () => {
                       {user.user_name}
                     </Typography>
                   </IconButton> */}
-                  <button
-                    className="w-10 h-10"
-                    onClick={handleOpenUserMenu}
-                  >
+                  <button className="w-10 h-10" onClick={handleOpenUserMenu}>
                     <img
                       className="w-full h-full rounded-full"
                       color="#303030"
                       alt={user.user_name}
-                      src={`http://localhost:5000/${user.profileImg}`}
+                      src={`http://localhost:5000/${user.profileimage}`}
                     />
                   </button>
                 </Tooltip>
@@ -299,7 +296,9 @@ export const Navbar = () => {
                   </Link>
                 ))}
 
-              <Box sx={{ flexGrow: 0, cursor: "pointer" , alignItems : "center"}}>
+              <Box
+                sx={{ flexGrow: 0, cursor: "pointer", alignItems: "center" }}
+              >
                 {user.user_name ? (
                   <Tooltip title="Open settings">
                     <button
@@ -311,7 +310,7 @@ export const Navbar = () => {
                         className="w-full h-full rounded-full"
                         color="#303030"
                         alt={user.user_name}
-                        src={`http://localhost:5000/${user.profileImg}`}
+                        src={`http://localhost:5000/${user.profileimage}`}
                       />
                     </button>
                   </Tooltip>

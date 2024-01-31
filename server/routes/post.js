@@ -26,12 +26,8 @@ router.post('/', UploadMiddleware.single('media') , Authentication, async (req, 
     const extension = parts[parts.length - 1];
     const newPath = path + '.' + extension;
     fs.renameSync(path, newPath);
-    console.log(req.body);
-    console.log(req.user)
     
     const { title, content, category, tags, summary, posttype, comments } = req.body
-    
-    console.log(title, content, category, tags, summary, posttype, comments);
 
     const response = await pool.query('INSERT INTO posts values ($1, $2, $3, $4, $5, $6, $7, $8, current_timestamp, $9)', [title, newPath, content, category, tags, summary, posttype, comments, req.user.user_id])
 

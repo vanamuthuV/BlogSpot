@@ -20,9 +20,9 @@ export const AuthProvider = ({ children }) => {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
           });
-          console.log(response?.data);
-          setUser(response?.data)
-          setAuth(response?.data)
+          console.log(response?.data?.data);
+          setUser(response?.data?.data)
+          setAuth(response?.data?.data)
         } catch (error) {
           console.error(error);
         }

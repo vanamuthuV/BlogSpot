@@ -190,11 +190,11 @@ export const PostDetails = () => {
         ) : (
           <div className="flex flex-row items-center justify-center">
             <div className="flex flex-col items-center w-9/12 justify-evenly">
-              <h1 className="mt-10 mb-3 text-2xl font-bold text-center font-fira">
+              <h1 className="mt-10 mb-3 text-2xl font-bold text-center font-Mono max-md:text-base max-md:mb-1">
                 {data.post_title}
               </h1>
               <div className="flex flex-row items-center justify-evenly">
-                <p className="m-5 text-xl">
+                <p className="m-5 text-xl max-md:m-2 max-md:text-sm">
                   By{" "}
                   <Link
                     className="text-blue-400 underline"
@@ -203,12 +203,14 @@ export const PostDetails = () => {
                     {data.user_name}
                   </Link>
                 </p>
-                <p>{format(data.post_upload_time, "dd-MMM-yyyy HH:mm")}</p>
+                <p className="max-md:text-sm">
+                  {format(data.post_upload_time, "dd-MMM-yyyy HH:mm")}
+                </p>
               </div>
               <div>
                 {user.user_id === data.user_id && (
                   <Link to={`/edit/${data.post_id}`}>
-                    <button className="flex flex-row items-center justify-center pt-1 pb-1 pl-3 pr-3 ml-2.5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg ">
+                    <button className="flex flex-row items-center justify-center pt-1 pb-1 pl-3 pr-3 ml-2.5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg max-md:text-xs">
                       <svg
                         width={"10px"}
                         style={{ paddingRight: "5px" }}
@@ -217,7 +219,7 @@ export const PostDetails = () => {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6"
+                        class="w-6 h-6 max-md:w-4 max-md:h-4"
                       >
                         <path
                           stroke-linecap="round"
@@ -239,7 +241,7 @@ export const PostDetails = () => {
 
               <div
                 dangerouslySetInnerHTML={{ __html: data.post_content }}
-                className="text-justify"
+                className="text-justify max-md:text-xs"
               ></div>
               <div className="flex flex-col flex-wrap items-center w-full mt-5 justify-evenly">
                 <div className="flex flex-row flex-wrap items-center justify-between w-full mt-5 mb-10 max-md:justify-center">
@@ -282,7 +284,7 @@ export const PostDetails = () => {
                 {user.user_id === data.user_id && (
                   <div>
                     <button
-                      className="pt-2 pb-2 pl-5 pr-5 font-light text-white transition duration-300 bg-red-600 border border-red-600 rounded-lg hover:text-red-600 hover:bg-white active:text-red-600 active:bg-white"
+                      className="pt-2 pb-2 pl-5 pr-5 font-light text-white transition duration-300 bg-red-600 border border-red-600 rounded-lg hover:text-red-600 hover:bg-white active:text-red-600 active:bg-white max-md:text-xs"
                       onClick={handleClickOpen}
                     >
                       Delete This Post
@@ -344,8 +346,9 @@ export const PostDetails = () => {
                 {data.post_comment_type === "true" ? (
                   <div className="flex flex-col items-start justify-center w-full mt-5">
                     <div className="flex flex-col items-start w-full mt-5 justify-evenly">
-                      <h1 className="mb-3 text-2xl font-bold">
-                        {comments.length === 0 ? 0 : comments.length} Comments
+                      <h1 className="mb-3 text-2xl font-bold max-md:text-lg">
+                        {comments.length === 0 ? "No" : comments.length}{" "}
+                        Comments
                       </h1>
                       <div className="flex flex-row items-center justify-center w-full mt-5 mb-5">
                         {Object.keys(user).length === 0 ? (
@@ -356,8 +359,8 @@ export const PostDetails = () => {
                         ) : (
                           <Link to={`/${user.user_name}`}>
                             <img
-                              className="mr-2 rounded-full min-h-10 min-w-10 max-h-10 max-w-10"
-                              src={`http://localhost:5000/${user.profileImg}`}
+                              className="mr-2 rounded-full min-h-10 min-w-10 max-h-10 max-w-10 max-md:max-h-8 max-md:max-w-8 max-md:min-w-8 max-md:min-h-8"
+                              src={`http://localhost:5000/${user.profileimage}`}
                             />
                           </Link>
                         )}
@@ -392,7 +395,7 @@ export const PostDetails = () => {
                       {commentLoading ? (
                         <h1>Loading...</h1>
                       ) : comments.length === 0 ? (
-                        <p>No Comments Yet</p>
+                        <p className="max-md:text-sm">No Comments Yet</p>
                       ) : (
                         comments.map((com) => {
                           return (
@@ -515,7 +518,7 @@ export const PostDetails = () => {
                                                 }
                                               );
                                               console.log(response?.data?.data);
-                                              setComments(response?.data?.data)
+                                              setComments(response?.data?.data);
                                             } catch (error) {
                                               console.log(error);
                                             }

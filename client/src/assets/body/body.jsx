@@ -26,10 +26,7 @@ export const Post = ({
   console.log(post_images);
   return (
     <div className="flex flex-row items-center justify-center w-5/6 border-t-2 max-md:flex-wrap max-md:w-11/12">
-      <div
-        className="flex flex-row items-center justify-center mt-5 mb-5 max-md:mt-2 max-md:mb-2 min-w-80 max-w-80 h-60"
-
-      >
+      <div className="flex flex-row items-center justify-center h-40 mt-1 mb-1 max-md:mt-2 max-md:mb-2 min-w-60 max-w-60 max-md:h-40 max-md:min-w-48 max-md:max-w-48">
         <img
           src={`http://localhost:5000/${post_images}`}
           alt={post_title}
@@ -39,12 +36,12 @@ export const Post = ({
       <div>
         <div className="m-5 max-md:m-0">
           <Link to={`/Read Blog/${post_id}`}>
-            <h3 className="inline-block p-3 text-xl font-bold text-justify hover:underline">
+            <h3 className="inline-block p-2 text-lg font-bold text-justify hover:underline max-md:text-sm">
               {post_title}
             </h3>
           </Link>
           <div
-            className="p-3 text-justify max-md:text-sm"
+            className="p-2 text-sm text-justify max-md:text-xs"
             dangerouslySetInnerHTML={{
               __html:
                 post_summary.length <= 290
@@ -52,20 +49,24 @@ export const Post = ({
                   : post_summary.substring(0, 290) + "...",
             }}
           ></div>
-          <div className="flex flex-row items-center justify-between p-5">
-            <p>
+          <div className="flex flex-row items-center justify-between m-2 max-md:m-2">
+            <p className="text-sm max-md:text-xs">
               By
-              <Link style={{ display: "inline-block" }} to={`/${user_name}`} className="">
-                <p className="inline-block pl-3 pr-3 font-bold text-gray-900 hover:underline">
+              <Link
+                style={{ display: "inline-block" }}
+                to={`/${user_name}`}
+                className=""
+              >
+                <p className="inline-block pl-3 pr-3 text-sm font-bold text-gray-900 hover:underline">
                   {user_name}
                 </p>
               </Link>
               At
             </p>
-            <time>
+            <time className="text-sm max-md:text-xs">
               {<ReactTimeAgo date={post_upload_time} locale="en-IN" />}
             </time>
-            <p className="max-md:hidden">Country : Unkown</p>
+            <p className="text-sm max-md:hidden">Country : Unkown</p>
           </div>
         </div>
       </div>

@@ -5,9 +5,6 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
     try {
-        console.log(req.headers)
-        console.log(req.body.id)
-
         const post = await pool.query("SELECT * from users join posts on users.user_id = posts.user_id where posts.post_id = $1", [req.body.id])
 
         res.status(200).json({post : post.rows[0]})

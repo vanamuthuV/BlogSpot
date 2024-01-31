@@ -38,15 +38,11 @@ router.post('/', Authentication, Cover.single('media'), async (req, res) => {
 
 router.put("/", Authentication, Cover.single("media"), async (req, res) => {
   const { user_id } = req.body;
-  console.log(req.file);
-  console.log("Hey Boy");
   const { originalname, path } = req.file;
   const parts = originalname.split(".");
   const extension = parts[parts.length - 1];
   const newPath = path + "." + extension;
   fs.renameSync(path, newPath);
-  console.log(req.body.user_id);
-  console.log(newPath);
 
   try {
     const query = `
