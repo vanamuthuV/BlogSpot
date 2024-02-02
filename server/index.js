@@ -23,6 +23,10 @@ import DeletePost from "./routes/deletepost.js"
 import DeleteSinglepPost from "./routes/deletesinglepost.js"
 import EditComment from "./routes/updatecomment.js"
 import DeleteComment from "./routes/deletecomment.js"
+import AccountSearch from "./routes/accountsearch.js"
+import PostSearch from "./routes/postsearch.js"
+import TagSearch from "./routes/tagsearch.js"
+import CategorySearch from "./routes/categorysearch.js"
 
 const Base_URL = "http://localhost:5173"
 dotenv.config();
@@ -62,6 +66,10 @@ app.use("/deletepost", DeletePost);
 app.use("/deletesinglepost", DeleteSinglepPost);
 app.use("/editcomment", EditComment)
 app.use("/deletecomment", DeleteComment);
+app.use("/accountsearch", AccountSearch);
+app.use("/postsearch", PostSearch);
+app.use("/tagsearch", TagSearch);
+app.use("/categorysearch", CategorySearch);
 
 app.listen(5000, () => {
   console.log("Connected to postgres...")

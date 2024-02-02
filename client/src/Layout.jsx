@@ -4,6 +4,7 @@ import { Outlet, Link } from "react-router-dom";
 import { Navbar } from "./assets/Header/Header";
 import "./assets/SignUp/SignUp.css"
 import { SignUp } from "./assets/SignUp/SignUp"
+import { Search } from "./assets/search/search";
 
 export const Layout = () => {
   return (
@@ -73,3 +74,12 @@ export const SignUpPersonalLayout = () => {
     </>
   );
 };
+
+export const SearchLayout = () => {
+  return (
+    <>
+      <Search />
+      <Outlet />
+    </>
+  );
+}

@@ -12,7 +12,11 @@ import { PostRequester } from "./assets/PostRequester/PostRequester";
 import { PostDetails } from "./assets/postdetails/postdetails";
 import { EditCaller } from "./assets/Edit/Edit";
 import { ProfileCaller } from "./assets/profile/profile";
-import { Search } from "./assets/search/search";
+import { SearchLayout } from "./Layout";
+import { Account } from "./assets/search/search";
+import { Category } from "./assets/search/Category";
+import { Tags } from "./assets/search/Tags";
+import { Posts } from "./assets/search/Posts";
 
 function App() {
   return (
@@ -32,7 +36,12 @@ function App() {
           <Route path="/Read Blog/:id" element={<PostDetails />} />
           <Route path="/edit/:post_ids" element={<EditCaller />} />
           <Route path="/:user_name" element={<ProfileCaller />} />
-          <Route path="/Search" element={<Search />} />
+          <Route path="/Search" element={<SearchLayout />}>
+            <Route path="/Search" element={<Account />} />
+            <Route path="/Search/Tags" element={<Tags />} />
+            <Route path="/Search/Category" element={<Category />} />
+            <Route path="/Search/Posts" element={<Posts />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

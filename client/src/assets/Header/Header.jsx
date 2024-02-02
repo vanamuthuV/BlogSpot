@@ -9,18 +9,22 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import "./Header.css";
-import { Link, Navigate, useSearchParams } from "react-router-dom";
-import { SignUp } from "../SignUp/SignUp";
+import { Link, Navigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { createContext } from "react";
 import BookIcon from "@mui/icons-material/Book";
 
 const pages = ["Search", "Read Blog", "Contact"];
 const settings = ["Profile", "Account", "Dashboard"];
+
+const darkTheme = createTheme({ palette: { mode: "dark" } });
+const lightTheme = createTheme({ palette: { mode: "light" } });
 
 const userUpdater = createContext({});
 
@@ -30,6 +34,16 @@ export const Navbar = () => {
   const [userFunc, setUserFunc] = useState(false);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const Item = styled(Paper)(({ theme }) => ({
+    textAlign: "center",
+    color: "inherit",
+    paddingLeft: "10px",
+    paddingRight: "10px",
+    paddingTop: "5px",
+    paddingBottom: "5px",
+    backgroundColor: "inherit",
+  }));
 
   const handleLogout = () => {
     console.log("Logout Success!!");
@@ -173,6 +187,7 @@ export const Navbar = () => {
             )}
 
             <BookIcon
+              fontSize="small"
               sx={{
                 display: { xs: "flex", md: "none", color: "#303030" },
                 mr: 1,
@@ -188,6 +203,7 @@ export const Navbar = () => {
                 display: { xs: "flex", md: "none" },
                 flexGrow: 1,
                 fontFamily: "Space Mono",
+                fontSize: "16px",
                 fontWeight: 700,
                 letterSpacing: ".2rem",
                 color: "#303030",
@@ -196,6 +212,51 @@ export const Navbar = () => {
             >
               INKWELLIFY
             </Typography>
+
+            {Object.keys(user).length === 0 && (
+              <Link to={"Search"} className="max-md:hidden">
+                <Item elevation={1}>
+                  <button className="flex flex-row items-center justify-center text-gray-700 shadow-base max-md:hidden">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-6 h-6 pr-2"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                      />
+                    </svg>
+                    Search
+                  </button>
+                </Item>
+              </Link>
+            )}
+
+            {Object.keys(user).length === 0 && (
+              <Tooltip title="Search">
+                <Link to={"/Search"} className="text-gray-700 md:hidden">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                    />
+                  </svg>
+                </Link>
+              </Tooltip>
+            )}
 
             {user.user_name && (
               <div
@@ -257,7 +318,7 @@ export const Navbar = () => {
               ) : (
                 <Link to={"/SignUp"}>
                   <Tooltip title="SignUp / Login">
-                    <button className="pt-1 pb-1 pl-2 pr-2 font-light text-white transition duration-300 delay-100 bg-gray-800 border border-gray-700 rounded-lg hover:text-gray-800 hover:bg-white active:bg-white active:text-gray-800">
+                    <button className="pt-1 pb-1 pl-2 pr-2 ml-5 font-light text-white transition duration-300 delay-100 bg-gray-800 border border-gray-700 rounded-lg hover:text-gray-800 hover:bg-white active:bg-white active:text-gray-800 max-md:text-xs">
                       SIGN UP
                     </button>
                   </Tooltip>
