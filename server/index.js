@@ -29,6 +29,10 @@ import TagSearch from "./routes/tagsearch.js"
 import CategorySearch from "./routes/categorysearch.js"
 import Follow from "./routes/follow.js"
 import Unfollow from "./routes/unfollow.js"
+import GetFollowers from "./routes/getfollowers.js"
+import GetFollowings from "./routes/getfollowings.js"
+import RemoveUser from "./routes/removeuser.js"
+import UnfollowUser from "./routes/unfollowuser.js"
 
 const Base_URL = "http://localhost:5173"
 dotenv.config();
@@ -74,6 +78,10 @@ app.use("/tagsearch", TagSearch);
 app.use("/categorysearch", CategorySearch);
 app.use("/follow", Follow);
 app.use("/unfollow", Unfollow);
+app.use("/getfollowers", GetFollowers);
+app.use("/getfollowings", GetFollowings)
+app.use("/removeuser", RemoveUser)
+app.use("/unfollowuser", UnfollowUser)
 
 app.listen(5000, () => {
   console.log("Connected to postgres...")

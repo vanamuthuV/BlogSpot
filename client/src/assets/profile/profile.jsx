@@ -999,8 +999,16 @@ export const Profile = (user_name) => {
                     </time>
                   </div>
                   <div className="flex flex-row items-center justify-start mt-3 mb-3 text-gray-600 max-md:text-xs">
-                    <p className="pr-2">{followers.length} Followers</p>
-                    <p className="pl-2">{following.length} Followings</p>
+                    <Link to={`/${username}/followers`}>
+                      <p className="pr-2 hover:underline">
+                        {followers.length} Followers
+                      </p>
+                    </Link>
+                    <Link to={`/${username}/followings`}>
+                      <p className="pl-2 hover:underline">
+                        {following.length} Followings
+                      </p>
+                    </Link>
                   </div>
                   {console.log(publicPost)}
                   {user.user_id !== userDetails.user_id && (

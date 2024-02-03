@@ -40,11 +40,19 @@ router.post("/", async (req, res) => {
     `;
 
   const query8 = `
-    select * from follow where following_id = $1
+    select * from follow 
+join users on users.user_id = follow.follower_id
+left outer join profilepicture on profilepicture.user_id = follow.follower_id
+left outer join profileinformation on profileinformation.user_id = follow.follower_id
+where follow.following_id = $1
   `;
 
   const query9 = `
-    select * from follow where follower_id = $1
+    select * from follow 
+join users on users.user_id = follow.following_id
+left outer join profilepicture on profilepicture.user_id = follow.following_id
+left outer join profileinformation on profileinformation.user_id = follow.following_id
+where follow.follower_id = $1
   `;
 
   const ProfilePictureExist = await pool.query(query, [user_name]);

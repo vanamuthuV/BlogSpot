@@ -17,6 +17,9 @@ import { Account } from "./assets/search/search";
 import { Category } from "./assets/search/Category";
 import { Tags } from "./assets/search/Tags";
 import { Posts } from "./assets/search/Posts";
+import { FollowersAndFollowingLayout } from "./assets/FollowerandFollowing/ff";
+import { Followers } from "./assets/FollowerandFollowing/ff";
+import { Followings } from "./assets/FollowerandFollowing/ff";
 
 function App() {
   return (
@@ -35,12 +38,24 @@ function App() {
           <Route path="/Read Blog" element={<PostRequester />} />
           <Route path="/Read Blog/:id" element={<PostDetails />} />
           <Route path="/edit/:post_ids" element={<EditCaller />} />
-          <Route path="/:user_name" element={<ProfileCaller />} />
+          <Route path="/:user_name" element={<ProfileCaller />}></Route>
           <Route path="/Search" element={<SearchLayout />}>
             <Route path="/Search" element={<Account />} />
             <Route path="/Search/Tags" element={<Tags />} />
             <Route path="/Search/Category" element={<Category />} />
             <Route path="/Search/Posts" element={<Posts />} />
+          </Route>
+          <Route
+            path="/:user_name/followers"
+            element={<FollowersAndFollowingLayout />}
+          >
+            <Route path="/:user_name/followers" element={<Followers />} />
+          </Route>
+          <Route
+            path="/:user_name/followings"
+            element={<FollowersAndFollowingLayout />}
+          >
+            <Route path="/:user_name/followings" element={<Followings />} />
           </Route>
         </Route>
       </Routes>
