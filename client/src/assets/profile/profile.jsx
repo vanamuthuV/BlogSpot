@@ -23,7 +23,7 @@ import { Link, useParams } from "react-router-dom";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en.json";
 import ru from "javascript-time-ago/locale/ru.json";
-import DEFAULT from "../../../public/BLOGSPOT.png";
+import DEFAULT from "../../../public/Inkwellify.png";
 import DeFAULTPROF from "../../../public/Profile.jpeg";
 import { format } from "date-fns";
 import Tooltip from "@mui/material/Tooltip";
@@ -31,17 +31,27 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { styled } from "@mui/material/styles";
 import "./profile.css";
 
 const SETPERSONALDETAILS = "/addpersonaldetails";
 const SETPROFILE = "/setprofileimage";
 const SETCOVER = "/setcoverimage";
 const GETPROFILEIMAGE = "/getprofileimage";
-const DELETEPOST = "/deletepost";
+const FOLLOW = "/follow";
+const UNFOLLOW = "/unfollow";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialogContent-root": {
+    padding: theme.spacing(2),
+  },
+  "& .MuiDialogActions-root": {
+    padding: theme.spacing(1),
+  },
+}));
 
 export const Profile = (user_name) => {
   const username = user_name.user_name;
@@ -73,20 +83,50 @@ export const Profile = (user_name) => {
   const [bio, setBio] = useState("");
   const [birthDay, setBirthDay] = useState("");
   const [role, setRole] = useState("");
-  const [follwers, setFollwers] = useState();
-  const [following, setFollowing] = useState();
+  const [follow, setFollow] = useState({});
+
+  const [followers, setFollowers] = useState([]);
+
+  const [following, setFollowing] = useState([]);
 
   const data = {
     user_name: user_name,
+    user_id: user.user_id,
   };
 
   const [openDelete, setOpenDelete] = React.useState(false);
+  const [openUnfollow, setOpenUnfollow] = React.useState(false);
+
+  const handleClickOpenUnfollow = () => {
+    setOpenUnfollow(true);
+  };
+
+  const handleUnfollow = async (ev) => {
+    console.log(ev.target.value);
+
+    try {
+      const response = await axios.delete(UNFOLLOW + `/${ev.target.value}`, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
+        },
+      });
+      console.log(response?.data?.data);
+      setFollow(response?.data?.data[0]);
+    } catch (error) {
+      console.log(error);
+    }
+
+    setOpenUnfollow(false);
+  };
+
+  const handleCloseUnfollow = () => {
+    setOpenUnfollow(false);
+  };
 
   const handleClickOpenDelete = () => {
     setOpenDelete(true);
   };
-
- 
 
   const handleCloseDelete = () => {
     setOpenDelete(false);
@@ -118,7 +158,13 @@ export const Profile = (user_name) => {
         setRole(response?.data?.data?.ProfileInfo[0].role || "");
         setPublicPost(response?.data?.data?.PublicPost);
         setPrivatePost(response?.data?.data?.PrivatePost);
-
+        setFollow(response?.data?.data?.FollowStatus);
+        response?.data?.data?.FollowStatus === undefined
+          ? setFollow({})
+          : setFollow(response?.data?.data?.FollowStatus);
+        console.log(response?.data?.data?.FollowStatus);
+        setFollowers(response?.data?.data?.Followers);
+        setFollowing(response?.data?.data?.Followings);
         console.log(CompleteProfileChecker);
         for (const key in response?.data?.data?.ProfileInfo[0]) {
           if (response?.data?.data?.ProfileInfo[0][key] === "") {
@@ -473,42 +519,63 @@ export const Profile = (user_name) => {
     }
   };
 
-  const [deleteVar, setDeleteVar] = useState('');
-  const [deleteID, setDeleteID] = useState('');
+  const [deleteVar, setDeleteVar] = useState("");
+  const [deleteID, setDeleteID] = useState("");
 
-  
-   const handleDeletePost = async (post_id) => {
-     console.log(post_id);
-     try {
-       const response = await axios.delete(
-         `/deletepost/${post_id + "." + user.user_name}`,
-         {
-           headers: {
-             "Content-Type": "multipart/form-data",
-             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-           },
-         }
-       );
-       console.log(response?.data?.data);
-       setPublicPost(response?.data?.data?.PublicPost);
-       setPrivatePost(response?.data?.data?.PrivatePost);
-     } catch (error) {
-       console.error(error);
-     }
-     setOpenDelete(false);
-   };
+  const handleDeletePost = async (post_id) => {
+    console.log(post_id);
+    try {
+      const response = await axios.delete(
+        `/deletepost/${post_id + "." + user.user_name}`,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      console.log(response?.data?.data);
+      setPublicPost(response?.data?.data?.PublicPost);
+      setPrivatePost(response?.data?.data?.PrivatePost);
+    } catch (error) {
+      console.error(error);
+    }
+    setOpenDelete(false);
+  };
 
   const handleClickDeleteManager = (ev) => {
-    const post_id = ev.target.value
-    const PostArray = post_id.split('/../')
+    const post_id = ev.target.value;
+    const PostArray = post_id.split("/../");
     console.log(PostArray);
-    setDeleteVar(PostArray[1])
-    setDeleteID(PostArray[0])
+    setDeleteVar(PostArray[1]);
+    setDeleteID(PostArray[0]);
     console.log(post_id);
     setOpenDelete(true);
   };
 
   const [ShowEditable, setShowEditable] = useState(false);
+
+  const AddFollower = async () => {
+    const data = {};
+
+    try {
+      const response = await axios.post(FOLLOW, {
+        data: {
+          user_id: user.user_id,
+          follower_name: user_name,
+        },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      console.log(response?.data?.data);
+      console.log(response?.data?.data[0]);
+      setFollow(response?.data?.data[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -517,7 +584,7 @@ export const Profile = (user_name) => {
       ) : (
         <div className="flex flex-col items-center justify-center">
           <div className="w-5/6 max-md:w-full">
-            <div className="relative w-full mt-5 mb-40 max-md:w-full max-md:mb-16 max-md:mt-0">
+            <div className="relative w-full mt-5 mb-28 max-md:w-full max-md:mb-16 max-md:mt-0">
               <img
                 className="w-full max-h-80 max-md:h-28 rounded-xl max-md:mt-0 max-md:rounded-b-xl max-md:rounded-t-none"
                 src={
@@ -745,11 +812,11 @@ export const Profile = (user_name) => {
               )}
 
               <div
-                className="absolute flex flex-row items-center justify-center w-64 rounded-full -bottom-32 max-md:-bottom-10 max-md:w-20 left-10 max-md:h-20"
+                className="absolute flex flex-row items-center justify-center w-40 rounded-full -bottom-20 max-md:-bottom-10 max-md:w-20 left-16 max-md:left-6 max-md:h-20"
                 style={{ borderRadius: "50%" }}
               >
                 <img
-                  className="rounded-full min-w-64 min-h-64 max-w-64 max-h-64 max-md:min-w-28 max-md:min-h-28 max-md:max-w-28 max-md:max-h-28"
+                  className="rounded-full min-w-40 min-h-40 max-w-40 max-h-40 max-md:min-w-20 max-md:min-h-20 max-md:max-w-20 max-md:max-h-20"
                   src={
                     ProfileImage === "NO"
                       ? DeFAULTPROF
@@ -763,7 +830,7 @@ export const Profile = (user_name) => {
                       <Tooltip title="Change Profile Image">
                         <button
                           onClick={ProfileToggle(anchor, true)}
-                          className="absolute flex-row justify-center pt-2 pb-2 pl-2 pr-2 font-bold text-white bg-gray-900 rounded-full opacity-50 -right-1 bottom-10 items-9-center hover:opacity-100 max-md:-bottom-1 max-md:-right-5 max-md:pt-1.5 max-md:pb-1 max-md:pr-1 max-md:pl-1"
+                          className="absolute flex-row justify-center pt-2 pb-2 pl-2 pr-2 font-bold text-white bg-gray-900 rounded-full opacity-50 -right-3 bottom-6 items-9-center hover:opacity-100 max-md:bottom-2 max-md:-right-2 max-md:pt-1.5 max-md:pb-1 max-md:pr-1 max-md:pl-1"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -873,7 +940,9 @@ export const Profile = (user_name) => {
                   <h1 className="text-xl font-semibold tex-gray-600 max-md:text-sm">
                     @{userDetails.user_name}
                   </h1>
-                  <h1 className="text-gray-600 max-md:text-sm">{ProfileInfo.role}</h1>
+                  <h1 className="text-gray-600 max-md:text-sm">
+                    {ProfileInfo.role}
+                  </h1>
                   {ProfileInfo.bio && (
                     <div
                       className="mt-3 mb-1 max-md:text-xs max-md:mt-1"
@@ -929,12 +998,77 @@ export const Profile = (user_name) => {
                   /> */}
                     </time>
                   </div>
-
-                  <div className="flex flex-row items-center justify-center mt-5 mb-5">
-                    <button className="w-2/4 pt-2 pb-2 text-xl text-white border-none max-md:text-lg max-md:pb-1 max-md:pt-1 rounded-xl bg-sky-600">
-                      Follow
-                    </button>
+                  <div className="flex flex-row items-center justify-start mt-3 mb-3 text-gray-600 max-md:text-xs">
+                    <p className="pr-2">{followers.length} Followers</p>
+                    <p className="pl-2">{following.length} Followings</p>
                   </div>
+                  {console.log(publicPost)}
+                  {user.user_id !== userDetails.user_id && (
+                    <div className="flex flex-row items-center justify-center mt-5 mb-5">
+                      {console.log(follow)}
+                      {Object.keys(follow).length === 0 ? (
+                        <button
+                          className="w-2/4 pt-2 pb-2 text-xl text-white border-none max-md:text-lg max-md:pb-1 max-md:pt-1 rounded-xl bg-sky-600"
+                          onClick={AddFollower}
+                        >
+                          Follow
+                        </button>
+                      ) : (
+                        <>
+                          <button
+                            onClick={handleClickOpenUnfollow}
+                            value={follow.follow_id}
+                          >
+                            Following
+                          </button>
+
+                          <BootstrapDialog
+                            onClose={handleCloseUnfollow}
+                            aria-labelledby="customized-dialog-title"
+                            open={openUnfollow}
+                          >
+                            <DialogTitle
+                              sx={{ m: 0, p: 2 }}
+                              id="customized-dialog-title"
+                              fontFamily={"Space Mono"}
+                            >
+                              Unfollow Alert
+                            </DialogTitle>
+                            <IconButton
+                              aria-label="close"
+                              onClick={handleCloseUnfollow}
+                              sx={{
+                                position: "absolute",
+                                right: 8,
+                                top: 8,
+                                color: (theme) => theme.palette.grey[500],
+                              }}
+                            >
+                              <CloseIcon />
+                            </IconButton>
+                            <DialogContent dividers>
+                              <Typography
+                                sx={{ fontFamily: "Space Mono" }}
+                                gutterBottom
+                              >
+                                Are You Sure To Unfollow{" "}
+                                <span className="text-red-500">{username}</span>
+                              </Typography>
+                            </DialogContent>
+                            <DialogActions>
+                              <button
+                                value={follow.follow_id}
+                                className="text-red-600"
+                                onClick={handleUnfollow}
+                              >
+                                Unfollow
+                              </button>
+                            </DialogActions>
+                          </BootstrapDialog>
+                        </>
+                      )}
+                    </div>
+                  )}
 
                   <div className="flex flex-col items-center justify-center mt-10 mb-10">
                     <h1 className="text-3xl font-bold max-md:text-lg">
@@ -1078,7 +1212,9 @@ export const Profile = (user_name) => {
                                             fontFamily: "Space Mono",
                                             color: "red",
                                           }}
-                                          onClick={() => { handleDeletePost(deleteID)}}
+                                          onClick={() => {
+                                            handleDeletePost(deleteID);
+                                          }}
                                           autoFocus
                                         >
                                           Delete

@@ -27,6 +27,8 @@ import AccountSearch from "./routes/accountsearch.js"
 import PostSearch from "./routes/postsearch.js"
 import TagSearch from "./routes/tagsearch.js"
 import CategorySearch from "./routes/categorysearch.js"
+import Follow from "./routes/follow.js"
+import Unfollow from "./routes/unfollow.js"
 
 const Base_URL = "http://localhost:5173"
 dotenv.config();
@@ -70,6 +72,8 @@ app.use("/accountsearch", AccountSearch);
 app.use("/postsearch", PostSearch);
 app.use("/tagsearch", TagSearch);
 app.use("/categorysearch", CategorySearch);
+app.use("/follow", Follow);
+app.use("/unfollow", Unfollow);
 
 app.listen(5000, () => {
   console.log("Connected to postgres...")
