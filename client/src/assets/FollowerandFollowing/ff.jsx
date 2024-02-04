@@ -132,7 +132,7 @@ export const Followers = () => {
         ) : (
           follower.map((user) => {
             return (
-              <div className="flex flex-row items-center justify-between w-full">
+              <div className="flex flex-row items-center justify-between w-full mt-2 mb-2 max-md:mt-1 max-md:mb-1">
                 <div className="flex flex-row items-center justify-center">
                   <div className="max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16">
                     <img
@@ -296,7 +296,7 @@ export const Followings = () => {
         ) : (
           following.map((user) => {
             return (
-              <div className="flex flex-row items-center justify-between w-full">
+              <div className="flex flex-row items-center justify-between w-full mt-2 mb-2 max-md:mt-1 max-md:mb-1 ">
                 <div className="flex flex-row items-center justify-center">
                   <div className="max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16">
                     <img

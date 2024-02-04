@@ -657,13 +657,3 @@ export const PostDetails = () => {
     </>
   );
 };
-
-export default function FormDialog() {
-  
-
-  return (
-    <React.Fragment>
-      
-    </React.Fragment>
-  );
-}
