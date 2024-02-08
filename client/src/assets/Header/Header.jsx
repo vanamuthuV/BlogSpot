@@ -19,9 +19,8 @@ import { Link, Navigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { createContext } from "react";
 import BookIcon from "@mui/icons-material/Book";
-
 const pages = ["Search", "Read Blog", "Contact"];
-const settings = ["Profile", "Account", "Dashboard"];
+const settings = ["Account", "Dashboard"];
 
 const darkTheme = createTheme({ palette: { mode: "dark" } });
 const lightTheme = createTheme({ palette: { mode: "light" } });
@@ -294,24 +293,17 @@ export const Navbar = () => {
             >
               {user.user_name ? (
                 <Tooltip title="Open settings">
-                  {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Typography
-                      sx={{
-                        my: 2,
-                        color: "#303030",
-                        display: "block",
-                        fontFamily: "Space Mono",
-                      }}
-                    >
-                      {user.user_name}
-                    </Typography>
-                  </IconButton> */}
                   <button className="w-10 h-10" onClick={handleOpenUserMenu}>
+                    {console.log(user.profileimage)}
                     <img
-                      className="w-full h-full rounded-full"
+                      className="w-full h-full text-gray-700 rounded-full"
                       color="#303030"
                       alt={user.user_name}
-                      src={`http://localhost:5000/${user.profileimage}`}
+                      src={
+                        user.profileimage
+                          ? `http://localhost:5000/${user.profileimage}`
+                          : "../../../public/Profile.jpeg"
+                      }
                     />
                   </button>
                 </Tooltip>
@@ -368,18 +360,21 @@ export const Navbar = () => {
                       sx={{ p: 0 }}
                     >
                       <img
-                        className="w-full h-full rounded-full"
-                        color="#303030"
+                        className="w-full h-full text-gray-500 rounded-full"
                         alt={user.user_name}
-                        src={`http://localhost:5000/${user.profileimage}`}
+                        src={
+                          user.profileimage !== null
+                            ? `http://localhost:5000/${user.profileimage}`
+                            : "../../../public/Profile.jpeg"
+                        }
                       />
                     </button>
                   </Tooltip>
                 ) : (
                   <Link to={"/SignUp"}>
                     <Tooltip title="SignUp / Login">
-                      <button className="pt-1 pb-1 pl-3 pr-3 text-lg font-medium text-white transition duration-500 bg-gray-800 border border-gray-800 rounded-lg hover:bg-white hover:text-gray-800 active:bg-white active:text-gray-800">
-                        SIGN UP
+                      <button className="pt-1 pb-1 pl-3 pr-3 text-base font-medium text-white transition duration-500 bg-gray-800 border border-gray-800 rounded-full hover:bg-white hover:text-gray-800 active:bg-white active:text-gray-800">
+                        Get Started
                       </button>
                     </Tooltip>
                   </Link>
@@ -406,8 +401,18 @@ export const Navbar = () => {
                     sx={{ display: "flex", flexDirection: "column" }}
                     onClick={handleCloseUserMenu}
                   >
+                    <Link to={`/${user.user_name}`}>
+                      <Typography
+                        variant="body1"
+                        sx={{ mt: "6px", mb: "6px", fontFamily: "Space Mono" }}
+                        textAlign="center"
+                      >
+                        Profile
+                      </Typography>
+                    </Link>
+
                     {settings.map((setting) => (
-                      <Link to={`/${user.user_name}`}>
+                      <Link to={`/${setting}`}>
                         <Typography
                           sx={{
                             mt: "6px",

@@ -38,20 +38,20 @@ export const Login = () => {
       console.log(response?.data?.user_details[0].user_name);
       console.log(user_name);
       console.log(accessToken);
-      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem("accessToken", accessToken);
       setAuth({
         Gmail: Gmail.current.value,
         Passcode: Passcode.current.value,
-        user_id : response?.data?.user_details[0].user_id,
+        user_id: response?.data?.user_details[0].user_id,
         accessToken,
       });
-      
+
       setUser({
         Gmail: Gmail.current.value,
         Passcode: Passcode.current.value,
         user_name: response?.data?.user_details[0].user_name,
         user_id: response?.data?.user_details[0].user_id,
-        profileimage : response?.data?.user_details[0].profileimage
+        profileimage: response?.data?.user_details[0].profileimage,
       });
       navigate("/");
     } catch (err) {

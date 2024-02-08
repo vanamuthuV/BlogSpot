@@ -20,6 +20,8 @@ import { Posts } from "./assets/search/Posts";
 import { FollowersAndFollowingLayout } from "./assets/FollowerandFollowing/ff";
 import { Followers } from "./assets/FollowerandFollowing/ff";
 import { Followings } from "./assets/FollowerandFollowing/ff";
+import { Accounts } from "./assets/Account/account";
+import { Dashboard } from "./assets/Dashboard/dashboard";
 
 function App() {
   return (
@@ -57,6 +59,9 @@ function App() {
           >
             <Route path="/:user_name/followings" element={<Followings />} />
           </Route>
+
+          <Route path="/Account" element={<Accounts />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>

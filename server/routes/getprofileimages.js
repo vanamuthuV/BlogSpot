@@ -63,8 +63,7 @@ where follow.follower_id = $1
   const PrivatePost = await pool.query(query5, [user_name]);
   const User = await pool.query(query6, [user_name]);
 
-  console.log(User.rows[0].user_id);
-  const Follower_id = User.rows[0].user_id;
+  const Follower_id = User?.rows[0]?.user_id;
   const FollowStatus = await pool.query(query7, [user_id, Follower_id]);
   const Followers = await pool.query(query8, [Follower_id]);
   const Followings = await pool.query(query9, [Follower_id]);
@@ -92,20 +91,20 @@ where follow.follower_id = $1
       },
     });
   } else if (
-    ProfilePictureExist.rows.length === 0 &&
-    CoverPictureExist.rows.length !== 0
+    ProfilePictureExist?.rows?.length === 0 &&
+    CoverPictureExist?.rows?.length !== 0
   ) {
     res.status(200).json({
       data: {
         profilestatus: "NO",
-        coverstatus: CoverPictureExist.rows,
-        userDetails: UserDetails.rows,
-        ProfileInfo: ProfileInfo.rows.length === 0 ? [{}] : ProfileInfo.rows,
-        PublicPost: PublicPost.rows,
-        PrivatePost: PrivatePost.rows,
-        FollowStatus: FollowStatus.rows === 0 ? {} : FollowStatus.rows[0],
-        Followers: Followers.rows,
-        Followings: Followings.rows,
+        coverstatus: CoverPictureExist?.rows,
+        userDetails: UserDetails?.rows,
+        ProfileInfo: ProfileInfo?.rows?.length === 0 ? [{}] : ProfileInfo.rows,
+        PublicPost: PublicPost?.rows,
+        PrivatePost: PrivatePost?.rows,
+        FollowStatus: FollowStatus?.rows === 0 ? {} : FollowStatus.rows[0],
+        Followers: Followers?.rows,
+        Followings: Followings?.rows,
       },
     });
   } else if (

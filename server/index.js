@@ -38,9 +38,17 @@ import DeleteFavorite from "./routes/deletefavorite.js";
 import GetFavorite from "./routes/getfavorite.js";
 import Like from "./routes/like.js";
 import GetLike from "./routes/getlike.js";
-import DeleteLike from "./routes/deletelike.js"
-import DeleteDislike from "./routes/deletedislike.js"
-import Dislike from "./routes/dislike.js"
+import DeleteLike from "./routes/deletelike.js";
+import DeleteDislike from "./routes/deletedislike.js";
+import Dislike from "./routes/dislike.js";
+import Account from "./routes/accountfetch.js";
+import UserNameCheck from "./routes/usernamecheck.js";
+import UserNameUpdate from "./routes/usernameupdate.js";
+import EmailCheck from "./routes/emailcheck.js";
+import EmailUpdate from "./routes/emailupdate.js";
+import PasswordVerify from "./routes/passwordverify.js";
+import PasswordUpdate from "./routes/passwordupdate.js";
+import DeleteAccount from "./routes/deleteaccount.js"
 
 const Base_URL = "http://localhost:5173";
 dotenv.config();
@@ -98,6 +106,14 @@ app.use("/dislike", Dislike);
 app.use("/getlikes", GetLike);
 app.use("/deletelike", DeleteLike);
 app.use("/deletedislike", DeleteDislike);
+app.use("/account", Account);
+app.use("/usernamecheck", UserNameCheck);
+app.use("/usernameupdate", UserNameUpdate);
+app.use("/emailcheck", EmailCheck);
+app.use("/emailupdate", EmailUpdate);
+app.use("/passcodeverify", PasswordVerify);
+app.use("/passwordupdate", PasswordUpdate);
+app.use("/deleteaccount", DeleteAccount);
 
 app.listen(5000, () => {
   console.log("Connected to postgres...");
