@@ -48,7 +48,11 @@ import EmailCheck from "./routes/emailcheck.js";
 import EmailUpdate from "./routes/emailupdate.js";
 import PasswordVerify from "./routes/passwordverify.js";
 import PasswordUpdate from "./routes/passwordupdate.js";
-import DeleteAccount from "./routes/deleteaccount.js"
+import DeleteAccount from "./routes/deleteaccount.js";
+import GetDashBoard from "./routes/getdashboard.js";
+import MoreFavorites from "./routes/loadfav.js";
+import MoreLike from "./routes/loadlike.js"
+import MoreDisLike from "./routes/loaddislike.js"
 
 const Base_URL = "http://localhost:5173";
 dotenv.config();
@@ -114,6 +118,10 @@ app.use("/emailupdate", EmailUpdate);
 app.use("/passcodeverify", PasswordVerify);
 app.use("/passwordupdate", PasswordUpdate);
 app.use("/deleteaccount", DeleteAccount);
+app.use("/getdashboard", GetDashBoard);
+app.use("/favload", MoreFavorites);
+app.use("/likeload", MoreLike);
+app.use("/dislikeload", MoreDisLike);
 
 app.listen(5000, () => {
   console.log("Connected to postgres...");

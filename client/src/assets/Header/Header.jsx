@@ -21,6 +21,7 @@ import { createContext } from "react";
 import BookIcon from "@mui/icons-material/Book";
 const pages = ["Search", "Read Blog", "Contact"];
 const settings = ["Account", "Dashboard"];
+import { useNavigate } from "react-router-dom";
 
 const darkTheme = createTheme({ palette: { mode: "dark" } });
 const lightTheme = createTheme({ palette: { mode: "light" } });
@@ -29,7 +30,7 @@ const userUpdater = createContext({});
 
 export const Navbar = () => {
   const { user, setAuth, setUser } = useAuth();
-
+  const navigate = useNavigate();
   const [userFunc, setUserFunc] = useState(false);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -49,7 +50,7 @@ export const Navbar = () => {
     localStorage.clear();
     setAuth({});
     setUser({});
-    return <Navigate to={"/"} />;
+    navigate("/SignUp")
   };
 
   const handleOpenNavMenu = (event) => {
