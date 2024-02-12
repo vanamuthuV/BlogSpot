@@ -18,18 +18,19 @@ export const SignUp = () => {
       username: UserName.current.value,
       email: Gmail.current.value,
       passcode: Passcode.current.value,
-      
     });
     setVisibleModel((prev) => !prev);
   };
 
   useEffect(() => {
     UserName.current.focus();
-  }, [])
+  }, []);
 
   return (
     <div div className=" Login">
-      <h1>Sign Up Page</h1>
+      <p className="mt-5 mb-5 text-xl font-semibold text-orange-500">
+        SignUp Page
+      </p>
       <form
         className="Gmail-form"
         onSubmit={(event) => {
@@ -40,7 +41,7 @@ export const SignUp = () => {
       >
         <input
           type="text"
-          className="input"
+          className="input focus:outline-none"
           placeholder="Enter Your Username "
           ref={UserName}
           pattern="^[a-z0-9]+$"
@@ -48,7 +49,7 @@ export const SignUp = () => {
           required
         ></input>
         <input
-          className="input"
+          className="input focus:outline-none"
           ref={Gmail}
           required
           pattern="^[a-z0-9]+(?:[._][a-z0-9]+)*@[a-z]+\.[a-z]+$"
@@ -56,13 +57,16 @@ export const SignUp = () => {
           placeholder="What Is Your Gmail ? "
         ></input>
         <input
-          className="input"
+          className="input focus:outline-none"
           type="password"
           ref={Passcode}
           placeholder="Give Me A Passcode "
           required
         ></input>
-        <button className="Submit" type="Submit">
+        <button
+          className="pt-1.5 pb-1.5 pl-5 pr-5 bg-orange-500 rounded-xl text-gray-50 hover:border hover:border-orange-500 hover:bg-gray-50 hover:text-orange-500"
+          type="Submit"
+        >
           Register
         </button>
       </form>

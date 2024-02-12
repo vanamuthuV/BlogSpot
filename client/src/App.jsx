@@ -22,13 +22,14 @@ import { Followers } from "./assets/FollowerandFollowing/ff";
 import { Followings } from "./assets/FollowerandFollowing/ff";
 import { Accounts } from "./assets/Account/account";
 import { Dashboard } from "./assets/Dashboard/dashboard";
+import { LandingPage } from "./assets/LandingPage/LandingPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<PostRequester />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/createpost" element={<CreatePost />} />
           <Route path="/SignUp" element={<SignUpLayout />}>
             <Route path="/SignUp" element={<SignUp />} />

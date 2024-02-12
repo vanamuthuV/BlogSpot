@@ -50,7 +50,7 @@ export const Navbar = () => {
     localStorage.clear();
     setAuth({});
     setUser({});
-    navigate("/SignUp")
+    navigate("/SignUp");
   };
 
   const handleOpenNavMenu = (event) => {
@@ -74,7 +74,10 @@ export const Navbar = () => {
     <userUpdater.Provider value={setUserFunc}>
       <AppBar
         elevation={0}
-        sx={{ backgroundColor: "#f5f5f5", borderBottom: "1px solid #303030" }}
+        sx={{
+          backgroundColor: "#fffefd",
+          borderBottom: "0.5px solid #d1cfcd",
+        }}
         position="sticky"
       >
         <Container maxWidth="xl">
@@ -108,10 +111,10 @@ export const Navbar = () => {
                 sx={{
                   display: { xs: "none", md: "flex" },
                   mr: 1,
-                  color: "#303030",
+                  color: "#ff6500",
                 }}
               />
-              INKWELLIFY
+              INK <span className="text-orange-500">WELLIFY</span>
             </Typography>
 
             {user.user_name && (
@@ -213,7 +216,7 @@ export const Navbar = () => {
               INKWELLIFY
             </Typography>
 
-            {Object.keys(user).length === 0 && (
+            {/* {Object.keys(user).length === 0 && (
               <Link to={"Search"} className="max-md:hidden">
                 <Item elevation={1}>
                   <button className="flex flex-row items-center justify-center text-gray-700 shadow-base max-md:hidden">
@@ -235,7 +238,7 @@ export const Navbar = () => {
                   </button>
                 </Item>
               </Link>
-            )}
+            )} */}
 
             {Object.keys(user).length === 0 && (
               <Tooltip title="Search">
@@ -374,7 +377,7 @@ export const Navbar = () => {
                 ) : (
                   <Link to={"/SignUp"}>
                     <Tooltip title="SignUp / Login">
-                      <button className="pt-1 pb-1 pl-3 pr-3 text-base font-medium text-white transition duration-500 bg-gray-800 border border-gray-800 rounded-full hover:bg-white hover:text-gray-800 active:bg-white active:text-gray-800">
+                      <button className="pt-1 pb-1 pl-3 pr-3 text-base font-medium bg-orange-500 rounded-full text-gray-50 hover:bg-white hover:text-orange-500 hover:border hover:border-orange-500 active:bg-white active:text-orange-500">
                         Get Started
                       </button>
                     </Tooltip>

@@ -65,7 +65,9 @@ export const Login = () => {
     <>
       {success && <p>Login Success</p>}
       <div className="Login">
-        <h1>Login Page</h1>
+        <h1 className="mt-5 mb-5 text-xl font-semibold text-orange-500">
+          Login Page
+        </h1>
         {/* <p ref={errMsg} aria-live="assertive">
         {errMsg}
       </p> */}
@@ -99,7 +101,10 @@ export const Login = () => {
               <p className="newuser">New User ? Register</p>
             </Link>
           </div>
-          <button className="Submit" type="Submit">
+          <button
+            className="pt-1.5 pb-1.5 pl-5 pr-5 bg-orange-500 rounded-xl text-gray-50  hover:border hover:border-orange-500 hover:bg-gray-50 hover:text-orange-500"
+            type="Submit"
+          >
             Login
           </button>
         </form>

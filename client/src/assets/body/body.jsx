@@ -1,6 +1,5 @@
 import React from "react";
 import "./body.css";
-import { CoverPage } from "../LandingPage/LandingPage";
 import { formatISO9075 } from "date-fns";
 import { Link } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago";
