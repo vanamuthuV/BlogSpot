@@ -395,24 +395,57 @@ export const PostDetails = () => {
           </div>
         ) : (
           <div className="flex flex-row items-center justify-center">
-            <div className="flex flex-col items-center w-9/12 justify-evenly">
-              <h1 className="mt-10 mb-3 text-2xl font-bold text-center font-Mono max-md:text-base max-md:mb-1">
-                {data.post_title}
-              </h1>
-              <div className="flex flex-row items-center justify-evenly">
-                <p className="m-5 text-xl max-md:m-2 max-md:text-sm">
-                  By{" "}
-                  <Link
-                    className="text-blue-400 underline"
-                    to={`/${data.user_name}`}
-                  >
-                    {data.user_name}
-                  </Link>
-                </p>
-                <p className="max-md:text-sm">
-                  {format(data.post_upload_time, "dd-MMM-yyyy HH:mm")}
-                </p>
+            <div className="flex flex-col items-center w-7/12 justify-evenly">
+              <div className="flex flex-col items-start w-full">
+                <h1
+                  style={{ fontSize: "42px", lineHeight: "52px" }}
+                  className="mt-10 mb-5 font-bold max-md:text-base max-md:mb-1"
+                >
+                  {data.post_title}
+                </h1>
+                <div className="flex flex-row items-center mt-5 mb-10 justify-evenly">
+                  <div className="flex flex-row items-center justify-center">
+                    <div className="mr-2.5">
+                      <img
+                        className="rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
+                        src={
+                          data.profileimage
+                            ? `http://localhost:5000/${data.profileimage}`
+                            : "../../../public/Profile.jpeg"
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-col items-start justify-center ml-2.5">
+                      <div className="flex flex-row items-center ">
+                        <Link to={`/${data.user_name}`}>
+                          <p className="pr-2 text-base font-medium hover:underline">
+                            {data.userfullname
+                              ? data.userfullname
+                              : data.user_name}
+                          </p>
+                        </Link>
+                        &middot;
+                        {data.user_name !== user.user_name && (
+                          <button className="pl-2 text-base text-green-600">
+                            Follow
+                          </button>
+                        )}
+                      </div>
+                      <div className="flex flex-row items-center justify-start w-full ">
+                        <p className="pr-2 text-sm text-neutral-500">
+                          {Math.round(data.post_content.split("").length / 200)}{" "}
+                          min read
+                        </p>
+                        &middot;
+                        <p className="pl-2 text-sm text-neutral-500">
+                          {format(data.post_upload_time, "MMM dd,yyyy")}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+
               <div>
                 {user.user_id === data.user_id && (
                   <Link to={`/edit/${data.post_id}`}>
@@ -438,16 +471,16 @@ export const PostDetails = () => {
                   </Link>
                 )}
               </div>
-              <div className="flex flex-row items-center justify-center w-10/12 h-full max-md:w-full">
+              <div className="flex flex-row items-center justify-center w-full h-full max-md:w-full">
                 <img
                   src={`http://localhost:5000/${data.post_images}`}
-                  className="m-5 mb-10 rounded-xl"
+                  className="mt-5 mb-10 rounded-xl"
                 />
               </div>
 
               <div
                 dangerouslySetInnerHTML={{ __html: data.post_content }}
-                className="text-justify max-md:text-xs"
+                className="text-lg text-justify max-md:text-xs"
               ></div>
               <div className="flex flex-col flex-wrap items-center w-full mt-5 justify-evenly">
                 <div className="flex flex-row flex-wrap items-center justify-between w-full mt-5 mb-10 max-md:justify-center">
