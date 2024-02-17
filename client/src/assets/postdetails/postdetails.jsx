@@ -424,7 +424,7 @@ export const PostDetails = () => {
                               : data.user_name}
                           </p>
                         </Link>
-                        &middot;
+                        {data.user_name !== user.user_name && <p>&middot;</p>}
                         {data.user_name !== user.user_name && (
                           <button className="pl-2 text-base text-green-600">
                             Follow
@@ -446,7 +446,7 @@ export const PostDetails = () => {
                 </div>
               </div>
 
-              <div>
+              <div className="mb-5">
                 {user.user_id === data.user_id && (
                   <Link to={`/edit/${data.post_id}`}>
                     <button className="flex flex-row items-center justify-center pt-1 pb-1 pl-3 pr-3 ml-2.5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg max-md:text-xs">
@@ -471,6 +471,7 @@ export const PostDetails = () => {
                   </Link>
                 )}
               </div>
+
               <div className="flex flex-row items-center justify-center w-full h-full max-md:w-full">
                 <img
                   src={`http://localhost:5000/${data.post_images}`}
@@ -480,7 +481,7 @@ export const PostDetails = () => {
 
               <div
                 dangerouslySetInnerHTML={{ __html: data.post_content }}
-                className="text-lg text-justify max-md:text-xs"
+                className="text-lg font-light text-justify max-md:text-xs"
               ></div>
               <div className="flex flex-col flex-wrap items-center w-full mt-5 justify-evenly">
                 <div className="flex flex-row flex-wrap items-center justify-between w-full mt-5 mb-10 max-md:justify-center">
