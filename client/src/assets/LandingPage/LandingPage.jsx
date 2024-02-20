@@ -80,8 +80,8 @@ export const LandingPage = () => {
           </Link>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center w-full pb-20">
-        <h1 className="pt-10 pb-10 text-3xl text-center text-orange-500">
+      <div className="flex flex-col items-center justify-center w-full pb-5">
+        <h1 className="pt-10 pb-10 text-3xl font-bold text-center text-orange-500">
           Trending Blogs
         </h1>
         {loading ? (
@@ -92,7 +92,7 @@ export const LandingPage = () => {
           <div className="flex flex-row flex-wrap items-center justify-around w-full gap-5 p-5">
             {data.map((post) => {
               return (
-                <div className="flex flex-row items-center justify-center h-40 m-5 shadow-md max-md:flex-col hover:shadow-xl">
+                <div className="flex flex-row items-center justify-center h-40 pl-5 m-5 shadow-md max-md:flex-col hover:shadow-xl">
                   <div className="flex flex-row items-center justify-center w-36 h-36">
                     <img
                       className="max-h-36 max-w-36"
@@ -140,7 +140,9 @@ export const LandingPage = () => {
         )}
       </div>
       <div className="flex flex-col items-center justify-center mt-10 mb-10">
-        <h1 className="text-2xl font-bold">What We Have ? </h1>
+        <h1 className="mb-10 text-3xl font-bold text-orange-500">
+          What We Have ?{" "}
+        </h1>
         <div className="flex flex-row flex-wrap items-center justify-around w-full gap-10 mt-10 mb-10">
           {Cards.map((card) => {
             return (
@@ -148,32 +150,56 @@ export const LandingPage = () => {
                 sx={{
                   maxWidth: 345,
                 }}
+                elevation={3}
               >
                 <CardActionArea>
-                  <div className="flex flex-row items-center justify-center w-full h-36">
-                    <img className="w-36 h-36" src={card.src} />
+                  <div className="flex flex-row items-center justify-center w-full h-20 mt-10 mb-10">
+                    <img className="w-20 h-20" src={card.src} />
                   </div>
                   <CardContent>
-                    <Typography
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                      gutterBottom
-                      variant="h5"
-                      component="div"
-                    >
+                    <p className="flex flex-row items-center justify-center text-xl font-bold text-orange-500">
+                      {" "}
                       {card.title}
-                    </Typography>
+                    </p>
                     <Typography
                       sx={{ m: 2 }}
                       variant="body2"
                       color="text.secondary"
                     >
-                      <li className="text-justify list-disc">{card.pt1}</li>
-                      <li className="text-justify list-disc">{card.pt2}</li>
+                      <p className="flex flex-row text-sm ">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="2.5"
+                          stroke="rgb(249, 115, 22)"
+                          class="w-6 h-6 mr-2"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m4.5 12.75 6 6 9-13.5"
+                          />
+                        </svg>
+                        {card.pt1}
+                      </p>
+                      <p className="flex flex-row text-sm">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="2.5"
+                          stroke="rgb(249, 115, 22)"
+                          class="w-6 h-6 mr-2"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m4.5 12.75 6 6 9-13.5"
+                          />
+                        </svg>
+                        {card.pt2}
+                      </p>
                     </Typography>
                   </CardContent>
                 </CardActionArea>
