@@ -119,9 +119,7 @@ export const CreatePost = () => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <h1 className="m-5 text-3xl font-bold max-md:text-2xl">
-        Writing on Blogspot
-      </h1>
+      <h1 className="m-5 text-4xl max-md:text-2xl ">Writing on Blogspot</h1>
       <div className="flex flex-col items-center justify-center w-full mb-10">
         <form
           className="flex flex-col items-center justify-center w-full"

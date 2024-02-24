@@ -189,18 +189,11 @@ export const Navbar = () => {
               </Box>
             )}
 
-            <BookIcon
-              fontSize="small"
-              sx={{
-                display: { xs: "flex", md: "none", color: "#303030" },
-                mr: 1,
-              }}
-            />
             <Typography
               variant="h5"
               noWrap
               component="a"
-              href="#app-bar-with-responsive-menu"
+              href="/"
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
@@ -209,11 +202,19 @@ export const Navbar = () => {
                 fontSize: "16px",
                 fontWeight: 700,
                 letterSpacing: ".2rem",
-                color: "#303030",
+                color: "#0e0a07",
                 textDecoration: "none",
               }}
             >
-              INKWELLIFY
+              <BookIcon
+                fontSize="small"
+                sx={{
+                  display: { xs: "flex", md: "none", color: "#ff6500" },
+                  mr: 1,
+                }}
+              />
+              INK
+              <span className="text-orange-500">WELLIFY</span>
             </Typography>
 
             {/* {Object.keys(user).length === 0 && (
@@ -242,7 +243,7 @@ export const Navbar = () => {
 
             {Object.keys(user).length === 0 && (
               <Tooltip title="Search">
-                <Link to={"/Search"} className="text-gray-700 md:hidden">
+                <Link to={"/Search"} className="text-gray-900 md:hidden">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -314,7 +315,7 @@ export const Navbar = () => {
               ) : (
                 <Link to={"/SignUp"}>
                   <Tooltip title="SignUp / Login">
-                    <button className="pt-1 pb-1 pl-2 pr-2 ml-5 font-light text-white transition duration-300 delay-100 bg-gray-800 border border-gray-700 rounded-lg hover:text-gray-800 hover:bg-white active:bg-white active:text-gray-800 max-md:text-xs">
+                    <button className="pt-1 pb-1 pl-2 pr-2 ml-5 font-light bg-orange-500 rounded-lg text-gray-50 hover:text-orange-500 hover:bg-gray-50 hover:border hover:border-orange-500 active:bg-white active:text-orange-500 max-md:text-xs">
                       SIGN UP
                     </button>
                   </Tooltip>
@@ -377,7 +378,7 @@ export const Navbar = () => {
                 ) : (
                   <Link to={"/SignUp"}>
                     <Tooltip title="SignUp / Login">
-                      <button className="pt-1 pb-1 pl-3 pr-3 text-base font-medium bg-orange-500 rounded-full text-gray-50 hover:bg-white hover:text-orange-500 hover:border hover:border-orange-500 active:bg-white active:text-orange-500">
+                      <button className="pt-1 pb-1 pl-3 pr-3 text-base font-medium bg-orange-500 rounded-full text-gray-50 hover:bg-gray-50 hover:text-orange-500 hover:border hover:border-orange-500 active:bg-white active:text-orange-500">
                         Get Started
                       </button>
                     </Tooltip>

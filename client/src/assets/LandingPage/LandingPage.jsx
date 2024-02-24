@@ -10,6 +10,12 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
+import "./LandingPage.css";
+import { styled } from "@mui/material/styles";
+import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
+import MuiAccordion from "@mui/material/Accordion";
+import MuiAccordionSummary from "@mui/material/AccordionSummary";
+import MuiAccordionDetails from "@mui/material/AccordionDetails";
 
 const LANDINGDATA = "/landingdata";
 
@@ -38,12 +44,52 @@ const Cards = [
   },
 ];
 
+const Accordion = styled((props) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  "&:not(:last-child)": {
+    borderBottom: 0,
+  },
+  "&::before": {
+    display: "none",
+  },
+}));
+
+const AccordionSummary = styled((props) => (
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? "rgba(255, 255, 255, .05)"
+      : "rgba(0, 0, 0, .03)",
+  flexDirection: "row-reverse",
+  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+    transform: "rotate(90deg)",
+  },
+  "& .MuiAccordionSummary-content": {
+    marginLeft: theme.spacing(1),
+  },
+}));
+
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderTop: "1px solid rgba(0, 0, 0, .125)",
+}));
+
 export const LandingPage = () => {
   const { user } = useAuth();
   const theme = useTheme();
-
+  const [expanded, setExpanded] = React.useState("panel1");
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+
+  const handleChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
 
   useEffect(() => {
     (async () => {
@@ -92,14 +138,14 @@ export const LandingPage = () => {
           <div className="flex flex-row flex-wrap items-center justify-around w-full gap-5 p-5">
             {data.map((post) => {
               return (
-                <div className="flex flex-row items-center justify-center h-40 pl-5 m-5 shadow-md max-md:flex-col hover:shadow-xl">
+                <div className="flex flex-row items-center justify-center h-auto pl-5 m-5 shadow-md max-md:flex-col hover:shadow-xl max-md:w-11/12">
                   <div className="flex flex-row items-center justify-center w-36 h-36">
                     <img
                       className="max-h-36 max-w-36"
                       src={`http://localhost:5000/${post.post_images}`}
                     />
                   </div>
-                  <div className="flex flex-col items-start justify-center h-full pl-5 w-60">
+                  <div className="flex flex-col items-start justify-center h-full pl-5 w-60 max-md:w-full max-md:pl-1">
                     <Link to={`/Read Blog/${post.post_id}`}>
                       <p className="mt-2 mb-2 hover:underline">
                         {post.post_title.length > 60
@@ -139,6 +185,42 @@ export const LandingPage = () => {
           </div>
         )}
       </div>
+      <div className="flex flex-row items-center justify-center w-full">
+        <div className="flex flex-row items-center justify-between w-11/12 mt-10 mb-20">
+          <div className="w-2/4 pr-10">
+            <h1 className="text-6xl leading-snug">
+              Create and share your blog effortlessly.
+            </h1>
+          </div>
+          <div className="w-2/4 pl-10">
+            <p className="leading-relaxed">
+              "Empower your voice with our blog platform, where you can
+              effortlessly create and share your stories, building a community
+              around your ideas that grows with you."
+            </p>
+            <Link to={"/SignUp"}>
+              <button className="flex flex-row items-center mt-5 text-black transition duration-150 delay-150 hover:text-orange-500">
+                <p className="underline underline-offset-4">Get Started </p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-7 pl-1"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                  />
+                </svg>
+              </button>
+            </Link>
+          </div>
+        </div>
+      </div>
+
       <div className="flex flex-col items-center justify-center mt-10 mb-10">
         <h1 className="mb-10 text-3xl font-bold text-orange-500">
           What We Have ?{" "}
@@ -148,7 +230,7 @@ export const LandingPage = () => {
             return (
               <Card
                 sx={{
-                  maxWidth: 345,
+                  maxWidth: 320,
                 }}
                 elevation={3}
               >
@@ -166,7 +248,7 @@ export const LandingPage = () => {
                       variant="body2"
                       color="text.secondary"
                     >
-                      <p className="flex flex-row text-sm ">
+                      <p className="flex flex-row mb-1 text-sm">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -183,7 +265,7 @@ export const LandingPage = () => {
                         </svg>
                         {card.pt1}
                       </p>
-                      <p className="flex flex-row text-sm">
+                      <p className="flex flex-row mt-1 text-sm">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -206,6 +288,120 @@ export const LandingPage = () => {
               </Card>
             );
           })}
+        </div>
+      </div>
+      <div className="flex flex-row items-center justify-center">
+        <div className="flex flex-col items-start justify-start w-10/12">
+          <h1 className="text-2xl font-bold text-orange-500">FAQS</h1>
+          <div className="mt-10">
+            <Accordion
+              expanded={expanded === "panel1"}
+              onChange={handleChange("panel1")}
+              sx={{
+                borderRadius: "10px",
+                marginBottom: "20px",
+              }}
+            >
+              <AccordionSummary
+                aria-controls="panel1d-content"
+                id="panel1d-header"
+                sx={{}}
+              >
+                <Typography sx={{ fontWeight: "500", fontSize: "18px" }}>
+                  How do I upload a blog post?
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography sx={{ fontSize: "16px" }}>
+                  {" "}
+                  To upload a blog post, simply log in to your account and
+                  navigate to the "Create Blog" section. Fill in the required
+                  details such as the title, content, and any relevant tags,
+                  then click "Create" to upload your post.
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion
+              expanded={expanded === "panel2"}
+              onChange={handleChange("panel2")}
+              sx={{
+                borderRadius: "10px",
+                marginBottom: "20px",
+              }}
+            >
+              <AccordionSummary
+                aria-controls="panel1d-content"
+                id="panel1d-header"
+                sx={{}}
+              >
+                <Typography sx={{ fontWeight: "500", fontSize: "18px" }}>
+                  Can I edit my blog posts after uploading?
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography sx={{ fontSize: "16px" }}>
+                  Yes, you can edit your blog posts after uploading them. Simply
+                  go to the "Profile" section in your account, find the blog
+                  post you want to edit, make your changes, and click "Update"
+                  to update the post.
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion
+              expanded={expanded === "panel3"}
+              onChange={handleChange("panel3")}
+              sx={{
+                borderRadius: "10px",
+                marginBottom: "20px",
+              }}
+            >
+              <AccordionSummary
+                aria-controls="panel1d-content"
+                id="panel1d-header"
+                sx={{}}
+              >
+                <Typography sx={{ fontWeight: "500", fontSize: "18px" }}>
+                  Is there a limit to the number of words in a blog post?
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography sx={{ fontSize: "16px" }}>
+                  No, there is no limit to the number of words in a blog post.
+                  You can write as much as you want to fully express your ideas
+                  and thoughts.
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion
+              expanded={expanded === "panel4"}
+              onChange={handleChange("panel4")}
+              sx={{
+                borderRadius: "10px",
+                marginBottom: "20px",
+              }}
+            >
+              <AccordionSummary
+                aria-controls="panel1d-content"
+                id="panel1d-header"
+                sx={{}}
+              >
+                <Typography sx={{ fontWeight: "500", fontSize: "18px" }}>
+                  How do I delete my account?
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography sx={{ fontSize: "16px" }}>
+                  To delete your account, go to the "Account Settings" section
+                  of your account and select the option to delete your account.
+                  Please note that this action is irreversible and will
+                  permanently delete all your data.
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          </div>
         </div>
       </div>
     </div>
