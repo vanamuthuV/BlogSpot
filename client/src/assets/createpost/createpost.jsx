@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import ReactQuill from "react-quill";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { styled } from "@mui/material/styles";
@@ -8,41 +7,57 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import "react-quill/dist/quill.snow.css";
 import "./createpost.css";
 import axios from "../../../api/axios";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
-const modules = {
-  toolbar: [
-    [{ header: [1, 2, false] }],
-    ["bold", "italic", "underline", "strike"],
-    ["blockquote", "code-block"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ indent: "-1" }, { indent: "+1" }],
-    [{ font: ["Fira Code"] }],
-    [{ align: [] }][("link", "image")],
-    ["clean"],
-  ],
-};
+// const modules = {
+//   toolbar: [
+//     [{ header: [1, 2, false] }],
+//     ["bold", "italic", "underline", "strike"],
+//     ["blockquote", "code-block"],
+//     [{ list: "ordered" }, { list: "bullet" }],
+//     [{ indent: "-1" }, { indent: "+1" }],
+//     [{ font: ["Fira Code"] }],
+//     [{ align: [] }][("link", "image")],
+//     ["clean"],
+//   ],
+// };
 
 const CREATE_POST = "/post";
 
-const formats = [
-  "header",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "blockquote",
-  "code-block",
-  "list",
-  "bullet",
-  "indent",
-  "link",
-  "image",
-];
+// const formats = [
+//   "bold",
+//   "italic",
+//   "underline",
+//   "strike",
+//   "blockquote",
+//   "code-block",
+//   "list",
+//   "bullet",
+//   "indent",
+//   "link",
+//   "image",
+// ];
+
+const modules = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ size: [] }],
+    ["bold", "italic", "underline", "strike", "blockquote", "code-block"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+    ],
+    ["link", "image", "video"],
+    ["clean"],
+  ],
+};
 
 /*
 Tool For Formating And Modules For React Quill
@@ -76,6 +91,11 @@ export const CreatePost = () => {
   const tags = useRef(null);
   const summary = useRef(null);
   const type = useRef(null);
+
+  const handleEditorChange = (contents, editor) => {
+    console.log("Content Value:", contents);
+    // You can also access the editor instance for more operations
+  };
 
   const [alignment, setAlignment] = React.useState("public");
   const navigate = useNavigate();
@@ -139,12 +159,13 @@ export const CreatePost = () => {
             type="file"
             id="images"
           />
-          <ReactQuill
-            className="w-3/4 min-h-5 max-md:w-5/6"
+          {/* <ReactQuill
+            className=""
             modules={modules}
             formats={formats}
             ref={content}
-          />
+          /> */}
+          <ReactQuill modules={modules} theme="snow" ref={content} />;
           <input
             className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg max-md:w-5/6"
             ref={category}
@@ -163,17 +184,6 @@ export const CreatePost = () => {
             type="summary"
             placeholder="Summary"
           ></input>
-
-          {/* <ToggleButtonGroup
-            color="primary"
-            value={alignment}
-            exclusive
-            onChange={handleChange}
-            aria-label="Platform"
-          >
-            <ToggleButton value="public">PUBLIC</ToggleButton>
-            <ToggleButton value="private">PRIVATE</ToggleButton>
-          </ToggleButtonGroup> */}
           <label className="font-semibold text-md" htmlFor="type">
             Select the post visibility
           </label>
@@ -187,7 +197,6 @@ export const CreatePost = () => {
             <option value={"public"}>Public</option>
             <option value={"private"}>Private</option>
           </select>
-
           <Stack
             direction="row"
             spacing={1}
@@ -207,7 +216,6 @@ export const CreatePost = () => {
             </label>
             <p className="pl-2 pr-2 text-lg">On</p>
           </Stack>
-
           <button
             className="pt-1 pb-1 pl-2 pr-2 ml-2.5 mt-5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg"
             type="submit"

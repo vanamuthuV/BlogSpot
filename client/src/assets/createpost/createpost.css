@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .switch {
   position: relative;
   display: inline-block;
@@ -10,7 +9,7 @@
   height: 34px;
 }
 
-.switch input { 
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -24,8 +23,8 @@
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -36,16 +35,16 @@
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #2196f3;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #2196f3;
 }
 
 input:checked + .slider:before {
@@ -61,4 +60,65 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+.quill.ql-error {
+  svg {
+    width: 20px;
+  }
+}
+
+.ql-toolbar {
+  background: #eaecec;
+  border-top-left-radius: 0.5em;
+  border-top-right-radius: 0.5em;
+  border-bottom: none;
+}
+
+.ql-toolbar > .ql-formats > .ql-header > svg {
+  width: 20px;
+}
+
+.ql-toolbar > .ql-formats > .ql-bold > svg {
+  width: 20px;
+}
+
+.ql-toolbar > .ql-formats > .ql-italic > svg {
+  width: 20px;
+}
+
+.ql-toolbar > .ql-formats > .ql-underline > svg {
+  width: 20px;
+}
+
+.ql-toolbar > .ql-formats > .ql-strike > svg {
+  width: 20px;
+}
+
+.ql-toolbar > .ql-formats > .ql-blockquote > svg {
+  width: 20px;
+}
+
+.ql-toolbar > .ql-formats > .ql-code-block > svg {
+  width: 20px;
+}
+
+.ql-toolbar > .ql-formats > .ql-list > svg {
+  width: 20px;
+}
+.ql-toolbar > .ql-formats > .ql-indent > svg {
+  width: 20px;
+}
+.ql-toolbar > .ql-formats > .ql-link > svg {
+  width: 20px;
+}
+.ql-toolbar > .ql-formats > .ql-image > svg {
+  width: 20px;
+}
+
+.ql-toolbar > .ql-formats > .ql-video > svg {
+  width: 20px;
+}
+
+.ql-toolbar > .ql-formats > .ql-clean > svg {
+  width: 20px;
 }
