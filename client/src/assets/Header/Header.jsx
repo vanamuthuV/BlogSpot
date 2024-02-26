@@ -100,7 +100,6 @@ export const Navbar = () => {
                 alignItems: "center",
                 fontSize: "26px",
                 fontWeight: 700,
-                fontFamily: "Space Mono",
                 letterSpacing: ".6rem",
                 color: "#303030",
                 textDecoration: "none",
@@ -158,7 +157,6 @@ export const Navbar = () => {
                         sx={{
                           marginRight: "2px",
                           marginLeft: "2px",
-                          fontFamily: "Space Mono",
                           fontSize: "12px",
                           color: "#303030",
                         }}
@@ -176,7 +174,6 @@ export const Navbar = () => {
                             marginRight: "2px",
                             marginLeft: "2px",
                             fontSize: "12px",
-                            fontFamily: "Space Mono",
                           }}
                           textAlign="center"
                         >
@@ -198,7 +195,6 @@ export const Navbar = () => {
                 mr: 2,
                 display: { xs: "flex", md: "none" },
                 flexGrow: 1,
-                fontFamily: "Space Mono",
                 fontSize: "16px",
                 fontWeight: 700,
                 letterSpacing: ".2rem",
@@ -270,7 +266,7 @@ export const Navbar = () => {
                 <Link to={"/createpost"}>
                   <button
                     onClick={handleCloseNavMenu}
-                    className="flex flex-row items-center justify-center pt-1 pb-1 pl-3 pr-3 text-lg text-gray-700 shadow-md rounded-xl font-Mono"
+                    className="flex flex-row items-center justify-center pt-2 pb-2 pl-4 pr-4 text-gray-900 border border-gray-400 rounded-full shadow-md text-md hover:text-orange-500 hover:border-orange-500"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -286,7 +282,7 @@ export const Navbar = () => {
                         d="M12 4.5v15m7.5-7.5h-15"
                       />
                     </svg>
-                    CREATE POST
+                    <span className="pr-1">Create </span> Post
                   </button>
                 </Link>
               </div>
@@ -344,7 +340,6 @@ export const Navbar = () => {
                         my: 2,
                         color: "#303030",
                         display: "block",
-                        fontFamily: "Space Mono",
                         fontSize: "16px",
                         paddingRight: "10px",
                       }}
@@ -409,7 +404,7 @@ export const Navbar = () => {
                     <Link to={`/${user.user_name}`}>
                       <Typography
                         variant="body1"
-                        sx={{ mt: "6px", mb: "6px", fontFamily: "Space Mono" }}
+                        sx={{ mt: "6px", mb: "6px" }}
                         textAlign="center"
                       >
                         Profile
@@ -422,7 +417,6 @@ export const Navbar = () => {
                           sx={{
                             mt: "6px",
                             mb: "6px",
-                            fontFamily: "Space Mono",
                           }}
                           textAlign="center"
                         >
@@ -433,7 +427,7 @@ export const Navbar = () => {
                     <Typography
                       onClick={handleLogout}
                       variant="body1"
-                      sx={{ mt: "6px", mb: "6px", fontFamily: "Space Mono" }}
+                      sx={{ mt: "6px", mb: "6px" }}
                       textAlign="center"
                     >
                       Logout

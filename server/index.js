@@ -54,6 +54,8 @@ import MoreFavorites from "./routes/loadfav.js";
 import MoreLike from "./routes/loadlike.js";
 import MoreDisLike from "./routes/loaddislike.js";
 import LandingData from "./routes/landingdata.js";
+import UserCheck from "./routes/uncheck.js";
+import UserECheck from "./routes/uecheck.js"
 
 const Base_URL = "http://localhost:5173";
 dotenv.config();
@@ -124,6 +126,8 @@ app.use("/favload", MoreFavorites);
 app.use("/likeload", MoreLike);
 app.use("/dislikeload", MoreDisLike);
 app.use("/landingdata", LandingData);
+app.use("/uncheck", UserCheck);
+app.use("/uecheck", UserECheck)
 
 app.listen(5000, () => {
   console.log("Connected to postgres...");

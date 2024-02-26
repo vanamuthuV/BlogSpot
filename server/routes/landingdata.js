@@ -16,8 +16,10 @@ FROM
     LEFT OUTER JOIN profileinformation on posts.user_id = profileinformation.user_id
 	LEFT OUTER JOIN profilepicture on profilepicture.user_id = posts.user_id
     LEFT OUTER JOIN likes ON posts.post_id = likes.post_id AND likes.likes = 'true'
+    WHERE  posts.post_type = 'public'
 GROUP BY
     posts.post_id, users.user_id, profilepicture.user_id, profilepicture.profileimage, profilepicture.profiletime, profilepicture.profileimageid, profileinformation.user_id, profileinformation.userfullname, profileinformation.role, profileinformation.dateofbirth, profileinformation.bio, profileinformation.profileupdatedate, profileinformation.profileinformationid
+
 ORDER BY
     likes_count desc
 LIMIT 10

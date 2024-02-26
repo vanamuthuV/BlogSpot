@@ -147,49 +147,73 @@ export const CreatePost = () => {
           enctype="multipart/form-data"
         >
           <input
-            className="w-3/4 border-2 border-#303030-500 border-solid rounded-lg pt-2 pb-2 pl-5 pr-5 m-5 max-md:w-5/6"
+            className="w-3/4 pt-2.5 pb-2.5 pl-5 pr-5 m-5 text-lg border-2 border-gray-500 border-solid rounded-xl max-md:w-5/6"
             type="title"
             ref={title}
             placeholder="Title"
             required
           ></input>
-          <input
+          {/* <input
             className="pb-5 cursor-pointer border-2-gray max-md:w-5/6"
-            ref={media}
             type="file"
             id="images"
-          />
+          /> */}
+          <div class="form-group file-area">
+            <label for="images">
+              Images <span>Try To Upload A Image With Resolution.</span>
+            </label>
+            <input
+              ref={media}
+              type="file"
+              name="images"
+              id="images"
+              required="required"
+            />
+            <div class="file-dummy">
+              <div class="success">
+                Great, your files are selected. Keep on.
+              </div>
+              <div class="default">Please select a files</div>
+            </div>
+          </div>
           {/* <ReactQuill
             className=""
             modules={modules}
             formats={formats}
             ref={content}
           /> */}
-          <ReactQuill modules={modules} theme="snow" ref={content} />;
+          <ReactQuill
+            className="w-3/4"
+            modules={modules}
+            theme="snow"
+            ref={content}
+            placeholder="Unleash your creativity and share your story with the world. Write something amazing here!"
+          />
+          ;
           <input
-            className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg max-md:w-5/6"
+            className="w-3/4 pt-2.5 pb-2.5 pl-5 pr-5 m-5 text-lg border-2 border-gray-500 border-solid rounded-xl max-md:w-5/6"
             ref={category}
             type="text"
             placeholder="Category ?"
           ></input>
           <input
-            className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg max-md:w-5/6"
+            className="w-3/4 pt-2.5 pb-2.5 pl-5 pr-5 m-5 text-lg border-2 border-gray-500 border-solid rounded-xl max-md:w-5/6"
             ref={tags}
             type="text"
             placeholder="Tags"
           ></input>
           <input
-            className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg max-md:w-5/6"
+            className="w-3/4 pt-2.5 pb-2.5 pl-5 pr-5 m-5 text-lg border-2 border-gray-500 border-solid rounded-lg max-md:w-5/6"
             ref={summary}
             type="summary"
             placeholder="Summary"
           ></input>
-          <label className="font-semibold text-md" htmlFor="type">
-            Select the post visibility
+          <label className="text-lg font-semibold" htmlFor="type">
+            Select Your Post Visibility
           </label>
           <select
             id="type"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-2/4 p-2.5 dark:bg-gray-500 dark:border-gray-600 dark:placeholder-gray-500 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-5 mb-5"
+            className="bg-gray-50 text-gray-50 text-sm rounded-lg focus:outline-none block w-2/4 p-2.5 dark:bg-orange-500 dark:border-orange-600 dark:placeholder-orange-500 dark:text-gray-50 mt-5 mb-5"
             ref={type}
             value={alignment}
             onChange={handleChange}
@@ -217,7 +241,7 @@ export const CreatePost = () => {
             <p className="pl-2 pr-2 text-lg">On</p>
           </Stack>
           <button
-            className="pt-1 pb-1 pl-2 pr-2 ml-2.5 mt-5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg"
+            className="pt-2 pb-2 pl-5 pr-5 transition duration-100 delay-100 ml-2.5 mt-5 bg-orange-500 text-gray-50 hover:bg-white hover:text-orange-500 hover:border hover:border-orange-500 rounded-lg"
             type="submit"
           >
             Create Post

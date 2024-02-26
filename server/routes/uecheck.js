@@ -1,25 +1,24 @@
 import express from "express";
 import pool from "../db.js";
-import Authentication from "../middleware/authorization.js";
 
 const router = express.Router();
 
-router.post("/", Authentication, async (req, res) => {
+router.post("/", async (req, res) => {
   console.log(req.body);
-
-  const { user_name } = req.body;
+  const { email } = req.body;
+  console.log(email);
 
   const query = `
-        select * from users where user_name = $1
-    `;
+    select * from users where user_email = $1
+  `;
 
   try {
-    const Users = await pool.query(query, [`${user_name}`]);
+    const Users = await pool.query(query, [email]);
+    console.log(Users.rows.length);
     res.status(200).json({ data: Users.rows.length === 0 ? true : false });
   } catch (error) {
     res.status(200).json({ data: error });
   }
 });
-
 
 export default router;

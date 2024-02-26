@@ -11,38 +11,52 @@ import Typography from "@mui/material/Typography";
 import "react-quill/dist/quill.snow.css";
 import "../createpost/createpost.css";
 import axios from "../../../api/axios";
+import "../createpost/createpost.css"
 import { Navigate, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const modules = {
+  // toolbar: [
+  //   [{ header: [1, 2, false] }],
+  //   ["bold", "italic", "underline", "strike"],
+  //   ["blockquote", "code-block"],
+  //   [{ list: "ordered" }, { list: "bullet" }],
+  //   [{ indent: "-1" }, { indent: "+1" }],
+  //   [{ font: ["Fira Code"] }],
+  //   [{ align: [] }][("link", "image")],
+  //   ["clean"],
+  // ],
   toolbar: [
-    [{ header: [1, 2, false] }],
-    ["bold", "italic", "underline", "strike"],
-    ["blockquote", "code-block"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ indent: "-1" }, { indent: "+1" }],
-    [{ font: ["Fira Code"] }],
-    [{ align: [] }][("link", "image")],
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ size: [] }],
+    ["bold", "italic", "underline", "strike", "blockquote", "code-block"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+    ],
+    ["link", "image", "video"],
     ["clean"],
   ],
 };
 
 const CREATE_POST = "/post";
 
-const formats = [
-  "header",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "blockquote",
-  "code-block",
-  "list",
-  "bullet",
-  "indent",
-  "link",
-  "image",
-];
+// const formats = [
+//   "header",
+//   "bold",
+//   "italic",
+//   "underline",
+//   "strike",
+//   "blockquote",
+//   "code-block",
+//   "list",
+//   "bullet",
+//   "indent",
+//   "link",
+//   "image",
+// ];
 
 /*
 Tool For Formating And Modules For React Quill
@@ -243,7 +257,6 @@ export const Edit = ({ post_ids }) => {
           <ReactQuill
             className="w-3/4 min-h-5"
             modules={modules}
-            formats={formats}
             value={content}
             ref={contents}
             onChange={(ev) => {

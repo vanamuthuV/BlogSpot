@@ -3,16 +3,19 @@ import useAuth from "../../../hooks/useAuth.jsx";
 import "../SignUp/SignUp.css";
 import axios from "../../../api/axios.jsx";
 import { Link, useNavigate } from "react-router-dom";
-
+import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 const Login_URL = "/login";
+import { SnackBar } from "./Alert.jsx";
 
 export const Login = () => {
   const { auth, setAuth, setUser } = useAuth();
-
+  const [alert, setAlert] = useState(false);
   const Gmail = useRef(null);
   const Passcode = useRef(null);
+  const [Snack, setSnack] = useState(null);
   // const [errMsg, seterrMsg] = useState('');
-  const [success, setSuccess] = useState(false);
 
   const navigate = useNavigate();
 
@@ -22,22 +25,19 @@ export const Login = () => {
 
   const SubmitHandler = async (e) => {
     e.preventDefault();
-    console.log("Hello");
-
     try {
-      const response = await axios.post(Login_URL, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
+      const data = {
         email: Gmail.current.value,
         passcode: Passcode.current.value,
+      };
+      const response = await axios.post(Login_URL, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-      setSuccess(true);
-      console.log(JSON.stringify(response?.data));
+      console.log(response?.data);
       const accessToken = response?.data?.accessToken;
       const user_name = response?.data?.user_name;
-      console.log(response?.data?.user_details[0].user_name);
-      console.log(user_name);
-      console.log(accessToken);
       localStorage.setItem("accessToken", accessToken);
       setAuth({
         Gmail: Gmail.current.value,
@@ -45,7 +45,6 @@ export const Login = () => {
         user_id: response?.data?.user_details[0].user_id,
         accessToken,
       });
-
       setUser({
         Gmail: Gmail.current.value,
         Passcode: Passcode.current.value,
@@ -53,17 +52,36 @@ export const Login = () => {
         user_id: response?.data?.user_details[0].user_id,
         profileimage: response?.data?.user_details[0].profileimage,
       });
-      navigate("/");
-    } catch (err) {
-      console.log(err);
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+      setSnack(
+        <SnackBar
+          message={response?.data?.login_status}
+          variant={"success"}
+        />
+      );
+      setAlert(true);
+    } catch (error) {
+      console.log(error?.response?.data?.login_status);
+      setSnack(
+        <SnackBar
+          message={error?.response?.data?.login_status}
+          variant={"error"}
+        />
+      );
+      setAlert(true);
     }
   };
-
-  setTimeout(() => setSuccess(false), 3000);
+  alert &&
+    setTimeout(() => {
+      setAlert(false);
+      console.log(Snack);
+    }, 3000);
 
   return (
     <>
-      {success && <p>Login Success</p>}
+      {alert && Snack}
       <div className="Login">
         <h1 className="mt-5 mb-5 text-xl font-semibold text-orange-500">
           Login Page
