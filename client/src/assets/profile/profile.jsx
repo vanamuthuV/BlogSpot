@@ -315,7 +315,7 @@ export const Profile = (user_name) => {
             <ListItemIcon>
               <UploadIcon />
             </ListItemIcon>
-            <div>
+            <div className="flex flex-row justify-center align-center">
               <label htmlFor="files">Upload Photo</label>
               <input
                 ref={Profile}
@@ -337,7 +337,7 @@ export const Profile = (user_name) => {
               </p>
               <button
                 onClick={ProfilePictureUpdater}
-                className="pt-1 pb-1 pl-3 pr-3 ml-2.5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg "
+                className="pt-1 pb-1 pl-3 pr-3 ml-2.5 bg-orange-500 text-white hover:bg-white hover:text-orange-500 border-2 border-orange-500 border-solid rounded-lg "
               >
                 Submit
               </button>
@@ -405,7 +405,7 @@ export const Profile = (user_name) => {
             <ListItemIcon>
               <UploadIcon />
             </ListItemIcon>
-            <div>
+            <div className="flex flex-row justify-center align-center">
               <label htmlFor="files">Upload Photo</label>
               <input
                 ref={CoverFiles}
@@ -424,7 +424,7 @@ export const Profile = (user_name) => {
               </p>
               <button
                 onClick={CoverPictureUpdater}
-                className="pt-1 pb-1 pl-3 pr-3 ml-2.5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg "
+                className="pt-1 pb-1 pl-3 pr-3 ml-2.5 bg-orange-500 text-white hover:bg-white hover:text-orange-500 border-2 border-orange-500 border-solid rounded-lg "
               >
                 Submit
               </button>
@@ -1016,7 +1016,7 @@ export const Profile = (user_name) => {
                       {console.log(follow)}
                       {Object.keys(follow).length === 0 ? (
                         <button
-                          className="w-2/4 pt-2 pb-2 text-xl text-white border-none max-md:text-lg max-md:pb-1 max-md:pt-1 rounded-xl bg-sky-600"
+                          className="pt-2 pb-2 text-xl text-white bg-orange-500 border-none w-60 max-md:text-lg max-md:pb-1 max-md:pt-1 rounded-xl"
                           onClick={AddFollower}
                         >
                           Follow
@@ -1026,6 +1026,7 @@ export const Profile = (user_name) => {
                           <button
                             onClick={handleClickOpenUnfollow}
                             value={follow.follow_id}
+                            className="pt-2 pb-2 text-xl text-orange-500 border-2 border-orange-500 w-60 max-md:text-lg max-md:pb-1 max-md:pt-1 rounded-xl "
                           >
                             Following
                           </button>

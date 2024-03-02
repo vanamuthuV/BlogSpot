@@ -215,7 +215,6 @@ export const Edit = ({ post_ids }) => {
       navigate("/");
     } catch (error) {
       console.error(error.message);
-      navigate("/SignUp");
     }
   };
 

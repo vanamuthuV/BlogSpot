@@ -31,7 +31,7 @@ export const FollowersAndFollowingLayout = () => {
           className="flex flex-row items-center justify-center w-3/4"
           to={`/${user_name}/followers`}
         >
-          <div className="flex flex-row items-center justify-center w-3/4 pt-2 pb-2 text-lg text-white bg-gray-700 border-none rounded-full max-md:text-sm">
+          <div className="flex flex-row items-center justify-center w-3/4 pt-2 pb-2 text-lg text-white bg-orange-500 border-none rounded-full max-md:text-sm">
             Followers
           </div>
         </Link>
@@ -40,7 +40,7 @@ export const FollowersAndFollowingLayout = () => {
           className="flex flex-row items-center justify-center w-3/4"
           to={`/${user_name}/followings`}
         >
-          <div className="flex flex-row items-center justify-center w-3/4 pt-2 pb-2 text-lg text-white bg-gray-700 border-none rounded-full max-md:text-sm">
+          <div className="flex flex-row items-center justify-center w-3/4 pt-2 pb-2 text-lg text-white bg-orange-500 border-none rounded-full max-md:text-sm">
             Followings
           </div>
         </Link>

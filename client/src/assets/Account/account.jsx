@@ -388,7 +388,7 @@ export const Accounts = () => {
           </Alert>
         </Snackbar>
 
-        <h1 className="w-full text-4xl align-start">Accounts</h1>
+        <h1 className="w-full text-4xl text-orange-500 align-start">Accounts</h1>
         <div className="flex flex-col items-start justify-center w-11/12">
           <div className="flex flex-col items-start w-full mt-10">
             <h1 className="w-full pb-2 text-2xl font-bold border border-white border-b-gray-500">

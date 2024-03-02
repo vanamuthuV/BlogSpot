@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
       "INSERT INTO users values($1, $2, $3,  CURRENT_TIMESTAMP)",
       [username, email, HashedPasscode]
     );
-    res.send("Insertion Success");
+    res.status(200).json({ data: "Registration Successfull!!" });
   } catch (error) {
     console.log(error.message);
     res.status(401).json({ error: error.message });

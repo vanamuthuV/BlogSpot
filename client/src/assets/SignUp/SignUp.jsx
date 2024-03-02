@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-
+import { SnackBar } from "../Login/Alert.jsx";
 const SignUp_URL = "/SignUp";
 
 const USERNAMECHECK = "/uncheck";
@@ -17,16 +17,33 @@ export const SignUp = () => {
   const Passcode = useRef(null);
 
   const [visiblemodel, setVisibleModel] = useState(false);
+  const [alert, setAlert] = useState();
+  const [snack, setSnack] = useState();
 
-  const SubmitHandler = (event) => {
+  const SubmitHandler = async (event) => {
     event.preventDefault();
-    axios.post(SignUp_URL, {
-      username: UserName.current.value,
-      email: Gmail.current.value,
-      passcode: Passcode.current.value,
-    });
-    setVisibleModel((prev) => !prev);
+
+    if ((Pos && PosE) === true) {
+      const response = await axios.post(SignUp_URL, {
+        username: UserName.current.value,
+        email: Gmail.current.value,
+        passcode: Passcode.current.value,
+      });
+      setVisibleModel((prev) => !prev);
+      setSnack(<SnackBar message={response?.data?.data} variant={"success"} />);
+    } else {
+      setSnack(
+        <SnackBar message={"Registration Unsucessfull!!"} variant={"error"} />
+      );
+      console.log("Sorry !!");
+    }
+    setAlert(true);
   };
+
+  alert &&
+    setTimeout(() => {
+      setAlert(false);
+    }, 3000);
 
   const [Pos, setPos] = useState(false);
   const [Neg, setNeg] = useState(false);
@@ -93,6 +110,7 @@ export const SignUp = () => {
 
   return (
     <div div className=" Login">
+      {alert && snack}
       <p className="mt-5 mb-5 text-xl font-semibold text-orange-500">
         SignUp Page
       </p>

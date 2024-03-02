@@ -37,7 +37,7 @@ export const Tags = () => {
       <div className="flex flex-col items-center justify-center w-3/4 mt-8">
         <div className="flex flex-row items-center justify-center w-full">
           <input
-            className="w-3/4 pt-2 pb-2 text-base border-2 border-gray-900 rounded-full max-md:w-11/12 bg-inherit focus:pl-5 max-md:text-sm focus:outline-none"
+            className="w-3/4 pt-2 pb-2 pl-5 text-base border-2 border-gray-900 rounded-full max-md:w-11/12 bg-inherit max-md:text-sm focus:outline-none"
             placeholder="Search by Tags"
             ref={Tags}
             onChange={FetchContinous}

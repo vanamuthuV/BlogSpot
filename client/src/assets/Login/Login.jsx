@@ -56,10 +56,7 @@ export const Login = () => {
         navigate("/");
       }, 1000);
       setSnack(
-        <SnackBar
-          message={response?.data?.login_status}
-          variant={"success"}
-        />
+        <SnackBar message={response?.data?.login_status} variant={"success"} />
       );
       setAlert(true);
     } catch (error) {

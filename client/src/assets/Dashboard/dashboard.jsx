@@ -154,7 +154,7 @@ export const Dashboard = () => {
             <p>{user.user_email || user.Gmail}</p>
           </div>
         </div>
-        <h1 className="w-full text-4xl align-start">Dashboard</h1>
+        <h1 className="w-full text-4xl text-orange-500 align-start">Dashboard</h1>
         {loading ? (
           <div className="flex flex-row items-center justify-center w-full h-96">
             <CircularProgress />

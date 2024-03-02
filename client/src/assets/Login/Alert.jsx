@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 export const SnackBar = ({ message, variant }) => {
   const [open, setOpen] = useState(true);
@@ -22,15 +23,17 @@ export const SnackBar = ({ message, variant }) => {
 
   console.log("Hello");
   return (
-    <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-      <Alert
-        onClose={handleClose}
-        severity={variant}
-        variant="filled"
-        sx={{ width: "100%" }}
-      >
-        {message}
-      </Alert>
-    </Snackbar>
+    <SnackbarProvider maxSnack={3}>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity={variant}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {message}
+        </Alert>
+      </Snackbar>
+    </SnackbarProvider>
   );
 };

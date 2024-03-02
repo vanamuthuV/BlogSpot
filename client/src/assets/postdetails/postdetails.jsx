@@ -23,8 +23,7 @@ import ReactTimeAgo from "react-time-ago";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en.json";
 import ru from "javascript-time-ago/locale/ru.json";
-import EditIcon from "@mui/icons-material/Edit";
-import { useStepContext } from "@mui/material";
+import Chip from "@mui/material/Chip";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -170,7 +169,7 @@ export const PostDetails = () => {
       }
     })();
   }, []);
-
+  const [tags, setTags] = useState([]);
   console.log(data);
   useEffect(() => {
     (async () => {
@@ -181,7 +180,16 @@ export const PostDetails = () => {
         console.log(response?.data);
         setData(response?.data?.post);
         setLoading(false);
-        console.log(data);
+        console.log(
+          response?.data?.post?.post_tags
+            .split("#")
+            .splice(1, response?.data?.post?.post_tags.split("#").length)
+        );
+        setTags(
+          response?.data?.post?.post_tags
+            .split("#")
+            .splice(1, response?.data?.post?.post_tags.split("#").length)
+        );
       } catch (error) {
         console.error(error.message);
       }
@@ -483,6 +491,45 @@ export const PostDetails = () => {
                 dangerouslySetInnerHTML={{ __html: data.post_content }}
                 className="text-lg font-light text-justify max-md:text-xs"
               ></div>
+              <div className="flex flex-row flex-wrap items-center justify-start w-full gap-2 pt-5">
+                <p className="flex flex-row items-center justify-start pr-5 text-orange-500">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6 pr-1"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M6 6h.008v.008H6V6Z"
+                    />
+                  </svg>
+                  Tags
+                </p>
+                {tags.map((tag) => {
+                  return (
+                    <Chip
+                      sx={{
+                        borderColor: "#ff6500",
+                        marginLeft: "2px",
+                        marginRight: "2px",
+                        color: "#ff6500",
+                      }}
+                      className=" hover:bg-orange-500 hover:text-gray-50 hover:cursor-pointer"
+                      label={`# ${tag}`}
+                      variant="outlined"
+                    />
+                  );
+                })}
+              </div>
               <div className="flex flex-col flex-wrap items-center w-full mt-5 justify-evenly">
                 <div className="flex flex-row flex-wrap items-center justify-between w-full mt-5 mb-10 max-md:justify-center">
                   <div className="flex flex-row items-center border-2 border-gray-400 border-solid rounded-lg justify-evenly">
@@ -668,7 +715,7 @@ export const PostDetails = () => {
                         />
                         <button
                           onClick={UploadComment}
-                          className="pt-1 pb-1 pl-2 pr-2 ml-2.5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg max-md:text-xs"
+                          className="pt-1 pb-1 pl-2 pr-2 ml-2.5 bg-orange-500 text-gray-50 hover:bg-gray-50 hover:text-orange-500 border-2 border-orange-500 border-solid rounded-lg max-md:text-xs"
                         >
                           Comment
                         </button>

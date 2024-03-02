@@ -225,7 +225,7 @@ export const LandingPage = () => {
         <h1 className="mb-10 text-3xl font-bold text-orange-500">
           What We Have ?{" "}
         </h1>
-        <div className="flex flex-row flex-wrap items-center justify-around w-full gap-10 mt-10 mb-10">
+        <div className="flex flex-row flex-wrap items-center justify-around w-11/12 gap-10 mt-10 mb-10">
           {Cards.map((card) => {
             return (
               <Card

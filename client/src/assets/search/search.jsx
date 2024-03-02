@@ -8,31 +8,33 @@ const ACCOUNTSEARCH = "/accountsearch";
 export const Search = () => {
   return (
     <div className="flex flex-col items-center justify-center pt-5">
-      <h1 className="text-xl">Search By</h1>
+      <h1 className="pt-2 pb-2 text-2xl font-bold text-orange-500">
+        Search By
+      </h1>
       <div className="flex flex-row items-center justify-between w-3/4 pt-3 max-md:w-11/12">
         <Link
           className="w-full text-lg rounded-full max-md:text-sm"
           to={"/Search"}
         >
-          <button className="w-full pt-2 pb-2 text-lg border-2 border-orange-500 rounded-tl-full rounded-bl-full active:text-orange-500 bg-gray-50 border-r-white max-md:text-sm max-md:border">
+          <button className="w-full pt-2 pb-2 text-lg text-orange-500 border-2 border-orange-500 rounded-tl-full rounded-bl-full active:text-orange-500 bg-gray-50 border-r-white max-md:text-sm max-md:border">
             Account
           </button>
         </Link>
 
         <Link className="w-full text-lg max-md:text-sm" to={"/Search/Posts"}>
-          <button className="w-full pt-2 pb-2 text-lg border-2 border-orange-500 bg-gray-50 border-r-white max-md:text-sm max-md:border">
+          <button className="w-full pt-2 pb-2 text-lg text-orange-500 border-2 border-orange-500 bg-gray-50 border-r-white max-md:text-sm max-md:border">
             Posts
           </button>
         </Link>
 
         <Link className="w-full text-lg max-md:text-sm" to={"/Search/Tags"}>
-          <button className="w-full pt-2 pb-2 text-lg border-2 border-orange-500 bg-gray-50 border-r-white max-md:text-sm max-md:border">
+          <button className="w-full pt-2 pb-2 text-lg text-orange-500 border-2 border-orange-500 bg-gray-50 border-r-white max-md:text-sm max-md:border">
             Tags
           </button>
         </Link>
 
         <Link className="w-full text-l max-md:text-sm" to={"/Search/Category"}>
-          <button className="w-full pt-2 pb-2 text-lg border-2 border-orange-500 rounded-tr-full rounded-br-full bg-gray-5 max-md:text-sm max-md:border">
+          <button className="w-full pt-2 pb-2 text-lg text-orange-500 border-2 border-orange-500 rounded-tr-full rounded-br-full bg-gray-5 max-md:text-sm max-md:border">
             Category
           </button>
         </Link>
@@ -74,7 +76,7 @@ export const Account = () => {
       <div className="flex flex-col items-center justify-center w-3/4 mt-8 mb-8">
         <div className="flex flex-row items-center justify-center w-full">
           <input
-            className="w-3/4 pt-2 pb-2 text-base border-2 border-gray-900 rounded-full max-md:w-11/12 bg-inherit focus:pl-5 max-md:text-sm focus:outline-none"
+            className="w-3/4 pt-2 pb-2 pl-5 text-base border-2 border-gray-900 rounded-full max-md:w-11/12 bg-inherit max-md:text-sm focus:outline-none"
             placeholder="Search by Account"
             ref={Account}
             onChange={FetchContinous}
