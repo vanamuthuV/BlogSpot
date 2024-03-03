@@ -34,6 +34,7 @@ const GETCOMMENT = "/getcomment";
 const DELETEPOST = "/deletesinglepost";
 const EDITCOMMENT = "/editcomment";
 const DELETECOMMENT = "/deletecomment";
+const CHECKFOLLOW = "/checkfollow";
 
 export const PostDetails = () => {
   const { id } = useParams();
@@ -52,6 +53,28 @@ export const PostDetails = () => {
 
   const [favorite, setFavorite] = useState();
   const [favoriteDeatails, setFavoriteDetails] = useState({});
+  const [follows, setFollows] = useState([]);
+  const [followLoad, setFollowLoad] = useState(true);
+  useEffect(() => {
+    if (Object.keys(user).length > 0) {
+      (async () => {
+        const response = await axios.post(
+          CHECKFOLLOW,
+          {
+            follower_id: user.user_id,
+            id: id,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json", // Adjust the content type as needed
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
+            },
+          }
+        );
+        setFollows(response?.data?.data);
+      })();
+    }
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -171,6 +194,7 @@ export const PostDetails = () => {
   }, []);
   const [tags, setTags] = useState([]);
   console.log(data);
+
   useEffect(() => {
     (async () => {
       try {
@@ -388,11 +412,90 @@ export const PostDetails = () => {
     }
   };
 
+  const ADDFOLLOWINPOST = "/addfollowinpost";
+
   const Styles = {
     backgroundColor: "#303030",
     color: "#f5f5f5",
     border: "none",
   };
+
+  const [openModal, setOpenModal] = useState(false);
+  const FOLLOW = "/follow";
+  const UNFOLLOW = "/unfollow";
+  const UnfollowHandler = async (ev) => {
+    console.log(ev.target.id);
+
+    try {
+      const response = await axios.delete(UNFOLLOW + `/${ev.target.id}`, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
+        },
+      });
+      setFollows(response?.data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+
+    setOpenModal((prev) => !prev);
+  };
+
+  const FollowHandler = async () => {
+    try {
+      const response = await axios.post(
+        ADDFOLLOWINPOST,
+        {
+          follower_id: user.user_id,
+          following_id: data.user_id,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
+          },
+        }
+      );
+      console.log(response?.data?.data);
+      setFollows(response?.data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (openModal) {
+    return (
+      <div className="flex flex-row items-center justify-center w-full h-screen bg-orange-500">
+        <div className="relative flex flex-col items-center justify-center h-40 p-5 bg-white shadow-xl w-80 rounded-xl">
+          <h1>
+            Are You Sure To Unfollow{" "}
+            <span className="text-red-500">{data.user_name}</span> ?
+          </h1>
+          <button
+            onClick={() => setOpenModal((prev) => !prev)}
+            className="absolute top-0 right-0 flex flex-row items-center justify-center w-5 h-5 bg-red-500 rounded-tr-xl"
+          >
+            x
+          </button>
+          <div className="flex flex-row items-center justify-end w-full">
+            <button
+              onClick={() => setOpenModal((prev) => !prev)}
+              className="pr-3 text-green-500"
+            >
+              Cancel
+            </button>
+            <button
+              id={follows[0].follow_id}
+              onClick={UnfollowHandler}
+              className="pl-2 text-red-500"
+            >
+              Unfollow
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -433,11 +536,23 @@ export const PostDetails = () => {
                           </p>
                         </Link>
                         {data.user_name !== user.user_name && <p>&middot;</p>}
-                        {data.user_name !== user.user_name && (
-                          <button className="pl-2 text-base text-green-600">
-                            Follow
-                          </button>
-                        )}
+                        {data.user_name !== user.user_name &&
+                          setFollowLoad &&
+                          (follows.length !== 0 ? (
+                            <button
+                              onClick={() => setOpenModal((prev) => !prev)}
+                              className="pl-2 text-base text-green-600"
+                            >
+                              Following
+                            </button>
+                          ) : (
+                            <button
+                              onClick={FollowHandler}
+                              className="pl-2 text-base text-green-600"
+                            >
+                              Follow
+                            </button>
+                          ))}
                       </div>
                       <div className="flex flex-row items-center justify-start w-full ">
                         <p className="pr-2 text-sm text-neutral-500">
@@ -532,21 +647,46 @@ export const PostDetails = () => {
               </div>
               <div className="flex flex-col flex-wrap items-center w-full mt-5 justify-evenly">
                 <div className="flex flex-row flex-wrap items-center justify-between w-full mt-5 mb-10 max-md:justify-center">
-                  <div className="flex flex-row items-center border-2 border-gray-400 border-solid rounded-lg justify-evenly">
-                    <p className="pt-2 pb-2 pl-2 pr-2 m-0 border-gray-400 border-solid border-e">
-                      {data.user_name}
-                    </p>
-                    <Button
-                      sx={{
-                        borderLeft: "1.3px solid rgb(156 163 175)",
-                        padding: "7px",
-                        borderRadius: "0px",
-                      }}
-                      startIcon={<AddIcon />}
-                    >
-                      {" "}
-                      Follow{" "}
-                    </Button>
+                  <div className="flex flex-row items-center justify-center">
+                    <div className="mr-2.5">
+                      <img
+                        className="rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
+                        src={
+                          data.profileimage
+                            ? `http://localhost:5000/${data.profileimage}`
+                            : "../../../public/Profile.jpeg"
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-col items-start justify-center ml-2.5">
+                      <div className="flex flex-row items-center ">
+                        <Link to={`/${data.user_name}`}>
+                          <p className="pr-2 text-base font-medium hover:underline">
+                            {data.userfullname
+                              ? data.userfullname
+                              : data.user_name}
+                          </p>
+                        </Link>
+                        {data.user_name !== user.user_name && <p>&middot;</p>}
+                        {data.user_name !== user.user_name &&
+                          setFollowLoad &&
+                          (follows.length !== 0 ? (
+                            <button
+                              onClick={() => setOpenModal((prev) => !prev)}
+                              className="pl-2 text-base text-green-600"
+                            >
+                              Following
+                            </button>
+                          ) : (
+                            <button
+                              onClick={FollowHandler}
+                              className="pl-2 text-base text-green-600"
+                            >
+                              Follow
+                            </button>
+                          ))}
+                      </div>
+                    </div>
                   </div>
 
                   <Tooltip title="Add to favorites">

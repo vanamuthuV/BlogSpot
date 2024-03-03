@@ -83,7 +83,7 @@ export const Profile = (user_name) => {
   const [bio, setBio] = useState("");
   const [birthDay, setBirthDay] = useState("");
   const [role, setRole] = useState("");
-  const [follow, setFollow] = useState({});
+  const [follow, setFollow] = useState([]);
 
   const [followers, setFollowers] = useState([]);
 
@@ -112,7 +112,7 @@ export const Profile = (user_name) => {
         },
       });
       console.log(response?.data?.data);
-      setFollow(response?.data?.data[0]);
+      setFollow(response?.data?.data);
     } catch (error) {
       console.log(error);
     }
@@ -160,7 +160,7 @@ export const Profile = (user_name) => {
         setPrivatePost(response?.data?.data?.PrivatePost);
         setFollow(response?.data?.data?.FollowStatus);
         response?.data?.data?.FollowStatus === undefined
-          ? setFollow({})
+          ? setFollow([])
           : setFollow(response?.data?.data?.FollowStatus);
         console.log(response?.data?.data?.FollowStatus);
         setFollowers(response?.data?.data?.Followers);
@@ -1014,7 +1014,7 @@ export const Profile = (user_name) => {
                   {user.user_id !== userDetails.user_id && (
                     <div className="flex flex-row items-center justify-center mt-5 mb-5">
                       {console.log(follow)}
-                      {Object.keys(follow).length === 0 ? (
+                      {follow.length === 0 ? (
                         <button
                           className="pt-2 pb-2 text-xl text-white bg-orange-500 border-none w-60 max-md:text-lg max-md:pb-1 max-md:pt-1 rounded-xl"
                           onClick={AddFollower}

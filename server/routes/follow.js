@@ -25,7 +25,7 @@ router.post("/", Authentication, async (req, res) => {
   try {
     const User = await pool.query(query, [user_name]);
     console.log(User.rows[0].user_id);
-    const Follower_id = User.rows[0].user_id;
+    const Follower_id = User?.rows[0]?.user_id;
 
     await pool.query(query1, [user_id, Follower_id]);
 

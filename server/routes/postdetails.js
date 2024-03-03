@@ -11,7 +11,12 @@ const query = `
     where posts.post_id = $1
 `;
 
+const query1 = `
+  SELECT * from follow where follower_id = $1  and following_id = $2
+`;
+
 router.post("/", async (req, res) => {
+ 
   try {
     const post = await pool.query(query, [req.body.id]);
 

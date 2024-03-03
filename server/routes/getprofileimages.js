@@ -85,7 +85,7 @@ where follow.follower_id = $1
         PublicPost: PublicPost.rows,
         PrivatePost: PrivatePost.rows,
         FollowStatus:
-          FollowStatus.rows.length === 0 ? {} : FollowStatus.rows[0],
+          FollowStatus.rows.length === 0 ? [] : FollowStatus.rows,
         Followers: Followers.rows,
         Followings: Followings.rows,
       },

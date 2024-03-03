@@ -4,7 +4,7 @@ import Authentication from "../middleware/authorization.js";
 
 const router = express.Router();
 
-router.delete("/:id",Authentication, async (req, res) => {
+router.delete("/:id", Authentication, async (req, res) => {
   console.log(req.params);
   const { id } = req?.params;
   console.log(id);
@@ -16,7 +16,7 @@ router.delete("/:id",Authentication, async (req, res) => {
   try {
     await pool.query(query, [id]);
 
-    res.status(200).json({ data: [{}] });
+    res.status(200).json({ data: [] });
   } catch (error) {
     console.log(error);
     res.status(200).json({ data: error });
