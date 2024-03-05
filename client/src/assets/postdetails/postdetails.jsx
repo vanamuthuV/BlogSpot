@@ -506,11 +506,11 @@ export const PostDetails = () => {
           </div>
         ) : (
           <div className="flex flex-row items-center justify-center">
-            <div className="flex flex-col items-center w-7/12 justify-evenly">
+            <div className="flex flex-col items-center w-7/12 justify-evenly max-md:w-9/12">
               <div className="flex flex-col items-start w-full">
                 <h1
-                  style={{ fontSize: "42px", lineHeight: "52px" }}
-                  className="mt-10 mb-5 font-bold max-md:text-base max-md:mb-1"
+                  style={{ lineHeight: "52px" }}
+                  className="mt-10 mb-5 text-5xl font-bold max-md:text-3xl max-md:mb-1"
                 >
                   {data.post_title}
                 </h1>
@@ -529,7 +529,7 @@ export const PostDetails = () => {
                     <div className="flex flex-col items-start justify-center ml-2.5">
                       <div className="flex flex-row items-center ">
                         <Link to={`/${data.user_name}`}>
-                          <p className="pr-2 text-base font-medium hover:underline">
+                          <p className="pr-2 text-base font-medium hover:underline max-md:text-sm">
                             {data.userfullname
                               ? data.userfullname
                               : data.user_name}
@@ -541,26 +541,26 @@ export const PostDetails = () => {
                           (follows.length !== 0 ? (
                             <button
                               onClick={() => setOpenModal((prev) => !prev)}
-                              className="pl-2 text-base text-green-600"
+                              className="pl-2 text-base text-green-600 max-md:text-sm"
                             >
                               Following
                             </button>
                           ) : (
                             <button
                               onClick={FollowHandler}
-                              className="pl-2 text-base text-green-600"
+                              className="pl-2 text-base text-green-600 max-md:text-sm"
                             >
                               Follow
                             </button>
                           ))}
                       </div>
                       <div className="flex flex-row items-center justify-start w-full ">
-                        <p className="pr-2 text-sm text-neutral-500">
+                        <p className="pr-2 text-sm text-neutral-500 max-md:text-sm">
                           {Math.round(data.post_content.split("").length / 200)}{" "}
                           min read
                         </p>
                         &middot;
-                        <p className="pl-2 text-sm text-neutral-500">
+                        <p className="pl-2 text-sm text-neutral-500 max-md:text-xs">
                           {format(data.post_upload_time, "MMM dd,yyyy")}
                         </p>
                       </div>
@@ -708,7 +708,8 @@ export const PostDetails = () => {
                         className="flex flex-row items-center justify-center pt-1 pb-1 pl-2 pr-2 mr-2 border-2 border-gray-500 rounded-full"
                         onClick={LikeUpdater}
                         style={likeStatus ? Styles : {}}
-                      >
+                          >
+                          
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -725,7 +726,8 @@ export const PostDetails = () => {
                         </svg>
                         Like
                       </button>
-                      <p className="pl-1 text-xl">{like.length}</p>
+                          <p className="pl-1 text-xl">{like.length}</p>
+                          
                       <button
                         className="flex flex-row items-center justify-center pt-1 pb-1 pl-2 pr-2 ml-2 border-2 border-gray-500 rounded-full"
                         onClick={DisLikeUpdater}

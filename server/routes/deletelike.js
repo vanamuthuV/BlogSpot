@@ -13,7 +13,7 @@ router.delete("/:id", Authentication, async (req, res) => {
     const query3 = `
     select * from likes where post_id = $1 and likes = true
   `;
-     const query4 = `
+    const query4 = `
     select * from likes where post_id = $1 and dislikes = true
   `;
 
@@ -26,8 +26,7 @@ router.delete("/:id", Authentication, async (req, res) => {
 
     await pool.query(query, [Data[0]]);
     const TotalLike = await pool.query(query3, [Data[1]]);
-    const TotalDisLike = await pool.query(query4, [post_id]);
-
+    const TotalDisLike = await pool.query(query4, [Data[0]]);
 
     res.status(200).json({
       data: {
