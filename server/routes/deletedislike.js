@@ -27,7 +27,7 @@ router.delete("/:id", Authentication, async (req, res) => {
 
     await pool.query(query, [Data[0]]);
     const TotalLike = await pool.query(query3, [Data[1]]);
-    const TotalDisLike = await pool.query(query4, [post_id]);
+    const TotalDisLike = await pool.query(query4, [Data[0]]);
 
     res.status(200).json({
       data: {

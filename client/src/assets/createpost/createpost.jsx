@@ -59,6 +59,21 @@ const modules = {
   ],
 };
 
+const modulesSummary = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ size: [] }],
+    ["bold", "italic", "underline", "strike", "blockquote", "code-block"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+    ],
+    ["clean"],
+  ],
+};
+
 /*
 Tool For Formating And Modules For React Quill
 
@@ -189,7 +204,7 @@ export const CreatePost = () => {
             ref={content}
             placeholder="Unleash your creativity and share your story with the world. Write something amazing here!"
           />
-          ;
+
           <input
             className="w-3/4 pt-2.5 pb-2.5 pl-5 pr-5 m-5 text-lg border-2 border-gray-500 border-solid rounded-xl max-md:w-5/6"
             ref={category}
@@ -202,12 +217,13 @@ export const CreatePost = () => {
             type="text"
             placeholder="Tags"
           ></input>
-          <input
-            className="w-3/4 pt-2.5 pb-2.5 pl-5 pr-5 m-5 text-lg border-2 border-gray-500 border-solid rounded-lg max-md:w-5/6"
+          <ReactQuill
+            className="w-3/4"
+            modules={modulesSummary}
+            theme="snow"
             ref={summary}
-            type="summary"
-            placeholder="Summary"
-          ></input>
+            placeholder="Briefly summarize your blog post..."
+          />
           <label className="text-lg font-semibold" htmlFor="type">
             Select Your Post Visibility
           </label>

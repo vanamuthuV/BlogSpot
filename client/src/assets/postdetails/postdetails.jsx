@@ -615,6 +615,15 @@ export const PostDetails = () => {
                 dangerouslySetInnerHTML={{ __html: data.post_content }}
                 className="text-lg font-light text-justify max-md:text-xs"
               ></div>
+              <div>
+                <h1 className="mt-5 mb-5 text-2xl font-bold text-orange-500 max-md:font-normal max-md:text-lg max-md:mt-3 max-md:mb-3">
+                  Summary
+                </h1>
+                <div
+                  dangerouslySetInnerHTML={{ __html: data.post_summary }}
+                  className="text-lg font-light text-justify max-md:text-xs"
+                ></div>
+              </div>
               <div className="flex flex-row flex-wrap items-center justify-start w-full gap-2 pt-5">
                 <p className="flex flex-row items-center justify-start pr-5 text-orange-500">
                   <svg
@@ -1149,7 +1158,7 @@ export const PostDetails = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-row items-center justify-center">
+                  <div className="flex flex-row items-center justify-center mt-10 mb-10">
                     <p>Comments are disabled for this particular post</p>
                   </div>
                 )}

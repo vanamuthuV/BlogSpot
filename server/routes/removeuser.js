@@ -8,7 +8,7 @@ const router = express.Router();
 router.delete("/:id", Authentication, async (req, res) => {
   const { id } = req.params;
   const Data = id.split("..");
-  console.log(Data[0], Data[1]);
+  console.log(Data[0], "ID", Data[1]);
 
   const query = `
         select * from users where user_name = $1

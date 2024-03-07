@@ -77,16 +77,13 @@ export const Followers = () => {
     setOpen(false);
   };
 
-  const handleRemove = async (ev) => {
-    console.log(ev.target.value);
-    const value = ev.target.value;
-    const Data = value.split("/../");
-    console.log(Data[0]);
-    console.log(Data[1]);
+  const handleRemove = async () => {
+    const Data = follower.filter((i) => i.user_name === users);
+    const { follow_id } = Data[0];
 
     try {
       const response = await axios.delete(
-        REMOVE + `/${Data[0]}..${user_name}`,
+        REMOVE + `/${follow_id}..${user_name}`,
         {
           headers: {
             "Content-Type": "multipart/form-data", // Adjust the content type as needed
@@ -130,7 +127,7 @@ export const Followers = () => {
             <h1>No Followers</h1>
           </div>
         ) : (
-          follower.map((user) => {
+          follower.map((user, index) => {
             return (
               <div className="flex flex-row items-center justify-between w-full mt-2 mb-2 max-md:mt-1 max-md:mb-1">
                 <div className="flex flex-row items-center justify-center">
@@ -198,7 +195,7 @@ export const Followers = () => {
                           style={{ fontFamily: "Space Mono" }}
                           className="text-red-500"
                           onClick={handleRemove}
-                          value={`${user.follow_id}/../${user.user_name}`}
+                          key={index}
                         >
                           Remove
                         </button>
@@ -235,7 +232,6 @@ export const Followings = () => {
     console.log(Data[0]);
     console.log(Data[1]);
     setUser(Data[1]);
-
     setOpen(true);
   };
 
@@ -243,14 +239,13 @@ export const Followings = () => {
     setOpen(false);
   };
 
-  const handleRemove = async (ev) => {
-    console.log(ev.target.value);
-    const value = ev.target.value;
-    const Data = value.split("/../");
+  const handleRemove = async () => {
+    const Data = following.filter((i) => i.user_name === users);
+    const { follow_id } = Data[0];
 
     try {
       const response = await axios.delete(
-        UNFOLLOW + `/${Data[0]}..${user_name}`,
+        UNFOLLOW + `/${follow_id}..${user_name}`,
         {
           headers: {
             "Content-Type": "multipart/form-data", // Adjust the content type as needed
@@ -362,7 +357,6 @@ export const Followings = () => {
                           style={{ fontFamily: "Space Mono" }}
                           className="text-red-500"
                           onClick={handleRemove}
-                          value={`${user.follow_id}/../${user.user_name}`}
                         >
                           Unfollow
                         </button>

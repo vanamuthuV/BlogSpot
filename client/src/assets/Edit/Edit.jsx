@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import "react-quill/dist/quill.snow.css";
 import "../createpost/createpost.css";
 import axios from "../../../api/axios";
-import "../createpost/createpost.css"
+import "../createpost/createpost.css";
 import { Navigate, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -37,6 +37,21 @@ const modules = {
       { indent: "+1" },
     ],
     ["link", "image", "video"],
+    ["clean"],
+  ],
+};
+
+const modulesSummary = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ size: [] }],
+    ["bold", "italic", "underline", "strike", "blockquote", "code-block"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+    ],
     ["clean"],
   ],
 };
@@ -96,6 +111,7 @@ export const Edit = ({ post_ids }) => {
   const [currentImage, setCurrentImage] = useState();
   const contents = useRef();
   const Image = useRef();
+  const summarys = useRef("");
 
   const handleComment = (event) => {
     setComments((prev) => !prev);
@@ -130,6 +146,7 @@ export const Edit = ({ post_ids }) => {
         setContent(post_content);
         setCategory(post_category);
         setComments(post_comment_type === "true" ? true : false);
+        console.log(post_summary);
         setSummary(post_summary);
         setTags(post_tags);
         setType(post_type);
@@ -146,9 +163,9 @@ export const Edit = ({ post_ids }) => {
   const ImageHandler = (event) => {
     setMedia(Image.current.files[0]);
   };
-  
+
   const datas = new FormData();
-  
+
   useEffect(() => {
     (async () => {
       try {
@@ -201,11 +218,12 @@ export const Edit = ({ post_ids }) => {
       summary: summary,
       posttype: type,
       comments: comment,
-      post_ids : post_ids
-    }
+      post_ids: post_ids,
+    };
 
     try {
-      const response = await axios.post(EDITUPDATER, { data,
+      const response = await axios.post(EDITUPDATER, {
+        data,
         headers: {
           "Content-Type": "multipart/form-data", // Adjust the content type as needed
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
@@ -240,10 +258,18 @@ export const Edit = ({ post_ids }) => {
             required
           ></input>
           <div
-            style={{ width: "350px", height: "350px", marginTop : "10px", marginBottom : "20px"}}
+            style={{
+              width: "350px",
+              height: "350px",
+              marginTop: "10px",
+              marginBottom: "20px",
+            }}
             className="flex flex-row items-center justify-center"
           >
-            <img className="max-h-96 rounded-xl" src={`http://localhost:5000/${currentImage}`} />
+            <img
+              className="max-w-full min-w-full max-h-96 rounded-xl"
+              src={`http://localhost:5000/${currentImage}`}
+            />
           </div>
 
           <input
@@ -282,7 +308,7 @@ export const Edit = ({ post_ids }) => {
             type="text"
             placeholder="Tags"
           ></input>
-          <input
+          {/* <input
             className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg"
             value={summary}
             onChange={(ev) => {
@@ -290,7 +316,19 @@ export const Edit = ({ post_ids }) => {
             }}
             type="summary"
             placeholder="Summary"
-          ></input>
+          ></input> */}
+
+          <ReactQuill
+            className="w-3/4 min-h-5"
+            modules={modulesSummary}
+            value={summary}
+            ref={summarys}
+            onChange={() => {
+              setSummary(summarys.current.value);
+            }}
+            placeholder="Summary"
+            style={{ fontFamily: "Space Mono" }}
+          />
 
           <label className="font-semibold text-md" htmlFor="type">
             Select the post visibility
@@ -327,7 +365,7 @@ export const Edit = ({ post_ids }) => {
           </Stack>
 
           <button
-            className="pt-1 pb-1 pl-2 pr-2 ml-2.5 bg-gray-800 text-white hover:bg-white hover:text-gray-800 border-2 border-gray-800 border-solid rounded-lg"
+            className="pt-2 pb-2 pl-5 pr-5 mt-5 mb-10 transition duration-100 delay-100 bg-orange-500 rounded-lg text-gray-50 hover:bg-gray-50 hover:text-orange-500 hover:border-2 hover:border-orange-500"
             type="submit"
           >
             Update
