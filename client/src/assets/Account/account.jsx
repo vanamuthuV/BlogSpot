@@ -540,7 +540,7 @@ export const Accounts = () => {
             </h1>
 
             <p className="pt-2 pb-3 text-base">
-              Changing your Email can have{" "}
+              Changing your Password can have{" "}
               <span className="text-red-500">unintended side effects</span>.
             </p>
             <button
