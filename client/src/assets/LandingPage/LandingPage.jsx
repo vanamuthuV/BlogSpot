@@ -79,7 +79,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2),
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
-
+import img from "../../../public/BackgroundImage.png";
 export const LandingPage = () => {
   const { user } = useAuth();
   const theme = useTheme();
@@ -106,7 +106,10 @@ export const LandingPage = () => {
 
   return (
     <div>
-      <div className="flex flex-col items-start justify-end w-full pl-10 mb-16 mt-28 h-96 max-md:h-64 bg-inherit">
+      <div
+        style={{ height: "500px" }}
+        className="flex flex-col items-start justify-end w-full pl-10 mb-16 max-md:h-64 bg-[url('../../../public/BackgroundImage.png')] bg-no-repeat bg-cover pb-10"
+      >
         <div className="w-4/6 mb-8">
           <h1 className="text-4xl max-md:text-xl">
             "Welcome to a world where words dance off the page and ideas ignite
