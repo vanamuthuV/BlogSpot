@@ -19,7 +19,7 @@ import { Link, Navigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { createContext } from "react";
 import BookIcon from "@mui/icons-material/Book";
-const pages = ["Search", "Read Blog", "Contact"];
+const pages = ["Search", "Read Blog", "Leaderboard"];
 const settings = ["Account", "Dashboard"];
 import { useNavigate } from "react-router-dom";
 

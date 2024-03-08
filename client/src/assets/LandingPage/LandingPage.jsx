@@ -138,7 +138,7 @@ export const LandingPage = () => {
           <div className="flex flex-row flex-wrap items-center justify-around w-full gap-5 p-5">
             {data.map((post) => {
               return (
-                <div className="flex flex-col items-center justify-center rounded-lg shadow-md hover:shadow-xl">
+                <div className="flex flex-col items-center justify-center mt-5 mb-5 rounded-lg shadow-md hover:shadow-xl">
                   <div className="flex flex-row items-center justify-center w-64 h-40">
                     <img
                       className="max-w-full max-h-full min-w-full min-h-full rounded-lg"
@@ -153,11 +153,15 @@ export const LandingPage = () => {
                           : post.post_title}
                       </p>
                     </Link>
-                    <p className="mb-4 text-xs text-justify ">
-                      {post.post_summary.length > 150
-                        ? post.post_summary.substring(0, 150) + "..."
-                        : post.post_summary}
-                    </p>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          post.post_summary.length > 150
+                            ? post.post_summary.substring(0, 150) + "..."
+                            : post.post_summary,
+                      }}
+                      className="mb-4 text-xs text-justify max-md:text-xs"
+                    ></div>
                     <div className="flex flex-row items-center justify-between w-full">
                       <div className="flex flex-row items-center justify-center">
                         <p className="flex flex-row items-center justify-center pr-1 text-sm text-green-500">

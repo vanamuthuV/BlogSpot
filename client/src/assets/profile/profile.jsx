@@ -1120,18 +1120,24 @@ export const Profile = (user_name) => {
                                       : items.post_title}
                                   </p>
                                 </Link>
-
-                                <p className="text-justify max-md:text-xs">
-                                  {window.innerWidth >= 769
-                                    ? items.post_summary.length > 250
-                                      ? items.post_summary.substring(0, 250) +
-                                        "..."
-                                      : items.post_summary
-                                    : items.post_summary.length > 60
-                                    ? items.post_summary.substring(0, 60) +
-                                      "..."
-                                    : items.post_summary}
-                                </p>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html:
+                                      window.innerWidth >= 769
+                                        ? items.post_summary.length > 250
+                                          ? items.post_summary.substring(
+                                              0,
+                                              250
+                                            ) + "..."
+                                          : items.post_summary
+                                        : items.post_summary.length > 60
+                                        ? items.post_summary.substring(0, 60) +
+                                          "..."
+                                        : items.post_summary,
+                                  }}
+                                  className="mb-4 text-justify max-md:text-xs"
+                                ></div>
+                              
                               </div>
                               {user.user_name === userDetails.user_name && (
                                 <div className="flex flex-row items-center justify-center pl-5 max-md:pl-2">

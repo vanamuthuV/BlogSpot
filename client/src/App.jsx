@@ -23,6 +23,8 @@ import { Followings } from "./assets/FollowerandFollowing/ff";
 import { Accounts } from "./assets/Account/account";
 import { Dashboard } from "./assets/Dashboard/dashboard";
 import { LandingPage } from "./assets/LandingPage/LandingPage";
+import { LeaderBoard } from "./assets/leaderboard/leaderboard";
+import { PageNotFound } from "./assets/pagenotfound/pagenotfound";
 
 function App() {
   return (
@@ -63,6 +65,8 @@ function App() {
 
           <Route path="/Account" element={<Accounts />} />
           <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/Contact" element={<LeaderBoard />} />
+          <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
