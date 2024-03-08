@@ -173,7 +173,7 @@ export const CreatePost = () => {
             type="file"
             id="images"
           /> */}
-          <div class="form-group file-area">
+          <div className="w-3/4 form-group file-area">
             <label for="images">
               Images <span>Try To Upload A Image With Resolution.</span>
             </label>

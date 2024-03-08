@@ -65,7 +65,7 @@ function App() {
 
           <Route path="/Account" element={<Accounts />} />
           <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/Contact" element={<LeaderBoard />} />
+          <Route path="/Leaderboard" element={<LeaderBoard />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>

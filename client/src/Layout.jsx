@@ -6,12 +6,14 @@ import "./assets/SignUp/SignUp.css";
 import { SignUp } from "./assets/SignUp/SignUp";
 import { Search } from "./assets/search/search";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Footer } from "./assets/Footer/footer";
 
 export const Layout = () => {
   return (
     <>
       <Navbar />
       <Outlet />
+      <Footer />
     </>
   );
 };
