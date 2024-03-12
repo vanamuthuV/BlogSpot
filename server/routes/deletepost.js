@@ -36,6 +36,7 @@ router.delete("/:id",  async (req, res) => {
                 PrivatePost : PrivatePost.rows
         } });
     } catch (error) {
+        console.log(error)
         res.status(200).json({data : error})
     }
 

@@ -15,6 +15,7 @@ router.delete("/:id", Authentication, async (req, res) => {
     await pool.query(query, [id]);
     res.status(200).json({ data: "success" });
   } catch (error) {
+    console.log(error);
     res.status(200).json({ data: error });
   }
 });
