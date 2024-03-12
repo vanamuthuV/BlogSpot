@@ -39,10 +39,12 @@ export const SignUpLayout = () => {
         alignItems: "center",
       }}
     >
-      <div className="OuterLogin">
-        <div className="LoginOrSignUp">
-          <h1 className="mt-10 mb-10 text-2xl font-bold">Join Inkwellify.</h1>
-          <div>
+      <div className="flex flex-col items-center justify-center w-3/4 p-5 shadow-2xl">
+        <div className="w-2/4">
+          <h1 className="mt-10 mb-10 text-2xl font-bold text-center">
+            Join Inkwellify.
+          </h1>
+          <div className="flex flex-row items-center justify-around">
             <Link to={"/SignUp"}>
               <button
                 onClick={() => {
@@ -50,7 +52,7 @@ export const SignUpLayout = () => {
                   localStorage.setItem("page", !signUpAndLogin);
                   console.log(localStorage.getItem("page"));
                 }}
-                className="SLB"
+                className="pt-2 pb-2 pl-3 pr-3 rounded-lg text-md max-md:text-sm max-md:pr-2 max-md:pl-2 max-md:pt-1 max-md:pb-1"
                 style={{
                   border: !signUpAndLogin && "1px solid #ff6500",
                   backgroundColor: signUpAndLogin && "#ff6500",
@@ -67,7 +69,7 @@ export const SignUpLayout = () => {
                   localStorage.setItem("page", !signUpAndLogin);
                   console.log(localStorage.getItem("page"));
                 }}
-                className="SLB"
+                className="pt-2 pb-2 pl-3 pr-3 rounded-lg text-md max-md:text-sm max-md:pr-2 max-md:pl-2 max-md:pt-1 max-md:pb-1"
                 style={{
                   border: signUpAndLogin && "1px solid #ff6500",
                   backgroundColor: !signUpAndLogin && "#ff6500",

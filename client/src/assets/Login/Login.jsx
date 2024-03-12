@@ -79,31 +79,44 @@ export const Login = () => {
   return (
     <>
       {alert && Snack}
-      <div className="Login">
-        <h1 className="mt-5 mb-5 text-xl font-semibold text-orange-500">
+      <div className="w-2/4 max-md:w-10/12">
+        <h1 className="mt-5 mb-5 text-xl font-semibold text-center text-orange-500 max-md:text-lg">
           Login Page
         </h1>
         {/* <p ref={errMsg} aria-live="assertive">
         {errMsg}
       </p> */}
-        <form onSubmit={SubmitHandler} className="Gmail-form">
+        <form
+          onSubmit={SubmitHandler}
+          className="flex flex-col items-center justify-center w-full"
+        >
+          <label
+            htmlFor="em"
+            className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center"
+          >
+            Enter Your Email <span className="pl-1 text-red-700">*</span>
+          </label>
           <input
             type="text"
-            className="input"
-            placeholder="Enter Your Username / Gmail ID "
+            className="w-full mt-2 border-b-2 border-orange-500 em focus:outline-none"
             autoComplete="off"
             ref={Gmail}
             required
           ></input>
+          <label
+            htmlFor="em"
+            className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center"
+          >
+            Enter Your Password <span className="pl-1 text-red-700">*</span>
+          </label>
           <input
-            className="input"
+            className="w-full mt-2 border-b-2 border-orange-500 em focus:outline-none"
             type="password"
-            placeholder="Enter Your Passcode "
             ref={Passcode}
             required
           ></input>
 
-          <div className="forgetpasscode">
+          <div className="flex flex-row items-center justify-around w-full mt-5 mb-2">
             <Link to={"/SignUp/forgetusername"}>
               <p className="forget">forget username</p>
             </Link>
@@ -111,13 +124,15 @@ export const Login = () => {
               <p className="forget">forget passcode</p>
             </Link>
           </div>
-          <div>
+          <div className="mb-5">
             <Link to={"/SignUp"}>
-              <p className="newuser">New User ? Register</p>
+              <p className="text-red-700 hover:underline hover:underline-offset-1">
+                New User ? Register
+              </p>
             </Link>
           </div>
           <button
-            className="pt-1.5 pb-1.5 pl-5 pr-5 bg-orange-500 rounded-xl text-gray-50  hover:border hover:border-orange-500 hover:bg-gray-50 hover:text-orange-500"
+            className="pt-2 pb-2 pl-5 pr-5 bg-orange-500 rounded-xl text-gray-50 hover:border hover:border-orange-500 hover:bg-gray-50 hover:text-orange-500"
             type="Submit"
           >
             Login

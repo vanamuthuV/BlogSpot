@@ -6,6 +6,8 @@ import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { SnackBar } from "../Login/Alert.jsx";
+import TextField from "@mui/material/TextField";
+
 const SignUp_URL = "/SignUp";
 
 const USERNAMECHECK = "/uncheck";
@@ -109,13 +111,13 @@ export const SignUp = () => {
   }, []);
 
   return (
-    <div div className=" Login">
+    <div div className="w-2/4 max-md:w-10/12">
       {alert && snack}
-      <p className="mt-5 mb-5 text-xl font-semibold text-orange-500">
-        SignUp Page
+      <p className="mt-5 mb-5 text-xl font-semibold text-center text-orange-500 max-md:text-lg">
+        Sign Up Page
       </p>
       <form
-        className="Gmail-form"
+        className="flex flex-col items-center justify-center w-full"
         onSubmit={(event) => {
           SubmitHandler(event);
         }}
@@ -124,7 +126,7 @@ export const SignUp = () => {
       >
         <div className="w-full">
           {Pos && (
-            <h1 className="flex flex-row items-center justify-start text-xs text-green-500">
+            <h1 className="flex flex-row items-center justify-start mt-2 text-xs text-green-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -158,11 +160,15 @@ export const SignUp = () => {
             </h1>
           )}
         </div>
-
+        <label
+          htmlFor="un"
+          className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center"
+        >
+          Enter Your username <span className="pl-1 text-red-700">*</span>
+        </label>
         <input
           type="text"
-          className="mt-2 input focus:outline-none"
-          placeholder="Enter Your Username "
+          className="w-full mt-2 border-b-2 border-orange-500 un focus:outline-none"
           ref={UserName}
           onChange={CheckUserName}
           pattern="^[a-z0-9]+$"
@@ -207,24 +213,34 @@ export const SignUp = () => {
             </h1>
           )}
         </div>
+        <label
+          htmlFor="em"
+          className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center"
+        >
+          Enter Your Email <span className="pl-1 text-red-700">*</span>
+        </label>
         <input
-          className="mt-2 input focus:outline-none"
+          className="w-full mt-2 border-b-2 border-orange-500 em focus:outline-none"
           ref={Gmail}
           onChange={CheckEmail}
           required
           pattern="^[a-z0-9]+(?:[._][a-z0-9]+)*@[a-z]+\.[a-z]+$"
           title="This field won't allow whitespaces and required"
-          placeholder="What Is Your Gmail ? "
         ></input>
+        <label
+          htmlFor="pa"
+          className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center"
+        >
+          Enter Your Password <span className="pl-1 text-red-700">*</span>
+        </label>
         <input
-          className="mt-2 input focus:outline-none"
+          className="w-full mt-2 border-b-2 border-orange-500 pa focus:outline-none"
           type="password"
           ref={Passcode}
-          placeholder="Give Me A Passcode "
           required
         ></input>
         <button
-          className="pt-1.5 pb-1.5 pl-5 pr-5 bg-orange-500 rounded-xl text-gray-50 hover:border hover:border-orange-500 hover:bg-gray-50 hover:text-orange-500"
+          className="pt-2 pb-2 pl-5 pr-5 mt-10 bg-orange-500 rounded-xl text-gray-50 hover:border hover:border-orange-500 hover:bg-gray-50 hover:text-orange-500"
           type="Submit"
         >
           Register
@@ -232,7 +248,10 @@ export const SignUp = () => {
       </form>
       {visiblemodel && (
         <Link to={"/SignUp/login"}>
-          <p style={{ textAlign: "center" }} className="Return">
+          <p
+            style={{ textAlign: "center" }}
+            className="pt-5 text-blue-500 underline"
+          >
             Return To Login Page
           </p>
         </Link>
