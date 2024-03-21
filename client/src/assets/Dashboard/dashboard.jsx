@@ -136,25 +136,30 @@ export const Dashboard = () => {
   return (
     <div className="flex flex-row items-center justify-center mb-16">
       <div className="flex flex-col items-center justify-center w-10/12">
-        <div className="flex flex-col items-end justify-center w-full">
+        {/* <div className="flex flex-col items-end justify-center w-full max-md:mb-10">
           <div className="flex flex-col items-start justify-center">
             <div className="flex flex-row items-center justify-end mt-10">
               <img
-                className="mr-3 rounded-full min-h-10 min-w-10 max-h-10 max-w-10"
+                className="mr-3 rounded-full max-md:mr-2 min-h-10 min-w-10 max-h-10 max-w-10 max-md:min-h-5 max-md:max-h-5 max-md:max-w-5 max-md:min-w-5"
                 src={
                   user.profileimage
                     ? `http://localhost:5000/${user.profileimage}`
                     : "../../../public/Profile.jpeg"
                 }
               />
-              <Link className="hover:underline" to={`/${user.user_name}`}>
+              <Link
+                className="hover:underline max-md:text-sm"
+                to={`/${user.user_name}`}
+              >
                 {user.user_name}
               </Link>
             </div>
-            <p>{user.user_email || user.Gmail}</p>
+            <p className="max-md:text-sm">{user.user_email || user.Gmail}</p>
           </div>
-        </div>
-        <h1 className="w-full text-4xl text-orange-500 align-start">Dashboard</h1>
+        </div> */}
+        <h1 className="w-full mt-10 text-4xl text-orange-500 align-start">
+          Dashboard
+        </h1>
         {loading ? (
           <div className="flex flex-row items-center justify-center w-full h-96">
             <CircularProgress />

@@ -19,7 +19,7 @@ const USERNAMEUPDATE = "/usernameupdate";
 const EMAILUPDATE = "/emailupdate";
 const PASSWORDVERIFY = "/passcodeverify";
 const PASSWORDUPDATE = "passwordupdate";
-const DELETEACCOUNT = "/deleteaccount"
+const DELETEACCOUNT = "/deleteaccount";
 
 export const Accounts = () => {
   const { user, setUser, setAuth } = useAuth();
@@ -94,8 +94,7 @@ export const Accounts = () => {
     setOpenDelete(false);
   };
 
-  const DeleteAccount = async() => {
-
+  const DeleteAccount = async () => {
     try {
       const response = await axios.delete(DELETEACCOUNT + `/${user.user_id}`, {
         headers: {
@@ -106,24 +105,22 @@ export const Accounts = () => {
       console.log(response?.data?.data);
 
       if (response?.data?.data === true) {
-        setMessageP("Account Deletion Complete. Redirecting Please wait...")
+        setMessageP("Account Deletion Complete. Redirecting Please wait...");
         setTimeout(() => {
-         setUser({});
-         setAuth({});
-         localStorage.clear();
-         navigate("/");
-        }, 4000)
-       
+          setUser({});
+          setAuth({});
+          localStorage.clear();
+          navigate("/");
+        }, 4000);
       } else {
-        setMessageN("Cannot Delete Account!!")
+        setMessageN("Cannot Delete Account!!");
       }
-
     } catch (error) {
       console.log(error);
     }
 
-    setOpenDelete(false)
-  }
+    setOpenDelete(false);
+  };
 
   const OldPasswordHandle = async (ev) => {
     ev.preventDefault();
@@ -348,7 +345,7 @@ export const Accounts = () => {
   return (
     <div className="flex flex-row items-center justify-center mb-16">
       <div className="flex flex-col items-center justify-center w-10/12">
-        <div className="flex flex-col items-end justify-center w-full">
+        {/* <div className="flex flex-col items-end justify-center w-full">
           <div className="flex flex-col items-start justify-center">
             <div className="flex flex-row items-center justify-end mt-10">
               <img
@@ -365,7 +362,7 @@ export const Accounts = () => {
             </div>
             <p>{user.user_email || user.Gmail}</p>
           </div>
-        </div>
+        </div> */}
         <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
           <Alert
             onClose={handleClose}
@@ -388,7 +385,9 @@ export const Accounts = () => {
           </Alert>
         </Snackbar>
 
-        <h1 className="w-full text-4xl text-orange-500 align-start">Accounts</h1>
+        <h1 className="w-full mt-10 text-4xl text-orange-500 align-start">
+          Accounts
+        </h1>
         <div className="flex flex-col items-start justify-center w-11/12">
           <div className="flex flex-col items-start w-full mt-10">
             <h1 className="w-full pb-2 text-2xl font-bold border border-white border-b-gray-500">

@@ -7,7 +7,6 @@ import { format } from "date-fns";
 import { useTheme } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import "./LandingPage.css";
@@ -16,6 +15,11 @@ import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
+import CardMedia from "@mui/material/CardMedia";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const LANDINGDATA = "/landingdata";
 
@@ -44,42 +48,65 @@ const Cards = [
   },
 ];
 
-const Accordion = styled((props) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  "&:not(:last-child)": {
-    borderBottom: 0,
-  },
-  "&::before": {
-    display: "none",
-  },
-}));
+// const Accordion = styled((props) => (
+//   <MuiAccordion disableGutters elevation={0} square {...props} />
+// ))(({ theme }) => ({
+//   border: `1px solid ${theme.palette.divider}`,
+//   "&:not(:last-child)": {
+//     borderBottom: 0,
+//   },
+//   "&::before": {
+//     display: "none",
+//   },
+// }));
 
-const AccordionSummary = styled((props) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === "dark"
-      ? "rgba(255, 255, 255, .05)"
-      : "rgba(0, 0, 0, .03)",
-  flexDirection: "row-reverse",
-  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-    transform: "rotate(90deg)",
-  },
-  "& .MuiAccordionSummary-content": {
-    marginLeft: theme.spacing(1),
-  },
-}));
+// const AccordionSummary = styled((props) => (
+//   <MuiAccordionSummary
+//     expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
+//     {...props}
+//   />
+// ))(({ theme }) => ({
+//   backgroundColor:
+//     theme.palette.mode === "dark"
+//       ? "rgba(255, 255, 255, .05)"
+//       : "rgba(0, 0, 0, .03)",
+//   flexDirection: "row-reverse",
+//   "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+//     transform: "rotate(90deg)",
+//   },
+//   "& .MuiAccordionSummary-content": {
+//     marginLeft: theme.spacing(1),
+//   },
+// }));
 
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderTop: "1px solid rgba(0, 0, 0, .125)",
-}));
-import img from "../../../public/BackgroundImage.png";
+// const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+//   padding: theme.spacing(2),
+//   borderTop: "1px solid rgba(0, 0, 0, .125)",
+// }));
+
+const AccordionDetail = [
+  {
+    Question: " How do I upload a blog post?",
+    Answers:
+      "To upload a blog post, simply log in to your account and navigate to the 'Create Blog' section. Fill in th required details such as the title, content, and any relevant tags, then click 'Create' to upload your post.",
+  },
+  {
+    Question: "Can I edit my blog posts after uploading?",
+    Answers:
+      "Yes, you can edit your blog posts after uploading them. Simply go to the 'Profile' section in your account, find the blog post you want to edit, make your changes, and click 'Update' to update the post.",
+  },
+  {
+    Question: "Is there a limit to the number of words in a blog post?",
+    Answers:
+      " No, there is no limit to the number of words in a blog post. You can write as much as you want to fully express your ideas and thoughts.",
+  },
+  {
+    Question: " How do I delete my account?",
+    Answers:
+      "To delete your account, go to the 'Account Settings' section of your account and select the option to delete your account. Please note that this action is irreversible and will permanently delete all your data.",
+  },
+];
+
 export const LandingPage = () => {
   const { user } = useAuth();
   const theme = useTheme();
@@ -334,8 +361,29 @@ export const LandingPage = () => {
       <div className="flex flex-row items-center justify-center">
         <div className="flex flex-col items-start justify-start w-10/12">
           <h1 className="text-2xl font-bold text-orange-500">FAQS</h1>
-          <div className="mt-10">
-            <Accordion
+          <div className="mt-5 mb-10">
+            {/* <Container sx={{ marginTop: "10px", marginBottom: "30px" }}> */}
+            {AccordionDetail.map((info) => {
+              return (
+                <Accordion>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <Typography className="text-orange-500">
+                      {info.Question}
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>{info.Answers}</Typography>
+                  </AccordionDetails>
+                </Accordion>
+              );
+            })}
+            {/* </Container> */}
+
+            {/* <Accordion
               expanded={expanded === "panel1"}
               onChange={handleChange("panel1")}
               sx={{
@@ -441,7 +489,7 @@ export const LandingPage = () => {
                   permanently delete all your data.
                 </Typography>
               </AccordionDetails>
-            </Accordion>
+            </Accordion> */}
           </div>
         </div>
       </div>
