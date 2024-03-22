@@ -169,15 +169,15 @@ export const LandingPage = () => {
             {data.map((post) => {
               return (
                 <div className="flex flex-col items-center justify-center mt-5 mb-5 rounded-lg shadow-md hover:shadow-xl">
-                  <div className="flex flex-row items-center justify-center w-64 h-40">
+                  <div className="flex flex-row items-center justify-center w-64 h-40 max-md:w-28 max-md:h-20">
                     <img
                       className="max-w-full max-h-full min-w-full min-h-full rounded-lg"
                       src={`http://localhost:5000/${post.post_images}`}
                     />
                   </div>
-                  <div className="flex flex-col items-start justify-center w-60">
+                  <div className="flex flex-col items-start justify-center w-60 max-md:w-28">
                     <Link to={`/Read Blog/${post.post_id}`}>
-                      <p className="mt-3 mb-2 font-bold text-md hover:underline">
+                      <p className="mt-3 mb-2 font-bold text-md hover:underline max-md:text-xs max-md:font-semibold">
                         {post.post_title.length > 26
                           ? post.post_title.substring(0, 26) + "..."
                           : post.post_title}
@@ -190,28 +190,28 @@ export const LandingPage = () => {
                             ? post.post_summary.substring(0, 150) + "..."
                             : post.post_summary,
                       }}
-                      className="mb-4 text-xs text-justify max-md:text-xs"
+                      className="mb-4 text-xs text-justify max-md:hidden"
                     ></div>
-                    <div className="flex flex-row items-center justify-between w-full">
-                      <div className="flex flex-row items-center justify-center">
-                        <p className="flex flex-row items-center justify-center pr-1 text-sm text-green-500">
+                    <div className="flex flex-row items-center justify-between w-full max-md:flex-wrap">
+                      <div className="flex flex-row items-center justify-center max-md:w-full max-md:justify-around">
+                        <p className="flex flex-row items-center justify-center pr-1 text-sm text-green-500 max-md:text-xs">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 20 20"
                             fill="currentColor"
-                            class="w-5 h-5 pr-1"
+                            class="w-5 h-5 pr-1 max-md:w-4 max-md:h-4"
                           >
                             <path d="M1 8.25a1.25 1.25 0 1 1 2.5 0v7.5a1.25 1.25 0 1 1-2.5 0v-7.5ZM11 3V1.7c0-.268.14-.526.395-.607A2 2 0 0 1 14 3c0 .995-.182 1.948-.514 2.826-.204.54.166 1.174.744 1.174h2.52c1.243 0 2.261 1.01 2.146 2.247a23.864 23.864 0 0 1-1.341 5.974C17.153 16.323 16.072 17 14.9 17h-3.192a3 3 0 0 1-1.341-.317l-2.734-1.366A3 3 0 0 0 6.292 15H5V8h.963c.685 0 1.258-.483 1.612-1.068a4.011 4.011 0 0 1 2.166-1.73c.432-.143.853-.386 1.011-.814.16-.432.248-.9.248-1.388Z" />
                           </svg>
 
                           {post.likes_count}
                         </p>
-                        <p className="flex flex-row items-center justify-center pl-1 text-sm text-red-500">
+                        <p className="flex flex-row items-center justify-center pl-1 text-sm text-red-500 max-md:text-xs">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
                             fill="currentColor"
-                            class="w-5 h-5 pr-1"
+                            class="w-5 h-5 pr-1 max-md:w-4 max-md:h-4"
                           >
                             <path d="M15.73 5.5h1.035A7.465 7.465 0 0 1 18 9.625a7.465 7.465 0 0 1-1.235 4.125h-.148c-.806 0-1.534.446-2.031 1.08a9.04 9.04 0 0 1-2.861 2.4c-.723.384-1.35.956-1.653 1.715a4.499 4.499 0 0 0-.322 1.672v.633A.75.75 0 0 1 9 22a2.25 2.25 0 0 1-2.25-2.25c0-1.152.26-2.243.723-3.218.266-.558-.107-1.282-.725-1.282H3.622c-1.026 0-1.945-.694-2.054-1.715A12.137 12.137 0 0 1 1.5 12.25c0-2.848.992-5.464 2.649-7.521C4.537 4.247 5.136 4 5.754 4H9.77a4.5 4.5 0 0 1 1.423.23l3.114 1.04a4.5 4.5 0 0 0 1.423.23ZM21.669 14.023c.536-1.362.831-2.845.831-4.398 0-1.22-.182-2.398-.52-3.507-.26-.85-1.084-1.368-1.973-1.368H19.1c-.445 0-.72.498-.523.898.591 1.2.924 2.55.924 3.977a8.958 8.958 0 0 1-1.302 4.666c-.245.403.028.959.5.959h1.053c.832 0 1.612-.453 1.918-1.227Z" />
                           </svg>
@@ -219,14 +219,13 @@ export const LandingPage = () => {
                           {post.dislikes_count}
                         </p>
                       </div>
-
-                      <p className="flex flex-row items-center justify-center ml-2 mr-2 text-xs text-neutral-500">
+                      <p className="flex flex-row items-center justify-center ml-2 mr-2 text-xs text-neutral-500 max-md:text-center max-md:m-0 max-md:w-full">
                         {Math.round(post.post_content.split("").length / 200)}
                         <span className="pl-1">min read</span>
                       </p>
                     </div>
                     <div className="flex flex-row flex-wrap items-center justify-between w-full mt-2 mb-2">
-                      <div className="flex flex-row items-center justify-center mr-2">
+                      <div className="flex flex-row items-center justify-center mr-2 max-md:w-full">
                         <img
                           className="rounded-full min-w-5 max-w-5 min-h-5 max-h-5"
                           src={
@@ -242,7 +241,7 @@ export const LandingPage = () => {
                         </Link>
                       </div>
 
-                      <p className="text-xs text-neutral-500">
+                      <p className="text-xs text-neutral-500 max-md:w-full max-md:text-center">
                         {format(post.post_upload_time, "MMM dd,yyyy")}
                       </p>
                     </div>
@@ -296,64 +295,53 @@ export const LandingPage = () => {
         <div className="flex flex-row flex-wrap items-center justify-around w-11/12 gap-10 mt-10 mb-10">
           {Cards.map((card) => {
             return (
-              <Card
-                sx={{
-                  maxWidth: 320,
-                }}
-                elevation={3}
-              >
-                <CardActionArea>
-                  <div className="flex flex-row items-center justify-center w-full h-20 mt-10 mb-10">
-                    <img className="w-20 h-20" src={card.src} />
-                  </div>
-                  <CardContent>
-                    <p className="flex flex-row items-center justify-center text-xl font-bold text-orange-500">
-                      {" "}
-                      {card.title}
+              <div className="flex flex-col items-center justify-center bg-gray-50 hover:drop-shadow-[0_0px_3px_rgba(249,115,22,1.000)] rounded-lg p-5 max-md:drop-shadow-[0_0px_3px_rgba(249,115,22,1.000)] max-md:m-5">
+                <div className="">
+                  <img className="w-20 h-20" src={card.src} />
+                </div>
+                <div>
+                  <p className="mt-5 mb-5 text-lg font-bold text-center text-orange-500">
+                    {card.title}
+                  </p>
+                  <div>
+                    <p className="flex flex-row text-sm text-justify">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2.5"
+                        stroke="rgb(249, 115, 22)"
+                        class="w-5 h-5 mr-1"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="m4.5 12.75 6 6 9-13.5"
+                        />
+                      </svg>
+                      {card.pt1}
                     </p>
-                    <Typography
-                      sx={{ m: 2 }}
-                      variant="body2"
-                      color="text.secondary"
-                    >
-                      <p className="flex flex-row mb-1 text-sm">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="2.5"
-                          stroke="rgb(249, 115, 22)"
-                          class="w-6 h-6 mr-2"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="m4.5 12.75 6 6 9-13.5"
-                          />
-                        </svg>
-                        {card.pt1}
-                      </p>
-                      <p className="flex flex-row mt-1 text-sm">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="2.5"
-                          stroke="rgb(249, 115, 22)"
-                          class="w-6 h-6 mr-2"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="m4.5 12.75 6 6 9-13.5"
-                          />
-                        </svg>
-                        {card.pt2}
-                      </p>
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+                    <p className="flex flex-row text-sm text-justify">
+                      {" "}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2.5"
+                        stroke="rgb(249, 115, 22)"
+                        class="w-5 h-5 mr-1"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="m4.5 12.75 6 6 9-13.5"
+                        />
+                      </svg>
+                      {card.pt2}
+                    </p>
+                  </div>
+                </div>
+              </div>
             );
           })}
         </div>

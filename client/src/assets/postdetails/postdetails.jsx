@@ -518,8 +518,8 @@ export const PostDetails = () => {
             <div className="flex flex-col items-center w-7/12 justify-evenly max-md:w-9/12">
               <div className="flex flex-col items-start w-full">
                 <h1
-                  style={{ lineHeight: "52px" }}
-                  className="mt-10 mb-5 text-5xl font-bold max-md:text-3xl max-md:mb-1"
+                  // style={{ lineHeight: "52px" }}
+                  className="mt-10 mb-5 text-5xl font-bold leading-normal max-md:text-3xl max-md:mb-1 max-md:leading-tight"
                 >
                   {data.post_title}
                 </h1>
