@@ -33,6 +33,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { styled } from "@mui/material/styles";
 import "./profile.css";
+import { useNavigate } from "react-router-dom";
 
 const SETPERSONALDETAILS = "/addpersonaldetails";
 const SETPROFILE = "/setprofileimage";
@@ -487,6 +488,7 @@ export const Profile = (user_name) => {
         });
         console.log(response?.data?.data);
         setProfileInfo(response?.data?.data[0]);
+        setOpen(false);
       } catch (error) {
         console.error(error);
       }
@@ -513,6 +515,7 @@ export const Profile = (user_name) => {
         });
         console.log(response?.data?.data);
         setProfileInfo(response?.data?.data[0]);
+        setOpen(false);
       } catch (error) {
         console.error(error);
       }
@@ -1010,7 +1013,6 @@ export const Profile = (user_name) => {
                       </p>
                     </Link>
                   </div>
-                  {console.log(publicPost)}
                   {user.user_id !== userDetails.user_id && (
                     <div className="flex flex-row items-center justify-center mt-5 mb-5">
                       {console.log(follow)}
@@ -1137,7 +1139,6 @@ export const Profile = (user_name) => {
                                   }}
                                   className="mb-4 text-justify max-md:text-xs"
                                 ></div>
-                              
                               </div>
                               {user.user_name === userDetails.user_name && (
                                 <div className="flex flex-row items-center justify-center pl-5 max-md:pl-2">
