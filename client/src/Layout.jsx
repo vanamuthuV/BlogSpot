@@ -40,7 +40,7 @@ export const SignUpLayout = () => {
       }}
     >
       <div className="flex flex-col items-center justify-center w-3/4 p-5 shadow-2xl">
-        <div className="w-2/4">
+        <div className="w-2/4 max-md:w-3/4">
           <h1 className="mt-10 mb-10 text-2xl font-bold text-center">
             Join Inkwellify.
           </h1>
