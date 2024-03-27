@@ -190,7 +190,14 @@ export const CreatePost = () => {
               </div>
               <div class="default">Please select a files</div>
             </div>
+            {/* <div> */}
+            <p className="pt-1 text-sm italic text-center text-red-400">
+              <span className="text-red-500">*</span>This image is shown in your
+              post thumbnail as well.<span className="text-red-500">*</span>
+            </p>
+            {/* </div> */}
           </div>
+
           {/* <ReactQuill
             className=""
             modules={modules}

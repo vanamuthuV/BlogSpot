@@ -4,7 +4,7 @@ import apiInstance from "../../api/axios";
 
 const AuthContext = createContext({});
 
-const RELOAD_USER = '/reloaduser'
+const RELOAD_USER = "/reloaduser";
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
@@ -21,16 +21,16 @@ export const AuthProvider = ({ children }) => {
             },
           });
           console.log(response?.data?.data);
-          setUser(response?.data?.data)
-          setAuth(response?.data?.data)
+          setUser(response?.data?.data);
+          setAuth(response?.data?.data);
         } catch (error) {
           console.error(error);
         }
       };
       ReloadUser();
     }
-    
-  }, []);
+  }, [user]);
+  console.log(user);
 
   return (
     <AuthContext.Provider value={{ auth, setAuth, user, setUser }}>

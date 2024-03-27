@@ -118,10 +118,15 @@ export const LandingPage = () => {
     setExpanded(newExpanded ? panel : false);
   };
 
+  const value = {
+    user_id: Object.keys(user).length !== 0 ? user.user_id : null,
+  };
+
   useEffect(() => {
+    console.log(user);
     (async () => {
       try {
-        const response = await axios.get(LANDINGDATA);
+        const response = await axios.post(LANDINGDATA, value);
         console.log(response?.data?.data);
         setData(response?.data?.data);
         setLoading(false);
@@ -129,7 +134,7 @@ export const LandingPage = () => {
         console.log(error);
       }
     })();
-  }, []);
+  }, [user]);
 
   return (
     <div>
