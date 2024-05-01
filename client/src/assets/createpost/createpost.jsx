@@ -1,18 +1,25 @@
-import React, { useRef, useState } from "react";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { styled } from "@mui/material/styles";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
+import React, { useEffect, useRef, useState } from "react";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 import "./createpost.css";
 import axios from "../../../api/axios";
-import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+// import EditorJS from "@editorjs/editorjs";
+// import Header from "@editorjs/header";
+// import LinkTool from "@editorjs/link";
+// import RawTool from "@editorjs/raw";
+// import SimpleImage from "@editorjs/simple-image";
+// import Checklist from "@editorjs/checklist";
+// import List from "@editorjs/list";
+// import Embed from "@editorjs/embed";
+// import Quote from "@editorjs/quote";
+// import CodeTool from "@editorjs/code"
+// import Warning from "@editorjs/warning"
+// import Marker from "@editorjs/marker"
+// import Delimiter from "@editorjs/delimiter"
+// import Table from "@editorjs/table"
+
 
 // const modules = {
 //   toolbar: [
@@ -98,6 +105,27 @@ var toolbarOptions = [
 ];
 */
 
+// const editor = new EditorJS({
+//   tools: {
+//     header: {
+//       class: Header,
+//       config: {
+//         placeholder: "Enter a header",
+//         levels: [2, 3, 4],
+//         defaultLevel: 3,
+//       },
+//     },
+//     linkTool: {
+//       class: LinkTool,
+//       config: {
+//         endpoint: "http://localhost:8008/fetchUrl", // Your backend endpoint for url data fetching,
+//       },
+//     },
+//   },
+// });
+
+// const editor = new EditorJS('editorjs')
+
 export const CreatePost = () => {
   const title = useRef(null);
   const content = useRef(null);
@@ -111,6 +139,70 @@ export const CreatePost = () => {
     console.log("Content Value:", contents);
     // You can also access the editor instance for more operations
   };
+
+  // const initEditor = () => {
+  //   const editor = new EditorJS({
+  //     holder: "editorjs",
+  //     onReady: () => {
+  //       content.current = editor;
+  //     },
+  //     onChange: async () => {
+  //       let contentData = await editor.saver.save();
+  //       console.log(contentData);
+  //     },
+  //     tools: {
+  //       header: {
+  //         class: Header,
+  //         inlineToolbar: ["marker", "link"],
+  //         config: {
+  //           placeholder: "Header",
+  //         },
+  //         shortcut: "CMD+SHIFT+H",
+  //       },
+  //       linkTool: LinkTool,
+  //       raw: RawTool,
+  //       image: SimpleImage,
+  //       checklist: {
+  //         class: Checklist,
+  //         inlineToolbar: true,
+  //       },
+  //       list: {
+  //         class: List,
+  //         inlineToolbar: true,
+  //         shortcut: "CMD+SHIFT+L",
+  //       },
+  //       embed: Embed,
+  //       quote: {
+  //         class: Quote,
+  //         inlineToolbar: true,
+  //         config: {
+  //           quotePlaceholder: "Enter a quote",
+  //           captionPlaceholder: "Quote's author",
+  //         },
+  //         shortcut: "CMD+SHIFT+O",
+  //       },
+  //       code: {
+  //         class: CodeTool,
+  //         shortcut: "CMD+SHIFT+C",
+  //       },
+  //       warning: Warning,
+  //       marker: {
+  //         class: Marker,
+  //         shortcut: "CMD+SHIFT+M",
+  //       },
+  //       delimiter: Delimiter,
+  //       table: {
+  //         class: Table,
+  //         inlineToolbar: true,
+  //         shortcut: "CMD+ALT+T",
+  //       },
+  //     },
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   initEditor();
+  // }, []);
 
   const [alignment, setAlignment] = React.useState("public");
   const navigate = useNavigate();
@@ -145,6 +237,8 @@ export const CreatePost = () => {
         },
       });
       console.log(response?.data?.success);
+      console.log(response?.data?.base);
+      console.log(response?.data?.Base);
       navigate("/");
     } catch (error) {
       console.error(error.message);
@@ -154,15 +248,18 @@ export const CreatePost = () => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <h1 className="m-5 text-4xl max-md:text-2xl ">Writing on Inkwellify</h1>
+      <h1 className="m-5 text-4xl font-bold max-md:text-2xl ">
+        Writting on Inkwellify
+      </h1>
       <div className="flex flex-col items-center justify-center w-full mb-10">
         <form
           className="flex flex-col items-center justify-center w-full"
           onSubmit={SubmitHandler}
           enctype="multipart/form-data"
         >
+          {/* border-2 border-gray-500 border-solid */}
           <input
-            className="w-3/4 pt-2.5 pb-2.5 pl-5 pr-5 m-5 text-lg border-2 border-gray-500 border-solid rounded-xl max-md:w-5/6"
+            className="w-3/4 pt-3 pb-3 pl-5 pr-5 m-5 text-4xl border-l-4 border-gray-300 max-md:w-5/6"
             type="title"
             ref={title}
             placeholder="Title"
@@ -197,7 +294,6 @@ export const CreatePost = () => {
             </p>
             {/* </div> */}
           </div>
-
           {/* <ReactQuill
             className=""
             modules={modules}
@@ -211,15 +307,14 @@ export const CreatePost = () => {
             ref={content}
             placeholder="Unleash your creativity and share your story with the world. Write something amazing here!"
           />
-
           <input
-            className="w-3/4 pt-2.5 pb-2.5 pl-5 pr-5 m-5 text-lg border-2 border-gray-500 border-solid rounded-xl max-md:w-5/6"
+            className="w-3/4 pt-3 pb-3 pl-5 pr-5 m-5 text-xl border-l-4 border-gray-300 max-md:w-5/6"
             ref={category}
             type="text"
             placeholder="Category ?"
           ></input>
           <input
-            className="w-3/4 pt-2.5 pb-2.5 pl-5 pr-5 m-5 text-lg border-2 border-gray-500 border-solid rounded-xl max-md:w-5/6"
+            className="w-3/4 pt-3 pb-3 pl-5 pr-5 m-5 text-xl border-l-4 border-gray-300 max-md:w-5/6"
             ref={tags}
             type="text"
             placeholder="Tags"

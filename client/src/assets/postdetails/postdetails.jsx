@@ -24,6 +24,7 @@ import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en.json";
 import ru from "javascript-time-ago/locale/ru.json";
 import Chip from "@mui/material/Chip";
+import ImageComponent from "../../../utils/ImageComponent";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -449,7 +450,7 @@ export const PostDetails = () => {
 
     setOpenModal((prev) => !prev);
   };
-
+  
   const FollowHandler = async () => {
     try {
       const response = await axios.post(
@@ -515,7 +516,7 @@ export const PostDetails = () => {
           </div>
         ) : (
           <div className="flex flex-row items-center justify-center">
-            <div className="flex flex-col items-center w-7/12 justify-evenly max-md:w-9/12">
+            <div className="flex flex-col items-center w-7/12 justify-evenly max-md:w-11/12">
               <div className="flex flex-col items-start w-full">
                 <h1
                   // style={{ lineHeight: "52px" }}
@@ -526,14 +527,27 @@ export const PostDetails = () => {
                 <div className="flex flex-row items-center mt-5 mb-10 justify-evenly">
                   <div className="flex flex-row items-center justify-center">
                     <div className="mr-2.5">
-                      <img
+                      {/* <img
                         className="rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
                         src={
                           data.profileimage
                             ? `http://localhost:5000/${data.profileimage}`
                             : "../../../public/Profile.jpeg"
                         }
-                      />
+                        /> */}
+                      {data.profileimage ? (
+                        <ImageComponent
+                          base64String={data.profileimage}
+                          features={
+                            "rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
+                          }
+                        />
+                      ) : (
+                        <img
+                          className="rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
+                          src={ "../../../public/Profile.jpeg"}
+                        />
+                      )}
                     </div>
                     <div className="flex flex-col items-start justify-center ml-2.5">
                       <div className="flex flex-row items-center ">
@@ -564,7 +578,7 @@ export const PostDetails = () => {
                           ))}
                       </div>
                       <div className="flex flex-row items-center justify-start w-full ">
-                        <p className="pr-2 text-sm text-neutral-500 max-md:text-sm">
+                        <p className="pr-2 text-sm text-neutral-500 ">
                           {Math.round(data.post_content.split("").length / 200)}{" "}
                           min read
                         </p>
@@ -603,36 +617,52 @@ export const PostDetails = () => {
                   </Link>
                 )}
               </div>
+              {/* <img src={`data:image/jpeg;base64,${base64String}`} alt="Image" /> */}
 
-              <div className="flex flex-row items-center justify-center w-full h-full max-md:w-full">
-                <img
+              <div className="flex flex-row items-center justify-center w-full h-full mb-10 max-md:w-full">
+                <ImageComponent
+                  features={
+                    "flex flex-row items-center justify-center w-full h-full max-md:w-full"
+                  }
+                  base64String={data.post_images}
+                />
+                {/* <img
                   src={`http://localhost:5000/${data.post_images}`}
                   className="mt-5 mb-10 rounded-xl"
-                />
+                /> */}
               </div>
 
-              <div
+              <div className="ql-snow max-md:w-full">
+                <div
+                  className="p-0 text-lg font-light text-justify ql-editor max-md:text-xs"
+                  dangerouslySetInnerHTML={{ __html: data.post_content }}
+                ></div>
+              </div>
+
+              {/* <div
                 dangerouslySetInnerHTML={{ __html: data.post_content }}
                 className="text-lg font-light text-justify max-md:text-xs"
-              ></div>
+              ></div> */}
               <div>
                 <h1 className="mt-5 mb-5 text-2xl font-bold text-orange-500 max-md:font-normal max-md:text-lg max-md:mt-3 max-md:mb-3">
                   Summary
                 </h1>
-                <div
-                  dangerouslySetInnerHTML={{ __html: data.post_summary }}
-                  className="text-lg font-light text-justify max-md:text-xs"
-                ></div>
+                <div className="ql-snow">
+                  <div
+                    className="p-0 text-lg font-light text-justify ql-editor max-md:text-xs"
+                    dangerouslySetInnerHTML={{ __html: data.post_summary }}
+                  ></div>
+                </div>
               </div>
               <div className="flex flex-row flex-wrap items-center justify-start w-full gap-2 pt-5">
-                <p className="flex flex-row items-center justify-start pr-5 text-orange-500">
+                <p className="flex flex-row items-center justify-start text-orange-500 max-md:text-xs">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class="w-6 h-6 pr-1"
+                    class="w-6 h-6 pr-1 max-md:w-4 max-md:h-4"
                   >
                     <path
                       stroke-linecap="round"
@@ -645,21 +675,16 @@ export const PostDetails = () => {
                       d="M6 6h.008v.008H6V6Z"
                     />
                   </svg>
-                  Tags
+                  Tags :
                 </p>
                 {tags.map((tag) => {
+                  const numerics = tags.length;
                   return (
-                    <Chip
-                      sx={{
-                        borderColor: "#ff6500",
-                        marginLeft: "2px",
-                        marginRight: "2px",
-                        color: "#ff6500",
-                      }}
-                      className=" hover:bg-orange-500 hover:text-gray-50 hover:cursor-pointer"
-                      label={`# ${tag}`}
-                      variant="outlined"
-                    />
+                    <p className="max-md:text-xs">
+                      {tags.indexOf(tag) === numerics - 1
+                        ? `${tag}`
+                        : `${tag},`}
+                    </p>
                   );
                 })}
               </div>
@@ -667,14 +692,27 @@ export const PostDetails = () => {
                 <div className="flex flex-row flex-wrap items-center justify-between w-full mt-5 mb-10 max-md:justify-center">
                   <div className="flex flex-row items-center justify-center">
                     <div className="mr-2.5">
-                      <img
+                      {/* <img
                         className="rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
                         src={
                           data.profileimage
                             ? `http://localhost:5000/${data.profileimage}`
                             : "../../../public/Profile.jpeg"
                         }
-                      />
+                      /> */}
+                      {data.profileimage ? (
+                        <ImageComponent
+                          features={
+                            "rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
+                          }
+                          base64String={data.profileimage}
+                        />
+                      ) : (
+                        <img
+                          className="rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
+                          src={"../../../public/Profile.jpeg"}
+                        />
+                      )}
                     </div>
                     <div className="flex flex-col items-start justify-center ml-2.5">
                       <div className="flex flex-row items-center ">
@@ -871,9 +909,15 @@ export const PostDetails = () => {
                           />
                         ) : (
                           <Link to={`/${user.user_name}`}>
-                            <img
+                            {/* <img
                               className="mr-2 rounded-full min-h-10 min-w-10 max-h-10 max-w-10 max-md:max-h-8 max-md:max-w-8 max-md:min-w-8 max-md:min-h-8"
                               src={`http://localhost:5000/${user.profileimage}`}
+                            /> */}
+                            <ImageComponent
+                              features={
+                                "mr-2 rounded-full min-h-10 min-w-10 max-h-10 max-w-10 max-md:max-h-8 max-md:max-w-8 max-md:min-w-8 max-md:min-h-8"
+                              }
+                              base64String={user.profileimage}
                             />
                           </Link>
                         )}
@@ -919,22 +963,28 @@ export const PostDetails = () => {
                                   sx={{ color: "action.active" }}
                                 /> */}
                                 <Link to={`/${com.user_name}`}>
-                                  <img
+                                  {/* <img
                                     className="rounded-full max-h-8 min-w-8 min-h-8 max-w-8"
                                     src={`http://localhost:5000/${com.profileimage}`}
+                                  /> */}
+                                  <ImageComponent
+                                    features={
+                                      "rounded-full max-h-8 min-w-8 min-h-8 max-w-8"
+                                    }
+                                    base64String={com.profileimage}
                                   />
                                 </Link>
                               </div>
                               <div className="flex flex-col items-start justify-center w-10/12 ml-3 mr-3 max-md:w-9/12">
                                 <div className="flex flex-row items-center justify-center">
                                   <Link to={`/${com.user_name}`}>
-                                    <p className="pr-5 font-bold max-md:pr-2 max-md:text-xs hover:underline">
+                                    <p className="pr-2 font-bold max-md:pr-2 max-md:text-xs hover:underline">
                                       {com.user_name}
                                     </p>
                                   </Link>
 
-                                  <time className="flex flex-row items-center pl-5 text-gray-500 max-md:pl-2 max-md:text-xs">
-                                    <span className="text-xl font-bold">
+                                  <time className="flex flex-row items-center text-gray-500 max-md:text-xs">
+                                    <span className="pr-2 text-xl font-bold">
                                       &middot;
                                     </span>
                                     {

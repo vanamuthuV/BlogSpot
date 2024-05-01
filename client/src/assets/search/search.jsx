@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "../../../api/axios";
-import Avatar from "@mui/material/Avatar";
+import ImageComponent from "../../../utils/ImageComponent";
 
 const ACCOUNTSEARCH = "/accountsearch";
 
@@ -106,9 +106,15 @@ export const Account = () => {
                               src="../../../public/ProfileDope.jpeg"
                             />
                           ) : (
-                            <img
-                              className="rounded-full min-w-16 max-w-16 min-h-16 max-h-16 max-md:min-w-10 max-md:max-w-10 max-md:min-h-10 max-md:max-h-10"
-                              src={`http://localhost:5000/${post.profileimage}`}
+                            // <img
+                            //   className="rounded-full min-w-16 max-w-16 min-h-16 max-h-16 max-md:min-w-10 max-md:max-w-10 max-md:min-h-10 max-md:max-h-10"
+                            //   src={`http://localhost:5000/${post.profileimage}`}
+                            //   />
+                            <ImageComponent
+                              base64String={post.profileimage}
+                              features={
+                                "rounded-full min-w-16 max-w-16 min-h-16 max-h-16 max-md:min-w-10 max-md:max-w-10 max-md:min-h-10 max-md:max-h-10"
+                              }
                             />
                           )}
                         </div>

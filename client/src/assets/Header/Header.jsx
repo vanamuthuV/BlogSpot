@@ -19,9 +19,10 @@ import { Link, Navigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { createContext } from "react";
 import BookIcon from "@mui/icons-material/Book";
-const pages = ["Search", "Read Blog", "Leaderboard"];
+const pages = ["Read Blog"];
 const settings = ["Account", "Dashboard"];
 import { useNavigate } from "react-router-dom";
+import ImageComponent from "../../../utils/ImageComponent";
 
 const darkTheme = createTheme({ palette: { mode: "dark" } });
 const lightTheme = createTheme({ palette: { mode: "light" } });
@@ -165,22 +166,102 @@ export const Navbar = () => {
                         Create Post
                       </Typography>
                     </Link>
-                    {pages.map((page) => (
-                      <Link to={`/${page}`}>
-                        <Typography
-                          mt={"6px"}
-                          mb={"6px"}
+                    <Tooltip title="Search">
+                      <Link to={`/search`}>
+                        <Button
+                          onClick={handleCloseNavMenu}
                           sx={{
-                            marginRight: "2px",
-                            marginLeft: "2px",
-                            fontSize: "12px",
+                            my: 2,
+                            color: "#303030",
+                            display: "block",
+                            fontSize: "16px",
+                            paddingRight: "10px",
                           }}
-                          textAlign="center"
                         >
-                          {page}
-                        </Typography>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            width="24"
+                          >
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                          </svg>
+                        </Button>
                       </Link>
-                    ))}
+                    </Tooltip>
+
+                    <Tooltip title="Read">
+                      <Link to={`/read`}>
+                        <Button
+                          onClick={handleCloseNavMenu}
+                          sx={{
+                            my: 2,
+                            color: "#303030",
+                            display: "block",
+                            fontSize: "16px",
+                            paddingRight: "10px",
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height={24}
+                            viewBox="0 0 30 30"
+                            id="blog"
+                            width={24}
+                          >
+                            <g>
+                              <path d="M26 12h-2V8a5 5 0 0 0-5-5H8a5 5 0 0 0-5 5v12a1 1 0 0 0 2 0V8a3 3 0 0 1 3-3h11a3 3 0 0 1 3 3v5a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3 1 1 0 0 0-2 0 5 5 0 0 0 5 5h16a5 5 0 0 0 5-5v-9a3 3 0 0 0-3-3Z"></path>
+                              <path d="M11.5 14h4a2.5 2.5 0 0 0 0-5h-4a2.5 2.5 0 0 0 0 5zm0-3h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1zm0 12h9a2.5 2.5 0 0 0 0-5h-9a2.5 2.5 0 0 0 0 5zm0-3h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1 0-1z"></path>
+                            </g>
+                          </svg>
+                        </Button>
+                      </Link>
+                    </Tooltip>
+
+                    <Tooltip title="LeaderBoard">
+                      <Link to={`/leaderboard`}>
+                        <Button
+                          onClick={handleCloseNavMenu}
+                          sx={{
+                            my: 2,
+                            color: "#303030",
+                            display: "block",
+                            fontSize: "16px",
+                            paddingRight: "10px",
+                          }}
+                        >
+                          {/* <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      enable-background="new 0 0 24 24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      width="24"
+                    >
+                      <rect fill="none" height="24" width="24" />
+                      <g>
+                        <path d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z" />
+                      </g>
+                    </svg> */}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            enable-background="new 0 0 24 24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            width="24"
+                          >
+                            <g>
+                              <path
+                                d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z"
+                                fill="none"
+                                stroke="#000000"
+                                stroke-width="1.5"
+                              />
+                            </g>
+                          </svg>
+                        </Button>
+                      </Link>
+                    </Tooltip>
                   </MenuItem>
                 </Menu>
               </Box>
@@ -330,24 +411,106 @@ export const Navbar = () => {
                 },
               }}
             >
-              {user.user_name &&
-                pages.map((page) => (
-                  <Link to={`/${page}`}>
-                    <Button
-                      key={page}
-                      onClick={handleCloseNavMenu}
-                      sx={{
-                        my: 2,
-                        color: "#303030",
-                        display: "block",
-                        fontSize: "16px",
-                        paddingRight: "10px",
-                      }}
+              {user.user_name && (
+                <>
+                  <Tooltip title="Search">
+                    <Link to={`/search`}>
+                      <Button
+                        onClick={handleCloseNavMenu}
+                        sx={{
+                          my: 2,
+                          color: "#303030",
+                          display: "block",
+                          fontSize: "16px",
+                          paddingRight: "10px",
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          width="24"
+                        >
+                          <path d="M0 0h24v24H0z" fill="none" />
+                          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                        </svg>
+                      </Button>
+                    </Link>
+                  </Tooltip>
+
+                  <Tooltip title="Read">
+                    <Link to={`/read`}>
+                      <Button
+                        onClick={handleCloseNavMenu}
+                        sx={{
+                          my: 2,
+                          color: "#303030",
+                          display: "block",
+                          fontSize: "16px",
+                          paddingRight: "10px",
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height={24}
+                          viewBox="0 0 30 30"
+                          id="blog"
+                          width={24}
+                        >
+                          <g>
+                            <path d="M26 12h-2V8a5 5 0 0 0-5-5H8a5 5 0 0 0-5 5v12a1 1 0 0 0 2 0V8a3 3 0 0 1 3-3h11a3 3 0 0 1 3 3v5a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3 1 1 0 0 0-2 0 5 5 0 0 0 5 5h16a5 5 0 0 0 5-5v-9a3 3 0 0 0-3-3Z"></path>
+                            <path d="M11.5 14h4a2.5 2.5 0 0 0 0-5h-4a2.5 2.5 0 0 0 0 5zm0-3h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1zm0 12h9a2.5 2.5 0 0 0 0-5h-9a2.5 2.5 0 0 0 0 5zm0-3h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1 0-1z"></path>
+                          </g>
+                        </svg>
+                      </Button>
+                    </Link>
+                  </Tooltip>
+
+                  <Tooltip title="LeaderBoard">
+                    <Link to={`/leaderboard`}>
+                      <Button
+                        onClick={handleCloseNavMenu}
+                        sx={{
+                          my: 2,
+                          color: "#303030",
+                          display: "block",
+                          fontSize: "16px",
+                          paddingRight: "10px",
+                        }}
+                      >
+                        {/* <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      enable-background="new 0 0 24 24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      width="24"
                     >
-                      {page}
-                    </Button>
-                  </Link>
-                ))}
+                      <rect fill="none" height="24" width="24" />
+                      <g>
+                        <path d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z" />
+                      </g>
+                    </svg> */}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          enable-background="new 0 0 24 24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          width="24"
+                        >
+                          <g>
+                            <path
+                              d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z"
+                              fill="none"
+                              stroke="#000000"
+                              stroke-width="1.5"
+                            />
+                          </g>
+                        </svg>
+                      </Button>
+                    </Link>
+                  </Tooltip>
+                </>
+              )}
 
               <Box
                 sx={{ flexGrow: 0, cursor: "pointer", alignItems: "center" }}
@@ -359,7 +522,7 @@ export const Navbar = () => {
                       onClick={handleOpenUserMenu}
                       sx={{ p: 0 }}
                     >
-                      <img
+                      {/* <img
                         className="w-full h-full text-gray-500 rounded-full"
                         alt={user.user_name}
                         src={
@@ -367,7 +530,20 @@ export const Navbar = () => {
                             ? `http://localhost:5000/${user.profileimage}`
                             : "../../../public/Profile.jpeg"
                         }
-                      />
+                      /> */}
+                      {user.profileimage === null ? (
+                        <img
+                          className="w-full h-full text-gray-500 rounded-full"
+                          alt={user.user_name}
+                          src={"../../../public/Profile.jpeg"}
+                        />
+                      ) : (
+                        <ImageComponent
+                          altName={user.user_name}
+                          features={"w-full h-full text-gray-500 rounded-full"}
+                          base64String={user.profileimage}
+                        />
+                      )}
                     </button>
                   </Tooltip>
                 ) : (

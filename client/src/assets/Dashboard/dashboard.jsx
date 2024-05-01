@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "../../../api/axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import { format } from "date-fns";
+import ImageComponent from "../../../utils/ImageComponent";
 
 const DASHBOARD = "/getdashboard";
 const MOREFAV = "/favload";
@@ -195,14 +196,18 @@ export const Dashboard = () => {
                       <div className="flex flex-row w-10/12 mt-2 mb-2 min-h-20 max-h-20">
                         <div className="pl-2 pr-2 min-h-20 min-w-20 max-w-20 max-h-20">
                           {favs.post_images && (
-                            <img
-                              className="w-full h-full rounded-xl"
-                              src={`http://localhost:5000/${favs.post_images}`}
+                            // <img
+                            //   className="w-full h-full rounded-xl"
+                            //   src={`http://localhost:5000/${favs.post_images}`}
+                            // />
+                            <ImageComponent
+                              base64String={favs.post_images}
+                              features={"w-full h-full rounded-xl"}
                             />
                           )}
                         </div>
                         <div className="flex flex-row items-center justify-start w-8/12 pl-2 pr-2">
-                          <Link to={`/Read Blog/${favs.post_id}`}>
+                          <Link to={`/Read/${favs.post_id}`}>
                             <p className="hover:underline">{favs.post_title}</p>
                           </Link>
                         </div>
@@ -268,14 +273,18 @@ export const Dashboard = () => {
                       <div className="flex flex-row w-10/12 mt-2 mb-2 min-h-20 max-h-20">
                         <div className="pl-2 pr-2 min-h-20 min-w-20 max-w-20 max-h-20">
                           {like.post_images && (
-                            <img
-                              className="w-full h-full rounded-xl"
-                              src={`http://localhost:5000/${like.post_images}`}
+                            // <img
+                            //   className="w-full h-full rounded-xl"
+                            //   src={`http://localhost:5000/${like.post_images}`}
+                            // />
+                            <ImageComponent
+                              base64String={like.post_images}
+                              features={"w-full h-full rounded-xl"}
                             />
                           )}
                         </div>
                         <div className="flex flex-row items-center justify-start w-8/12 pl-2 pr-2">
-                          <Link to={`/Read Blog/${like.post_id}`}>
+                          <Link to={`/Read/${like.post_id}`}>
                             <p className="hover:underline">{like.post_title}</p>
                           </Link>
                         </div>
@@ -341,14 +350,18 @@ export const Dashboard = () => {
                       <div className="flex flex-row w-10/12 mt-2 mb-2 min-h-20 max-h-20">
                         <div className="pl-2 pr-2 min-h-20 min-w-20 max-w-20 max-h-20">
                           {dislike.post_images && (
-                            <img
-                              className="w-full h-full rounded-xl"
-                              src={`http://localhost:5000/${dislike.post_images}`}
+                            // <img
+                            //   className="w-full h-full rounded-xl"
+                            //   src={`http://localhost:5000/${dislike.post_images}`}
+                            // />
+                            <ImageComponent
+                              base64String={dislike.post_images}
+                              features={"w-full h-full rounded-xl"}
                             />
                           )}
                         </div>
                         <div className="flex flex-row items-center justify-start w-8/12 pl-2 pr-2">
-                          <Link to={`/Read Blog/${dislike.post_id}`}>
+                          <Link to={`/Read/${dislike.post_id}`}>
                             <p className="hover:underline">
                               {dislike.post_title}
                             </p>

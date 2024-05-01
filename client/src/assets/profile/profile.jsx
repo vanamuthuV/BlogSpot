@@ -34,6 +34,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { styled } from "@mui/material/styles";
 import "./profile.css";
 import { useNavigate } from "react-router-dom";
+import ImageComponent from "../../../utils/ImageComponent";
 
 const SETPERSONALDETAILS = "/addpersonaldetails";
 const SETPROFILE = "/setprofileimage";
@@ -588,14 +589,28 @@ export const Profile = (user_name) => {
         <div className="flex flex-col items-center justify-center">
           <div className="w-5/6 max-md:w-full">
             <div className="relative w-full mt-5 mb-28 max-md:w-full max-md:mb-16 max-md:mt-0">
-              <img
+              {/* <img
                 className="w-full max-h-80 max-md:h-28 rounded-xl max-md:mt-0 max-md:rounded-b-xl max-md:rounded-t-none"
                 src={
                   CoverImage === "NO"
                     ? DEFAULT
                     : `http://localhost:5000/${CoverImage}`
                 }
-              />
+                /> */}
+              {CoverImage === "NO" ? (
+                <img
+                  className="w-full max-h-80 max-md:h-28 rounded-xl max-md:mt-0 max-md:rounded-b-xl max-md:rounded-t-none"
+                  src={DEFAULT}
+                />
+              ) : (
+                <ImageComponent
+                  features={
+                    "w-full max-h-80 max-md:h-28 rounded-xl max-md:mt-0 max-md:rounded-b-xl max-md:rounded-t-none"
+                  }
+                  base64String={CoverImage}
+                />
+              )}
+
               {user.user_name === userDetails.user_name && (
                 <div className="absolute flex flex-row items-center justify-end w-4/12 -bottom-20 right-10 max-md:-bottom-12 max-md:right-5">
                   {/* <Button variant="outlined" onClick={handleClickOpen}>
@@ -818,14 +833,27 @@ export const Profile = (user_name) => {
                 className="absolute flex flex-row items-center justify-center w-40 rounded-full -bottom-20 max-md:-bottom-10 max-md:w-20 left-16 max-md:left-6 max-md:h-20"
                 style={{ borderRadius: "50%" }}
               >
-                <img
+                {/* <img
                   className="rounded-full min-w-40 min-h-40 max-w-40 max-h-40 max-md:min-w-20 max-md:min-h-20 max-md:max-w-20 max-md:max-h-20"
                   src={
                     ProfileImage === "NO"
                       ? DeFAULTPROF
                       : `http://localhost:5000/${ProfileImage}`
                   }
-                />
+                /> */}
+                {ProfileImage === "NO" ? (
+                  <img
+                    className="rounded-full min-w-40 min-h-40 max-w-40 max-h-40 max-md:min-w-20 max-md:min-h-20 max-md:max-w-20 max-md:max-h-20"
+                    src={DeFAULTPROF}
+                  />
+                ) : (
+                  <ImageComponent
+                    features={
+                      "rounded-full min-w-40 min-h-40 max-w-40 max-h-40 max-md:min-w-20 max-md:min-h-20 max-md:max-w-20 max-md:max-h-20"
+                    }
+                    base64String={ProfileImage}
+                  />
+                )}
 
                 {user.user_name === userDetails.user_name &&
                   ["bottom"].map((anchor) => (
@@ -1103,13 +1131,17 @@ export const Profile = (user_name) => {
                           return (
                             <div className="flex flex-row items-center pb-2 border-b border-gray-400">
                               <div className="flex flex-row items-center justify-center pr-5 max-md:pr-2 min-h-40 min-w-48 max-w-48 max-h-40 max-md:max-w-24 max-md:min-w-24 max-md:max-h-24 max-md:min-h-24">
-                                <img
+                                {/* <img
                                   className="object-scale-down w-full h-full"
                                   src={`http://localhost:5000/${items.post_images}`}
+                                /> */}
+                                <ImageComponent
+                                  features={"object-scale-down w-full h-full"}
+                                  base64String={items.post_images}
                                 />
                               </div>
                               <div className="flex flex-col justify-center pl-5 pr-5 max-md:pl-2 max-md:pr-2">
-                                <Link to={`/Read Blog/${items.post_id}`}>
+                                <Link to={`/Read/${items.post_id}`}>
                                   <p className="pb-1 text-xl font-semibold text-justify hover:underline max-md:text-xs">
                                     {window.innerWidth >= 769
                                       ? items.post_title.length > 100
@@ -1269,13 +1301,17 @@ export const Profile = (user_name) => {
                             return (
                               <div className="flex flex-row items-center border-b border-gray-400">
                                 <div className="flex flex-row items-center justify-center pr-5 max-md:pr-2 min-h-40 min-w-48 max-w-48 max-h-40 max-md:max-w-24 max-md:min-w-24 max-md:max-h-24 max-md:min-h-24">
-                                  <img
+                                  {/* <img
                                     className="object-scale-down w-full h-full"
                                     src={`http://localhost:5000/${items.post_images}`}
+                                  /> */}
+                                  <ImageComponent
+                                    features={"object-scale-down w-full h-full"}
+                                    base64String={items.post_images}
                                   />
                                 </div>
                                 <div className="flex flex-col justify-center pl-5 pr-5 max-md:pl-2 max-md:pr-2">
-                                  <Link to={`/Read Blog/${items.post_id}`}>
+                                  <Link to={`/Read/${items.post_id}`}>
                                     <p className="text-xl font-semibold text-justify hover:underline max-md:text-xs">
                                       {window.innerWidth >= 769
                                         ? items.post_title.length > 100

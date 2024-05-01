@@ -40,8 +40,8 @@ function App() {
             <Route path="/SignUp/forgetpasscode" element={<ForgetPasscode />} />
             <Route path="/SignUp/users" element={<GetUsers />} />
           </Route>
-          <Route path="/Read Blog" element={<PostRequester />} />
-          <Route path="/Read Blog/:id" element={<PostDetails />} />
+          <Route path="/read" element={<PostRequester />} />
+          <Route path="/read/:id" element={<PostDetails />} />
           <Route path="/edit/:post_ids" element={<EditCaller />} />
           <Route path="/:user_name" element={<ProfileCaller />}></Route>
           <Route path="/Search" element={<SearchLayout />}>

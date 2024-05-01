@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .switch {
   position: relative;
   display: inline-block;
@@ -71,7 +72,7 @@ input:checked + .slider:before {
 .quill,
 .ql-bubble,
 .ql-editor {
-  border: 1px solid #6b7280;
+  /* border: 1px solid #6b7280; */
   border-top-left-radius: 0.6em;
   border-top-right-radius: 0.6em;
   outline: none;

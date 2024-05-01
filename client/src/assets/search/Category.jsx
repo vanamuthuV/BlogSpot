@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "../../../api/axios";
+import ImageComponent from "../../../utils/ImageComponent";
 
 const CATEGORYSEARCH = "/categorysearch";
 
@@ -63,10 +64,11 @@ export const Category = () => {
                       <div className="flex flex-row items-center mt-5">
                         <Link to={`/Read Blog/${post.post_id}`}>
                           <div className="flex flex-row items-center justify-center min-w-28 max-w-28 min-h-18 max-h-18">
-                            <img
+                            {/* <img
                               className=" min-w-28 max-w-28 min-h-18 max-h-18 max-md:min-w-16 max-md:max-w-16 max-md:min-h-14 max-md:max-h-14"
                               src={`http://localhost:5000/${post.post_images}`}
-                            />
+                            /> */}
+                            <ImageComponent features={"min-w-28 max-w-28 min-h-18 max-h-18 max-md:min-w-16 max-md:max-w-16 max-md:min-h-14 max-md:max-h-14"} base64String={post.post_images} />
                           </div>
                         </Link>
 

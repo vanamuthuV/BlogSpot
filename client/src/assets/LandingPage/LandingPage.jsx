@@ -20,6 +20,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ImageComponent from "../../../utils/ImageComponent";
 
 const LANDINGDATA = "/landingdata";
 
@@ -136,6 +137,8 @@ export const LandingPage = () => {
     })();
   }, [user]);
 
+  const [searchBar, setSearchBar] = useState(false);
+
   return (
     <div>
       <div
@@ -154,7 +157,7 @@ export const LandingPage = () => {
               Create Post
             </button>
           </Link>
-          <Link to={"/Read Blog"}>
+          <Link to={"/read"}>
             <button className="pt-2  max-md:pl-3 max-md:pr-3 pb-2 pl-8 pr-8 ml-2.5 font-bold text-orange-500 border border-orange-500 rounded-lg bg-gray-50  max-md:text-sm">
               Start Reading
             </button>
@@ -176,14 +179,28 @@ export const LandingPage = () => {
                 <div className="flex flex-col items-center justify-center p-5 rounded-lg shadow-xl hover:shadow-xl w-96">
                   <div className="flex flex-row flex-wrap items-center justify-between w-full mt-2 mb-2">
                     <div className="flex flex-row items-center justify-center w-full mr-2">
-                      <img
+                      {/* <img
                         className="rounded-full min-w-6 max-w-6 min-h-6 max-h-6"
                         src={
                           post.profileimage
                             ? `http://localhost:5000/${post.profileimage}`
                             : "../../../public/Profile.jpeg"
                         }
-                      />
+                      /> */}
+                      {post.profileimage ? (
+                        <ImageComponent
+                          base64String={post.profileimage}
+                          features={
+                            "rounded-full min-w-6 max-w-6 min-h-6 max-h-6"
+                          }
+                        />
+                      ) : (
+                        <img
+                          className="rounded-full min-w-6 max-w-6 min-h-6 max-h-6"
+                          src={"../../../public/Profile.jpeg"}
+                        />
+                      )}
+
                       <div className="flex flex-row items-center justify-between w-full pl-2">
                         <p className="font-normal">
                           <Link to={`/${post.user_name}`}>
@@ -215,16 +232,20 @@ export const LandingPage = () => {
                   <div className="flex flex-row items-center justify-center mt-2 mb-2 max-md:mt-1 max-md:mb-1">
                     <Link
                       className="flex flex-row items-center justify-center mt-2 mb-2"
-                      to={`/Read Blog/${post.post_id}`}
+                      to={`/Read/${post.post_id}`}
                     >
                       <p className="pr-2 mt-3 mb-2 text-base font-bold max-md:text-sm">
                         {post.post_title.length > 40
                           ? post.post_title.substring(0, 60) + "..."
                           : post.post_title}
                       </p>
-                      <img
+                      {/* <img
                         className=" min-h-14 min-w-20 max-h-14 max-w-20"
                         src={`http://localhost:5000/${post.post_images}`}
+                      /> */}
+                      <ImageComponent
+                        features={"min-h-14 min-w-20 max-h-14 max-w-20"}
+                        base64String={post.post_images}
                       />
                     </Link>
                   </div>
@@ -312,7 +333,7 @@ export const LandingPage = () => {
         <div className="flex flex-row flex-wrap items-center justify-around w-11/12 gap-10 mt-10 mb-10">
           {Cards.map((card) => {
             return (
-              <div className="flex flex-col items-center justify-center bg-gray-50 hover:drop-shadow-[0_0px_3px_rgba(249,115,22,1.000)] rounded-lg p-5 max-md:drop-shadow-[0_0px_3px_rgba(249,115,22,1.000)] max-md:m-5">
+              <div className="flex flex-col items-center justify-center p-5 border-2 border-opacity-25 border-zinc-700 hover:border-opacity-50 rounded-xl bg-gray-50 hover:border-2 hover:border-orange-500 max-md:m-5">
                 <div className="">
                   <img className="w-20 h-20" src={card.src} />
                 </div>

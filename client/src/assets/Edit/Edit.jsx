@@ -14,6 +14,7 @@ import axios from "../../../api/axios";
 import "../createpost/createpost.css";
 import { Navigate, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import ImageComponent from "../../../utils/ImageComponent";
 
 const modules = {
   // toolbar: [
@@ -266,9 +267,13 @@ export const Edit = ({ post_ids }) => {
             }}
             className="flex flex-row items-center justify-center"
           >
-            <img
+            {/* <img
               className="max-w-full min-w-full max-h-96 rounded-xl"
               src={`http://localhost:5000/${currentImage}`}
+            /> */}
+            <ImageComponent
+                features={"max-w-full min-w-full max-h-96 rounded-xl"}
+                base64String={currentImage}
             />
           </div>
 

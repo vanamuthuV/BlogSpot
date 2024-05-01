@@ -11,6 +11,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import ImageComponent from "../../../utils/ImageComponent";
 
 import img from "../../../public/Profile.jpeg";
 
@@ -132,14 +133,27 @@ export const Followers = () => {
               <div className="flex flex-row items-center justify-between w-full mt-2 mb-2 max-md:mt-1 max-md:mb-1">
                 <div className="flex flex-row items-center justify-center">
                   <div className="max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16">
-                    <img
+                    {/* <img
                       className="rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
                       src={
                         user.profileimage
                           ? `http://localhost:5000/${user.profileimage}`
                           : `../../../public/Profile.jpeg`
                       }
-                    />
+                    /> */}
+                    {user.profileimage  ? (
+                      <img
+                        className="rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
+                        src={`../../../public/Profile.jpeg`}
+                      />
+                    ) : (
+                      <ImageComponent
+                        features={
+                          "rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
+                        }
+                        base64String={user.profileimage}
+                      />
+                    )}
                   </div>
                   <Link to={`/${user.user_name}`}>
                     <div className="flex flex-col justify-center ml-5">
@@ -294,14 +308,29 @@ export const Followings = () => {
               <div className="flex flex-row items-center justify-between w-full mt-2 mb-2 max-md:mt-1 max-md:mb-1 ">
                 <div className="flex flex-row items-center justify-center">
                   <div className="max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16">
-                    <img
+                    {/* 
+                     <img
                       className="rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
                       src={
                         user.profileimage === null
                           ? `../../../public/Profile.jpeg`
                           : `http://localhost:5000/${user.profileimage}`
                       }
-                    />
+                    /> */}
+
+                    {user.profileimage === null ? (
+                      <img
+                        className="rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
+                        src={`../../../public/Profile.jpeg`}
+                      />
+                    ) : (
+                      <ImageComponent
+                        features={
+                          "rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
+                        }
+                        base64String={user.profileimage}
+                      />
+                    )}
                   </div>
                   <Link to={`/${user.user_name}`}>
                     <div className="flex flex-col justify-center ml-5">
