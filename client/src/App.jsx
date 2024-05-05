@@ -12,11 +12,6 @@ import { PostRequester } from "./assets/PostRequester/PostRequester";
 import { PostDetails } from "./assets/postdetails/postdetails";
 import { EditCaller } from "./assets/Edit/Edit";
 import { ProfileCaller } from "./assets/profile/profile";
-import { SearchLayout } from "./Layout";
-import { Account } from "./assets/search/search";
-import { Category } from "./assets/search/Category";
-import { Tags } from "./assets/search/Tags";
-import { Posts } from "./assets/search/Posts";
 import { FollowersAndFollowingLayout } from "./assets/FollowerandFollowing/ff";
 import { Followers } from "./assets/FollowerandFollowing/ff";
 import { Followings } from "./assets/FollowerandFollowing/ff";
@@ -25,8 +20,11 @@ import { Dashboard } from "./assets/Dashboard/dashboard";
 import { LandingPage } from "./assets/LandingPage/LandingPage";
 import { LeaderBoard } from "./assets/leaderboard/leaderboard";
 import { PageNotFound } from "./assets/pagenotfound/pagenotfound";
+import useSearch from "../hooks/useSearch";
 
 function App() {
+  const { searchOpen, setSearchOpen } = useSearch();
+  console.log(searchOpen);
   return (
     <BrowserRouter>
       <Routes>
@@ -44,12 +42,12 @@ function App() {
           <Route path="/read/:id" element={<PostDetails />} />
           <Route path="/edit/:post_ids" element={<EditCaller />} />
           <Route path="/:user_name" element={<ProfileCaller />}></Route>
-          <Route path="/Search" element={<SearchLayout />}>
+          {/* <Route path="/Search" element={<SearchLayout />}>
             <Route path="/Search" element={<Account />} />
             <Route path="/Search/Tags" element={<Tags />} />
             <Route path="/Search/Category" element={<Category />} />
             <Route path="/Search/Posts" element={<Posts />} />
-          </Route>
+          </Route> */}
           <Route
             path="/:user_name/followers"
             element={<FollowersAndFollowingLayout />}

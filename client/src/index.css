@@ -7,3 +7,18 @@ body {
 button > * {
   pointer-events: none;
 }
+
+.ql-editor {
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top : 6px;
+  padding-bottom: 6px;
+  min-height: 30px;
+  margin : 0px;
+  overflow-x: hidden;
+}
+
+.ql-blank, .ql-blank:active{
+  min-height: 100px;
+  padding-left : 5px;
+}

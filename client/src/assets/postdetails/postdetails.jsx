@@ -75,7 +75,7 @@ export const PostDetails = () => {
         setFollows(response?.data?.data);
       })();
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     (async () => {
@@ -99,7 +99,7 @@ export const PostDetails = () => {
         console.log(error);
       }
     })();
-  }, []);
+  }, [id]);
 
   const UploadComment = async () => {
     console.log(comment.current.value);
@@ -192,7 +192,7 @@ export const PostDetails = () => {
         console.error(error);
       }
     })();
-  }, []);
+  }, [id]);
   const [tags, setTags] = useState([]);
   console.log(data);
 
@@ -219,7 +219,7 @@ export const PostDetails = () => {
         console.error(error.message);
       }
     })();
-  }, []);
+  }, [id]);
 
   const [commentID, setCommentID] = useState("");
 
@@ -310,7 +310,7 @@ export const PostDetails = () => {
         console.log(error);
       }
     })();
-  }, []);
+  }, [id]);
 
   const LIKE = "/like";
   const DISLIKE = "/dislike";
@@ -475,7 +475,7 @@ export const PostDetails = () => {
 
   if (openModal) {
     return (
-      <div className="flex flex-row items-center justify-center w-full h-screen bg-orange-500">
+      <div className="flex flex-row items-center justify-center w-full h-screen bg-white">
         <div className="relative flex flex-col items-center justify-center h-40 p-5 bg-white shadow-xl w-80 rounded-xl">
           <h1>
             Are You Sure To Unfollow{" "}

@@ -33,7 +33,11 @@ export const Post = ({
           alt={post_title}
           className="max-w-full max-h-full max-md:w-full"
         /> */}
-        <ImageComponent base64String={post_images} features={"max-w-full max-h-full max-md:w-full"} altName={post_title} /> 
+        <ImageComponent
+          base64String={post_images}
+          features={"max-w-full max-h-full max-md:w-full"}
+          altName={post_title}
+        />
       </div>
       <div>
         <div className="m-5 max-md:m-0">
@@ -42,7 +46,18 @@ export const Post = ({
               {post_title}
             </h3>
           </Link>
-          <div
+          <div className="ql-snow">
+            <div
+              className="pt-1 text-sm text-justify ql-editor max-md:text-xs"
+              dangerouslySetInnerHTML={{
+                __html:
+                  post_summary.length <= 290
+                    ? post_summary
+                    : post_summary.substring(0, 290) + "...",
+              }}
+            ></div>
+          </div>
+          {/* <div
             className="pt-1 text-sm text-justify max-md:text-xs"
             dangerouslySetInnerHTML={{
               __html:
@@ -50,7 +65,7 @@ export const Post = ({
                   ? post_summary
                   : post_summary.substring(0, 290) + "...",
             }}
-          ></div>
+          ></div> */}
           <div className="flex flex-row items-center justify-between mt-2">
             <div className="flex flex-row items-center justify-center">
               <time className="pr-1 text-sm max-md:text-xs text-neutral-600">

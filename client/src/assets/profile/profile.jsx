@@ -36,6 +36,7 @@ import "./profile.css";
 import { useNavigate } from "react-router-dom";
 import ImageComponent from "../../../utils/ImageComponent";
 
+
 const SETPERSONALDETAILS = "/addpersonaldetails";
 const SETPROFILE = "/setprofileimage";
 const SETCOVER = "/setcoverimage";
@@ -55,9 +56,8 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export const Profile = (user_name) => {
-  const username = user_name.user_name;
-  console.log(username);
+export const Profile = () => {
+  const { user_name } = useParams();
   const [coverShow, setCoverShow] = useState();
   const CoverFiles = useRef();
   const [filename, setFilename] = useState("");
@@ -137,7 +137,10 @@ export const Profile = (user_name) => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.post(GETPROFILEIMAGE, data, {
+        const response = await axios.post(GETPROFILEIMAGE, {
+          user_name: user_name,
+          user_id : user.user_id
+        }, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -153,6 +156,8 @@ export const Profile = (user_name) => {
             response?.data?.data?.coverstatus
         );
         setUserDetails(response?.data?.data?.userDetails[0]);
+        console.log(response);
+        console.log(response?.data?.data?.userDetails[0]);
         setProfileInfo(response?.data?.data?.ProfileInfo[0]);
         setName(response?.data?.data?.ProfileInfo[0].userfullname || "");
         setBio(response?.data?.data?.ProfileInfo[0].bio || "");
@@ -182,7 +187,7 @@ export const Profile = (user_name) => {
         console.error(error);
       }
     })();
-  }, []);
+  }, [user_name]);
 
   const ProfileName = () => {
     setProfilePic(Profile.current.files[0]);
@@ -975,11 +980,19 @@ export const Profile = (user_name) => {
                     {ProfileInfo.role}
                   </h1>
                   {ProfileInfo.bio && (
-                    <div
-                      className="mt-3 mb-1 max-md:text-xs max-md:mt-1"
-                      dangerouslySetInnerHTML={{ __html: ProfileInfo.bio }}
-                    >
-                      {/* {ProfileInfo.bio} */}
+                    // <div
+                    //   className="mt-3 mb-1 max-md:text-xs max-md:mt-1"
+                    //   dangerouslySetInnerHTML={{ __html: ProfileInfo.bio }}
+                    // >
+                    //   {/* {ProfileInfo.bio} */}
+                    //   </div>
+                    <div className="ql-snow">
+                      <div
+                        className="mt-3 mb-1 ql-editor max-md:text-xs max-md:mt-1"
+                        dangerouslySetInnerHTML={{
+                          __html: ProfileInfo.bio,
+                        }}
+                      ></div>
                     </div>
                   )}
                   <div className="flex flex-row items-center mt-2 text-gray-600">
@@ -1030,12 +1043,12 @@ export const Profile = (user_name) => {
                     </time>
                   </div>
                   <div className="flex flex-row items-center justify-start mt-3 mb-3 text-gray-600 max-md:text-xs">
-                    <Link to={`/${username}/followers`}>
+                    <Link to={`/${user_name}/followers`}>
                       <p className="pr-2 hover:underline">
                         {followers.length} Followers
                       </p>
                     </Link>
-                    <Link to={`/${username}/followings`}>
+                    <Link to={`/${user_name}/followings`}>
                       <p className="pl-2 hover:underline">
                         {following.length} Followings
                       </p>
@@ -1091,7 +1104,7 @@ export const Profile = (user_name) => {
                                 gutterBottom
                               >
                                 Are You Sure To Unfollow{" "}
-                                <span className="text-red-500">{username}</span>
+                                <span className="text-red-500">{user_name}</span>
                               </Typography>
                             </DialogContent>
                             <DialogActions>
@@ -1148,13 +1161,34 @@ export const Profile = (user_name) => {
                                         ? items.post_title.substring(0, 100) +
                                           "..."
                                         : items.post_title
-                                      : items.post_title.length > 22
-                                      ? items.post_title.substring(0, 22) +
+                                      : items.post_title.length > 40
+                                      ? items.post_title.substring(0, 40) +
                                         "..."
                                       : items.post_title}
                                   </p>
                                 </Link>
-                                <div
+                                <div className="ql-snow">
+                                  <div
+                                    className="mb-4 text-justify ql-editor max-md:text-xs"
+                                    dangerouslySetInnerHTML={{
+                                      __html:
+                                        window.innerWidth >= 769
+                                          ? items.post_summary.length > 250
+                                            ? items.post_summary.substring(
+                                                0,
+                                                250
+                                              ) + "..."
+                                            : items.post_summary
+                                          : items.post_summary.length > 75
+                                          ? items.post_summary.substring(
+                                              0,
+                                              75
+                                            ) + "..."
+                                          : items.post_summary,
+                                    }}
+                                  ></div>
+                                </div>
+                                {/* <div
                                   dangerouslySetInnerHTML={{
                                     __html:
                                       window.innerWidth >= 769
@@ -1170,7 +1204,7 @@ export const Profile = (user_name) => {
                                         : items.post_summary,
                                   }}
                                   className="mb-4 text-justify max-md:text-xs"
-                                ></div>
+                                ></div> */}
                               </div>
                               {user.user_name === userDetails.user_name && (
                                 <div className="flex flex-row items-center justify-center pl-5 max-md:pl-2">

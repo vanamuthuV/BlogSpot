@@ -13,3 +13,7 @@
     display: none;
   }
 }
+
+.MuiToolbar-root,.MuiToolbar-regular,.css-e90tvv-MuiToolbar-root {
+  min-height: 50px;
+}

@@ -4,15 +4,15 @@ import { Outlet, Link } from "react-router-dom";
 import { Navbar } from "./assets/Header/Header";
 import "./assets/SignUp/SignUp.css";
 import { SignUp } from "./assets/SignUp/SignUp";
-import { Search } from "./assets/search/search";
-import CircularProgress from "@mui/material/CircularProgress";
 import { Footer } from "./assets/Footer/footer";
 
-export const Layout = () => {
+export const Layout = ({ children }) => {
   return (
     <>
       <Navbar />
-      <Outlet />
+      <div style={{ position: "relative", minHeight: "100vh" }}>
+        <Outlet />
+      </div>
       <Footer />
     </>
   );
@@ -96,11 +96,3 @@ export const SignUpPersonalLayout = () => {
   );
 };
 
-export const SearchLayout = () => {
-  return (
-    <>
-      <Search />
-      <Outlet />
-    </>
-  );
-};
