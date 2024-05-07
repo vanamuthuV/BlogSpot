@@ -22,3 +22,9 @@ button > * {
   min-height: 100px;
   padding-left : 5px;
 }
+
+
+::selection {
+  background-color: #f97316;
+  color : white;
+}
