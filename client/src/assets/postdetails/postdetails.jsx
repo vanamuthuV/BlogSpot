@@ -683,7 +683,7 @@ export const PostDetails = () => {
                   {tags.map((tag) => {
                     const numerics = tags.length;
                     return (
-                      <p className="max-md:text-xs">
+                      <p className="max-md:text-xs hover:text-orange-500">
                         {tags.indexOf(tag) === numerics - 1
                           ? `${tag}`
                           : `${tag},`}

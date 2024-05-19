@@ -26,7 +26,7 @@ export const Post = ({
 }) => {
   console.log(post_images);
   return (
-    <div className="flex flex-row items-center justify-start w-5/6 max-md:flex-wrap max-md:w-11/12 max-md:mt-5 max-md:mb-5">
+    <div className="flex flex-row items-center justify-start w-8/12 max-md:flex-wrap max-md:w-11/12 max-md:mt-5 max-md:mb-5">
       <div className="flex flex-row items-center justify-center h-40 mt-1 mb-1 max-md:mt-2 max-md:mb-2 min-w-60 max-w-60 max-md:h-40 max-md:min-w-full max-md:max-w-full">
         {/* <img
           src={`http://localhost:5000/${post_images}`}

@@ -73,6 +73,7 @@ const corOptions = {
 
 app.use(cors(corOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "5mb" }));
 app.use(express.json());
 app.use(cookieParser());
 app.use("/SignUp", signUpRouter);

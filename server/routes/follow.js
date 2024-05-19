@@ -18,12 +18,12 @@ router.post("/", Authentication, async (req, res) => {
     `;
 
   console.log(req.body);
-  const { user_id } = req?.body?.data;
-  const { user_name } = req?.body?.data?.follower_name;
-  console.log(user_id, user_name);
+  const { user_id, follower_name } = req?.body?.data;
+  console.log(req?.body);
+  console.log(user_id, follower_name);
 
   try {
-    const User = await pool.query(query, [user_name]);
+    const User = await pool.query(query, [follower_name]);
     console.log(User.rows[0].user_id);
     const Follower_id = User?.rows[0]?.user_id;
 

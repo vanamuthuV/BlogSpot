@@ -170,7 +170,7 @@ export const Edit = ({ post_ids }) => {
   useEffect(() => {
     (async () => {
       try {
-        datas.set("media", media);
+        datas.set("media", media || post_images);
         const response = await axios.post(IMAGEUPDATER, datas, {
           headers: {
             "Content-Type": "multipart/form-data", // Adjust the content type as needed
