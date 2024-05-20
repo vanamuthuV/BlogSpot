@@ -49,42 +49,6 @@ const Cards = [
   },
 ];
 
-// const Accordion = styled((props) => (
-//   <MuiAccordion disableGutters elevation={0} square {...props} />
-// ))(({ theme }) => ({
-//   border: `1px solid ${theme.palette.divider}`,
-//   "&:not(:last-child)": {
-//     borderBottom: 0,
-//   },
-//   "&::before": {
-//     display: "none",
-//   },
-// }));
-
-// const AccordionSummary = styled((props) => (
-//   <MuiAccordionSummary
-//     expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
-//     {...props}
-//   />
-// ))(({ theme }) => ({
-//   backgroundColor:
-//     theme.palette.mode === "dark"
-//       ? "rgba(255, 255, 255, .05)"
-//       : "rgba(0, 0, 0, .03)",
-//   flexDirection: "row-reverse",
-//   "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-//     transform: "rotate(90deg)",
-//   },
-//   "& .MuiAccordionSummary-content": {
-//     marginLeft: theme.spacing(1),
-//   },
-// }));
-
-// const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-//   padding: theme.spacing(2),
-//   borderTop: "1px solid rgba(0, 0, 0, .125)",
-// }));
-
 const AccordionDetail = [
   {
     Question: " How do I upload a blog post?",
@@ -110,7 +74,6 @@ const AccordionDetail = [
 
 export const LandingPage = () => {
   const { user } = useAuth();
-  const theme = useTheme();
   const [expanded, setExpanded] = React.useState("panel1");
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -137,7 +100,6 @@ export const LandingPage = () => {
     })();
   }, [user]);
 
-  const [searchBar, setSearchBar] = useState(false);
 
   return (
     <div>
@@ -214,13 +176,7 @@ export const LandingPage = () => {
                                 : post.user_name}
                             </span>
                           </Link>
-                          &middot;
-                          <button className="pl-2 text-orange-500">
-                            follow
-                          </button>
-                          {/* <button className="pl-2 text-green-500">
-                            following
-                          </button> */}
+                         
                         </p>
                         <p className="text-sm text-neutral-500 ">
                           {/* Uploaded on{" "} */}
@@ -229,9 +185,9 @@ export const LandingPage = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-row items-center justify-center mt-2 mb-2 max-md:mt-1 max-md:mb-1">
+                  <div className="flex flex-row items-center justify-between w-full mt-2 mb-2 max-md:mt-1 max-md:mb-1">
                     <Link
-                      className="flex flex-row items-center justify-center mt-2 mb-2"
+                      className="flex flex-row items-center justify-between w-full mt-2 mb-2"
                       to={`/Read/${post.post_id}`}
                     >
                       <p className="pr-2 mt-3 mb-2 text-base font-bold max-md:text-sm">

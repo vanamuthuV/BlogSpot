@@ -3,13 +3,65 @@ import pool from "../db.js";
 
 const router = express.Router();
 
-const querytrending = `select posts.*, users.*, coalesce(liked.likecount, 0) as likecounts from posts join users on posts.user_id  = users.user_id left join (select post_id, count(*) as likecount from likes group by post_id order by likecount desc) as liked on posts.post_id = liked.post_id where post_type='public' `;
+const querytrending = `SELECT
+    posts.*,
+    users.*,
+    profilepicture.*,
+    COALESCE(liked.likecount, 0) AS likes,
+    COALESCE(disliked.dislikecount, 0) AS dislikes
+FROM
+    posts
+LEFT JOIN
+    profilepicture ON posts.user_id = profilepicture.user_id
+JOIN
+    users ON posts.user_id = users.user_id
+LEFT JOIN
+    (SELECT
+        post_id,
+        COUNT(*) AS likecount
+     FROM
+        likes
+     WHERE
+        likes.likes = 'true'
+     GROUP BY
+        post_id
+    ) AS liked ON posts.post_id = liked.post_id
+LEFT JOIN
+    (SELECT
+        post_id,
+        COUNT(*) AS dislikecount
+     FROM
+        likes
+     WHERE
+        likes.dislikes = 'true'
+     GROUP BY
+        post_id
+    ) AS disliked ON posts.post_id = disliked.post_id
+WHERE
+    post_type = 'public';
+ `;
 
-const querynew = `select posts.* , users.* , coalesce(liked.likescount, 0) as likecount from posts join users on posts.user_id = users.user_id 
-left join (select post_id, coalesce(count(*),0) as likescount from likes group by post_id) as liked
-on posts.post_id = liked.post_id where post_type='public'  order by post_upload_time desc`;
+const querynew = `select posts.* , users.*, profilepicture.*, coalesce(liked.likescount, 0) as likecount, COALESCE(disliked.dislikecount, 0) AS dislikes 
+from posts LEFT JOIN
+    profilepicture ON posts.user_id = profilepicture.user_id join users on posts.user_id = users.user_id 
+left join (select post_id, coalesce(count(*),0) as likescount from likes where likes.likes = 'true' group by post_id) as liked
+on posts.post_id = liked.post_id LEFT JOIN
+    (SELECT
+        post_id,
+        COUNT(*) AS dislikecount
+     FROM
+        likes
+     WHERE
+        likes.dislikes = 'true'
+     GROUP BY
+        post_id
+    ) AS disliked ON posts.post_id = disliked.post_id where post_type='public'  order by post_upload_time desc`;
 
-const queryforyou = `select posts.*, users.* from posts join users on posts.user_id = users.user_id join (select following_id from follow join users on follow.follower_id = $1 group by following_id) as ids on posts.user_id = ids.following_id order by posts.post_upload_time desc`;
+const queryforyou = `select posts.post_title, users.*, prof.* from posts join users on posts.user_id = users.user_id
+join
+(select * from profilepicture right join (select following_id from follow join users on follow.follower_id = '45de9e3f-046d-4c8a-a93a-ba847bfb2c2e'
+group by following_id) as ids on ids.following_id = profilepicture.user_id ) as prof
+ on posts.user_id = prof.user_id order by posts.post_upload_time desc`;
 
 router.post("/", async (req, res) => {
   try {
