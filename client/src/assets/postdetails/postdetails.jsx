@@ -25,6 +25,16 @@ import en from "javascript-time-ago/locale/en.json";
 import ru from "javascript-time-ago/locale/ru.json";
 import Chip from "@mui/material/Chip";
 import ImageComponent from "../../../utils/ImageComponent";
+import { getWhatsAppUrl } from "@phntms/react-share";
+import { copyToClipboard } from "@phntms/react-share";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { getTwitterUrl } from "@phntms/react-share";
+import XIcon from "@mui/icons-material/X";
+import { getLinkedinUrl } from "@phntms/react-share";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import { getFacebookUrl } from "@phntms/react-share";
+import FacebookIcon from "@mui/icons-material/Facebook";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -45,17 +55,17 @@ export const PostDetails = () => {
   const [option, setOption] = useState(false);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
-
   const navigate = useNavigate();
-
   const comment = useRef(null);
-
   const GETFAVORITE = "/getfavorite";
-
   const [favorite, setFavorite] = useState();
   const [favoriteDeatails, setFavoriteDetails] = useState({});
   const [follows, setFollows] = useState([]);
   const [followLoad, setFollowLoad] = useState(true);
+
+  const [bookMark, setBookMark] = useState(false);
+  const [bookMarkLoad, setbookMarkLoad] = useState(true);
+
   useEffect(() => {
     if (Object.keys(user).length > 0) {
       (async () => {
@@ -290,6 +300,8 @@ export const PostDetails = () => {
   const [dislikeStatus, setDislikeStatus] = useState();
   const [likeloading, setlikeloading] = useState(true);
 
+  const [social, setSocial] = useState(false);
+
   useEffect(() => {
     (async () => {
       const data = {
@@ -450,7 +462,7 @@ export const PostDetails = () => {
 
     setOpenModal((prev) => !prev);
   };
-  
+
   const FollowHandler = async () => {
     try {
       const response = await axios.post(
@@ -525,10 +537,11 @@ export const PostDetails = () => {
                   >
                     {data.post_title}
                   </h1>
-                  <div className="flex flex-row items-center mt-5 mb-10 justify-evenly">
-                    <div className="flex flex-row items-center justify-center">
-                      <div className="mr-2.5">
-                        {/* <img
+                  <div className="relative flex flex-row items-center justify-between w-full pl-5 pr-5 mt-5 mb-10 max-md:pr-0 max-md:pl-0">
+                    <div className="flex flex-row items-center justify-evenly">
+                      <div className="flex flex-row items-center justify-center">
+                        <div className="mr-2.5">
+                          {/* <img
                         className="rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
                         src={
                           data.profileimage
@@ -536,61 +549,191 @@ export const PostDetails = () => {
                             : "../../../public/Profile.jpeg"
                         }
                         /> */}
-                        {data.profileimage ? (
-                          <ImageComponent
-                            base64String={data.profileimage}
-                            features={
-                              "rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
-                            }
-                          />
-                        ) : (
-                          <img
-                            className="rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
-                            src={"../../../public/Profile.jpeg"}
-                          />
-                        )}
-                      </div>
-                      <div className="flex flex-col items-start justify-center ml-2.5">
-                        <div className="flex flex-row items-center ">
-                          <Link to={`/${data.user_name}`}>
-                            <p className="pr-2 text-base font-medium hover:underline max-md:text-sm">
-                              {data.userfullname
-                                ? data.userfullname
-                                : data.user_name}
+                          {data.profileimage ? (
+                            <ImageComponent
+                              base64String={data.profileimage}
+                              features={
+                                "rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
+                              }
+                            />
+                          ) : (
+                            <img
+                              className="rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
+                              src={"../../../public/Profile.jpeg"}
+                            />
+                          )}
+                        </div>
+                        <div className="flex flex-col items-start justify-center ml-2.5">
+                          <div className="flex flex-row items-center ">
+                            <Link to={`/${data.user_name}`}>
+                              <p className="pr-2 text-base font-medium hover:underline max-md:text-sm">
+                                {data.userfullname
+                                  ? data.userfullname
+                                  : data.user_name}
+                              </p>
+                            </Link>
+                            {data.user_name !== user.user_name && (
+                              <p>&middot;</p>
+                            )}
+                            {data.user_name !== user.user_name &&
+                              setFollowLoad &&
+                              (follows.length !== 0 ? (
+                                <button
+                                  onClick={() => setOpenModal((prev) => !prev)}
+                                  className="pl-2 text-base text-green-600 max-md:text-sm"
+                                >
+                                  Following
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={FollowHandler}
+                                  className="pl-2 text-base text-green-600 max-md:text-sm"
+                                >
+                                  Follow
+                                </button>
+                              ))}
+                          </div>
+                          <div className="flex flex-row items-center justify-start w-full ">
+                            <p className="pr-2 text-sm text-neutral-500 ">
+                              {Math.round(
+                                data.post_content.split("").length / 200
+                              )}{" "}
+                              min read
                             </p>
-                          </Link>
-                          {data.user_name !== user.user_name && <p>&middot;</p>}
-                          {data.user_name !== user.user_name &&
-                            setFollowLoad &&
-                            (follows.length !== 0 ? (
-                              <button
-                                onClick={() => setOpenModal((prev) => !prev)}
-                                className="pl-2 text-base text-green-600 max-md:text-sm"
-                              >
-                                Following
-                              </button>
-                            ) : (
-                              <button
-                                onClick={FollowHandler}
-                                className="pl-2 text-base text-green-600 max-md:text-sm"
-                              >
-                                Follow
-                              </button>
-                            ))}
-                        </div>
-                        <div className="flex flex-row items-center justify-start w-full ">
-                          <p className="pr-2 text-sm text-neutral-500 ">
-                            {Math.round(
-                              data.post_content.split("").length / 200
-                            )}{" "}
-                            min read
-                          </p>
-                          &middot;
-                          <p className="pl-2 text-sm text-neutral-500 max-md:text-xs">
-                            {format(data.post_upload_time, "MMM dd,yyyy")}
-                          </p>
+                            &middot;
+                            <p className="pl-2 text-sm text-neutral-500 max-md:text-xs">
+                              {format(data.post_upload_time, "MMM dd,yyyy")}
+                            </p>
+                          </div>
                         </div>
                       </div>
+                    </div>
+                    <div className="flex flex-row items-center justify-center">
+                      <Tooltip title="Bookmark">
+                        <div>
+                          {bookMark ? (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                              class="w-6 h-6 pr-1"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z"
+                                clip-rule="evenodd"
+                              />
+                            </svg>
+                          ) : (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              class="w-6 h-6 pr-1"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+                              />
+                            </svg>
+                          )}
+                        </div>
+                      </Tooltip>
+
+                      {social && (
+                        <div className="absolute flex flex-row items-center justify-center -top-5 max-md:-bottom-14 max-md:-right-2 max-md:top-10">
+                          <Tooltip title="Whatsapp">
+                            <a
+                              className="pl-2 pr-2"
+                              onClick={() => setSocial((prev) => !prev)}
+                              href={getWhatsAppUrl({
+                                url: `https://inkwellify.com/read/${data.post_id}`,
+                                text: `Hey check this amazing post - `,
+                              })}
+                            >
+                              <WhatsAppIcon />
+                            </a>
+                          </Tooltip>
+
+                          <Tooltip title="Copy">
+                            <div
+                              className="pl-2 pr-2"
+                              onClick={() => {
+                                setSocial((prev) => !prev);
+                                return copyToClipboard(
+                                  `https://inkwellify.com/read/${data.post_id}`
+                                );
+                              }}
+                            >
+                              <ContentCopyIcon />
+                            </div>
+                          </Tooltip>
+
+                          <Tooltip title="X">
+                            <a
+                              onClick={() => setSocial((prev) => !prev)}
+                              className="pl-2 pr-2"
+                              href={getTwitterUrl({
+                                url: `https://inkwellify.com/read/${data.post_id}`,
+                                text: `Hey check this amazing post from ${"https://inkwellify.com"}`,
+                                hashtags: data.post_tags,
+                                related: data.post_category,
+                              })}
+                            >
+                              <XIcon />
+                            </a>
+                          </Tooltip>
+
+                          <Tooltip title="LinkedIn">
+                            <a
+                              onClick={() => setSocial((prev) => !prev)}
+                              className="pl-2 pr-2"
+                              href={getLinkedinUrl({
+                                url: `https://inkwellify.com/read/${data.post_id}`,
+                                title: data.post_title,
+                                source: `${"https://inkwellify.com"}`,
+                              })}
+                            >
+                              <LinkedInIcon />
+                            </a>
+                          </Tooltip>
+
+                          <Tooltip title="Facebook">
+                            <a
+                              className="pl-2 pr-2"
+                              href={getFacebookUrl({
+                                url: `https://inkwellify.com/read/${data.post_id}`,
+                                hashtag: data.post_tags,
+                              })}
+                            >
+                              <FacebookIcon />
+                            </a>
+                          </Tooltip>
+                        </div>
+                      )}
+
+                      <Tooltip title="Share">
+                        <div className="z-100">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6 pl-1 cursor-pointer"
+                            onClick={() => setSocial((prev) => !prev)}
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
+                            />
+                          </svg>
+                        </div>
+                      </Tooltip>
                     </div>
                   </div>
                 </div>

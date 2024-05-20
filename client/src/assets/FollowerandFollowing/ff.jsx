@@ -141,7 +141,7 @@ export const Followers = () => {
                           : `../../../public/Profile.jpeg`
                       }
                     /> */}
-                    {user.profileimage  ? (
+                    {user.profileimage === null ? (
                       <img
                         className="rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
                         src={`../../../public/Profile.jpeg`}

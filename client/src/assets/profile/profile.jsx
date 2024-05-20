@@ -35,7 +35,16 @@ import { styled } from "@mui/material/styles";
 import "./profile.css";
 import { useNavigate } from "react-router-dom";
 import ImageComponent from "../../../utils/ImageComponent";
-
+import { getWhatsAppUrl } from "@phntms/react-share";
+import { copyToClipboard } from "@phntms/react-share";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { getTwitterUrl } from "@phntms/react-share";
+import XIcon from "@mui/icons-material/X";
+import { getLinkedinUrl } from "@phntms/react-share";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import { getFacebookUrl } from "@phntms/react-share";
+import FacebookIcon from "@mui/icons-material/Facebook";
 
 const SETPERSONALDETAILS = "/addpersonaldetails";
 const SETPROFILE = "/setprofileimage";
@@ -65,7 +74,7 @@ export const Profile = () => {
   const [profilename, setProfilename] = useState("");
   const Profile = useRef();
   const [loading, setLoading] = useState(true);
-
+  const [social, setSocial] = useState(false);
   const [publicPost, setPublicPost] = useState([]);
   const [privatePost, setPrivatePost] = useState([]);
 
@@ -947,12 +956,14 @@ export const Profile = () => {
             <div className="flex flex-row items-center justify-center">
               <div className="flex flex-row items-start justify-start w-11/12">
                 <div className="w-full">
-                  {(ProfileInfo.userfullname !== undefined || "") && (
-                    <div className="flex flex-row items-center justify-start">
-                      <h1 className="text-2xl font-black max-md:text-lg">
-                        {ProfileInfo.userfullname}
-                      </h1>
-                      {/* {user.user_name === userDetails.user_name && (
+                  <div className="flex flex-row items-center justify-between">
+                    <div className="w-3/4">
+                      {(ProfileInfo.userfullname !== undefined || "") && (
+                        <div className="flex flex-row items-center justify-start">
+                          <h1 className="text-2xl font-black max-md:text-lg">
+                            {ProfileInfo.userfullname}
+                          </h1>
+                          {/* {user.user_name === userDetails.user_name && (
                       <button className="pl-3">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -970,90 +981,182 @@ export const Profile = () => {
                         </svg>
                       </button>
                     )} */}
-                    </div>
-                  )}
+                        </div>
+                      )}
 
-                  <h1 className="text-xl font-semibold tex-gray-600 max-md:text-sm">
-                    @{userDetails.user_name}
-                  </h1>
-                  <h1 className="text-gray-600 max-md:text-sm">
-                    {ProfileInfo.role}
-                  </h1>
-                  {ProfileInfo.bio && (
-                    // <div
-                    //   className="mt-3 mb-1 max-md:text-xs max-md:mt-1"
-                    //   dangerouslySetInnerHTML={{ __html: ProfileInfo.bio }}
-                    // >
-                    //   {/* {ProfileInfo.bio} */}
-                    //   </div>
-                    <div className="ql-snow">
-                      <div
-                        className="mt-3 mb-1 ql-editor max-md:text-xs max-md:mt-1"
-                        dangerouslySetInnerHTML={{
-                          __html: ProfileInfo.bio,
-                        }}
-                      ></div>
-                    </div>
-                  )}
-                  <div className="flex flex-row items-center mt-2 text-gray-600">
-                    {(ProfileInfo.dateofbirth !== undefined || "") && (
-                      <time className="flex flex-row items-center justify-start pr-4 max-md:text-xs">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          class="w-6 h-6 max-md:w-4 max-md:h-4"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75-1.5.75a3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0L3 16.5m15-3.379a48.474 48.474 0 0 0-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.169c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 0 1 3 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 0 1 6 13.12M12.265 3.11a.375.375 0 1 1-.53 0L12 2.845l.265.265Zm-3 0a.375.375 0 1 1-.53 0L9 2.845l.265.265Zm6 0a.375.375 0 1 1-.53 0L15 2.845l.265.265Z"
-                          />
-                        </svg>
-                        <time className="pl-2">
-                          {format(ProfileInfo.dateofbirth, "dd MMM yyyy")}
-                        </time>
-                      </time>
-                    )}
+                      <h1 className="text-xl font-semibold tex-gray-600 max-md:text-sm">
+                        @{userDetails.user_name}
+                      </h1>
+                      <h1 className="text-gray-600 max-md:text-sm">
+                        {ProfileInfo.role}
+                      </h1>
+                      {ProfileInfo.bio && (
+                        // <div
+                        //   className="mt-3 mb-1 max-md:text-xs max-md:mt-1"
+                        //   dangerouslySetInnerHTML={{ __html: ProfileInfo.bio }}
+                        // >
+                        //   {/* {ProfileInfo.bio} */}
+                        //   </div>
+                        <div className="ql-snow">
+                          <div
+                            className="mt-3 mb-1 ql-editor max-md:text-xs max-md:mt-1"
+                            dangerouslySetInnerHTML={{
+                              __html: ProfileInfo.bio,
+                            }}
+                          ></div>
+                        </div>
+                      )}
+                      <div className="flex flex-row items-center mt-2 text-gray-600">
+                        {(ProfileInfo.dateofbirth !== undefined || "") && (
+                          <time className="flex flex-row items-center justify-start pr-4 max-md:text-xs">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              class="w-6 h-6 max-md:w-4 max-md:h-4"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75-1.5.75a3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0L3 16.5m15-3.379a48.474 48.474 0 0 0-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.169c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 0 1 3 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 0 1 6 13.12M12.265 3.11a.375.375 0 1 1-.53 0L12 2.845l.265.265Zm-3 0a.375.375 0 1 1-.53 0L9 2.845l.265.265Zm6 0a.375.375 0 1 1-.53 0L15 2.845l.265.265Z"
+                              />
+                            </svg>
+                            <time className="pl-2">
+                              {format(ProfileInfo.dateofbirth, "dd MMM yyyy")}
+                            </time>
+                          </time>
+                        )}
 
-                    <time className="flex flex-row items-center justify-start max-md:text-xs">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6 max-md:w-4 max-md:h-4"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
-                        />
-                      </svg>
-                      <time className="pl-2">
-                        Joined {format(userDetails.account_created, "MMM yyyy")}
-                      </time>
-                      {/* <ReactTimeAgo
+                        <time className="flex flex-row items-center justify-start max-md:text-xs">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6 max-md:w-4 max-md:h-4"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
+                            />
+                          </svg>
+                          <time className="pl-2">
+                            Joined{" "}
+                            {format(userDetails.account_created, "MMM yyyy")}
+                          </time>
+                          {/* <ReactTimeAgo
                     date={userDetails.account_created}
                     locale="en-IN"
                   /> */}
-                    </time>
+                        </time>
+                      </div>
+                      <div className="flex flex-row items-center justify-start mt-3 mb-3 text-gray-600 max-md:text-xs">
+                        <Link to={`/${user_name}/followers`}>
+                          <p className="pr-2 hover:underline">
+                            {followers.length} Followers
+                          </p>
+                        </Link>
+                        <Link to={`/${user_name}/followings`}>
+                          <p className="pl-2 hover:underline">
+                            {following.length} Followings
+                          </p>
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="relative flex flex-row items-center justify-end w-1/4">
+                      {social && (
+                        <div className="absolute flex flex-row items-center justify-center -top-10 -right-24 max-md:-left-44">
+                          <Tooltip title="Whatsapp">
+                            <a
+                              className="pl-2 pr-2"
+                              onClick={() => setSocial((prev) => !prev)}
+                              href={getWhatsAppUrl({
+                                url: `https://inkwellify.com/${user_name}`,
+                                text: `Hey check this profile - `,
+                              })}
+                            >
+                              <WhatsAppIcon />
+                            </a>
+                          </Tooltip>
+
+                          <Tooltip title="Copy">
+                            <div
+                              className="pl-2 pr-2"
+                              onClick={() => {
+                                setSocial((prev) => !prev);
+                                return copyToClipboard(
+                                  `https://inkwellify.com/${user_name}`
+                                );
+                              }}
+                            >
+                              <ContentCopyIcon />
+                            </div>
+                          </Tooltip>
+
+                          <Tooltip title="X">
+                            <a
+                              onClick={() => setSocial((prev) => !prev)}
+                              className="pl-2 pr-2"
+                              href={getTwitterUrl({
+                                url: `https://inkwellify.com/${user_name}`,
+                                text: `Hey check this profile from ${"https://inkwellify.com"}`,
+                              })}
+                            >
+                              <XIcon />
+                            </a>
+                          </Tooltip>
+
+                          <Tooltip title="LinkedIn">
+                            <a
+                              onClick={() => setSocial((prev) => !prev)}
+                              className="pl-2 pr-2"
+                              href={getLinkedinUrl({
+                                url: `https://inkwellify.com/${user_name}`,
+                                source: `${"https://inkwellify.com"}`,
+                              })}
+                            >
+                              <LinkedInIcon />
+                            </a>
+                          </Tooltip>
+
+                          <Tooltip title="Facebook">
+                            <a
+                              className="pl-2 pr-2"
+                              href={getFacebookUrl({
+                                url: `https://inkwellify.com/${user_name}`,
+                              })}
+                            >
+                              <FacebookIcon />
+                            </a>
+                          </Tooltip>
+                        </div>
+                      )}
+                      <Tooltip title="Share">
+                        <div>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6 cursor-pointer"
+                            onClick={() => setSocial((prev) => !prev)}
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
+                            />
+                          </svg>
+                        </div>
+                      </Tooltip>
+                    </div>
                   </div>
-                  <div className="flex flex-row items-center justify-start mt-3 mb-3 text-gray-600 max-md:text-xs">
-                    <Link to={`/${user_name}/followers`}>
-                      <p className="pr-2 hover:underline">
-                        {followers.length} Followers
-                      </p>
-                    </Link>
-                    <Link to={`/${user_name}/followings`}>
-                      <p className="pl-2 hover:underline">
-                        {following.length} Followings
-                      </p>
-                    </Link>
-                  </div>
+
                   {user.user_id !== userDetails.user_id && (
                     <div className="flex flex-row items-center justify-center mt-5 mb-5">
                       {console.log(follow)}
@@ -1104,7 +1207,9 @@ export const Profile = () => {
                                 gutterBottom
                               >
                                 Are You Sure To Unfollow{" "}
-                                <span className="text-red-500">{user_name}</span>
+                                <span className="text-red-500">
+                                  {user_name}
+                                </span>
                               </Typography>
                             </DialogContent>
                             <DialogActions>
@@ -1378,7 +1483,6 @@ export const Profile = () => {
                                           : items.post_summary,
                                     }}
                                   ></div>
-                                 
                                 </div>
                                 {user.user_name === userDetails.user_name && (
                                   <div className="flex flex-row items-center justify-center pl-5 max-md:pl-2">

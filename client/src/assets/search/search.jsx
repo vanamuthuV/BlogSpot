@@ -126,7 +126,7 @@ export const FetchContinous = ({ keyword }) => {
                             {account.profileimage === null ? (
                               <img
                                 className="rounded-full min-w-10 max-w-10 min-h-10 max-h-10 max-md:min-w-8 max-md:max-w-8 max-md:min-h-8 max-md:max-h-8"
-                                src="../../../public/ProfileDope.jpeg"
+                                src="../../../public/Profile.jpeg"
                               />
                             ) : (
                               // <img
