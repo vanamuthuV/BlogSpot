@@ -41,6 +41,8 @@ export const PostRequester = () => {
 
   console.log(user);
 
+  let count = 0;
+
   return (
     <>
       {loading ? (
@@ -102,9 +104,10 @@ export const PostRequester = () => {
               connections.
             </p>
           )}
-          {data.map((post) => (
-            <Post {...post} />
-          ))}
+          {data.map((post) => {
+            count += 1
+            return <Post {...post} count = {count} type={ClickAnalyzer} />
+          })}
           {ClickAnalyzer === "foryou" && (
             <div className="flex flex-row items-center justify-center h-96">
               <p className="text-2xl text-orange-500">Coming Soon</p>
