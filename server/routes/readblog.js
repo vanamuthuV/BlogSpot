@@ -90,8 +90,8 @@ LEFT JOIN
         user_id = $1
     ) AS bookmark ON posts.post_id = bookmark.post_id
 WHERE
-    post_type = 'public';
-
+    post_type = 'public'
+order by likecount desc
 `;
 
 // const querynew = `select posts.* , users.*, profilepicture.*, coalesce(liked.likescount, 0) as likecount, COALESCE(disliked.dislikecount, 0) AS dislikecount
@@ -163,7 +163,7 @@ where post_type='public'  order by post_upload_time desc`;
 // as dislikedd on A.post_id = dislikedd.post_id where A.post_type = 'public' order by A.post_upload_time desc 
 // `;
 
-const queryforyou = `select A.*, 
+const querynetwork = `select A.*, 
 coalesce(likedd.lik, 0) as likecount, 
 coalesce(dislikedd.dislik, 0) as dislikecount,
  CASE 
@@ -212,7 +212,7 @@ router.post("/", async (req, res) => {
     }
 
     if (req?.body?.type === "network") {
-      const posts = await pool.query(queryforyou, [req?.body?.id]);
+      const posts = await pool.query(querynetwork, [req?.body?.id]);
       console.log(posts.rowCount);
       res.status(200).json({ posts: posts.rows });
     }
