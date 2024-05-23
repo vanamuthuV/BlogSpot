@@ -306,6 +306,7 @@ export const PostRequester = () => {
                             {Math.round(post_content.split("").length / 200)}{" "}
                             min read
                           </p>
+
                           <Tooltip
                             className="flex flex-row items-center justify-center"
                             title="Bookmark"
@@ -443,6 +444,9 @@ export const PostRequester = () => {
                             </div>
                           </Tooltip>
                         </div>
+                        <p className="pt-1 pb-1 pl-1 pr-1 text-sm font-normal rounded-md bg-orange-50 text-neutral-800 ">
+                          {post_category}
+                        </p>
                         <div className="flex flex-row items-center justify-center">
                           <p className="flex flex-row items-center justify-center pr-1 text-sm text-green-500 ">
                             <svg

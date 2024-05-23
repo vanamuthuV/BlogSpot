@@ -113,7 +113,7 @@ export const SignUp = () => {
   return (
     <div div className="w-2/4 max-md:w-10/12">
       {alert && snack}
-      <p className="mt-5 mb-5 text-xl font-semibold text-center text-orange-500 max-md:text-lg">
+      <p className="mt-5 mb-5 text-xl font-semibold text-center text-orange-500 max-md:text-sm">
         Sign Up Page
       </p>
       <form
@@ -162,13 +162,13 @@ export const SignUp = () => {
         </div>
         <label
           htmlFor="un"
-          className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center"
+          className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center max-md:text-vs"
         >
           Enter Your username <span className="pl-1 text-red-700">*</span>
         </label>
         <input
           type="text"
-          className="w-full mt-2 border-b-2 border-orange-500 un focus:outline-none"
+          className="w-full mt-2 border-b-2 border-orange-500 un focus:outline-none max-md:text-xs"
           ref={UserName}
           onChange={CheckUserName}
           pattern="^[a-z0-9]+$"
@@ -215,12 +215,12 @@ export const SignUp = () => {
         </div>
         <label
           htmlFor="em"
-          className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center"
+          className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center max-md:text-vs"
         >
           Enter Your Email <span className="pl-1 text-red-700">*</span>
         </label>
         <input
-          className="w-full mt-2 border-b-2 border-orange-500 em focus:outline-none"
+          className="w-full mt-2 border-b-2 border-orange-500 em focus:outline-none max-md:text-xs"
           ref={Gmail}
           onChange={CheckEmail}
           required
@@ -229,18 +229,18 @@ export const SignUp = () => {
         ></input>
         <label
           htmlFor="pa"
-          className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center"
+          className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center max-md:text-vs"
         >
           Enter Your Password <span className="pl-1 text-red-700">*</span>
         </label>
         <input
-          className="w-full mt-2 border-b-2 border-orange-500 pa focus:outline-none"
+          className="w-full mt-2 border-b-2 border-orange-500 pa focus:outline-none max-md:text-xs"
           type="password"
           ref={Passcode}
           required
         ></input>
         <button
-          className="pt-2 pb-2 pl-5 pr-5 mt-10 bg-orange-500 rounded-xl text-gray-50 hover:border hover:border-orange-500 hover:bg-gray-50 hover:text-orange-500"
+          className="pt-2 pb-2 pl-5 pr-5 mt-10 bg-orange-500 rounded-xl text-gray-50 hover:border hover:border-orange-500 hover:bg-gray-50 hover:text-orange-500 max-md:text-xs max-md:pt-1.5 max-md:pb-1.5 max-md:pr-4 max-md:pl-4"
           type="Submit"
         >
           Register

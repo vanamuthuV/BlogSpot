@@ -14,6 +14,10 @@ export default {
       inset: {
         "-38": "-9.5rem", // Assuming 1rem = 4 units in Tailwind (adjust accordingly)
       },
+      fontSize: {
+        xs: "0.75rem", // 12px (default example)
+        "vs": "10px", // Adding custom font size 8px
+      },
     },
     fontFamily: {
       sans: ["ui-sans-serif", "system-ui"],

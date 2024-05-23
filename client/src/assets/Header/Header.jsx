@@ -370,8 +370,8 @@ export const Navbar = () => {
               </Link>
             )} */}
 
-            {Object.keys(user).length === 0 && (
-              <Tooltip title="Search">
+            {/* {Object.keys(user).length !== 0 && (
+              <Tooltip title="Searc">
                 <Link to={"/Search"} className="text-gray-900 md:hidden">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -389,7 +389,7 @@ export const Navbar = () => {
                   </svg>
                 </Link>
               </Tooltip>
-            )}
+            )} */}
 
             {user.user_name && (
               <div
@@ -459,8 +459,8 @@ export const Navbar = () => {
               ) : (
                 <Link to={"/SignUp"}>
                   <Tooltip title="SignUp / Login">
-                    <button className="pt-1 pb-1 pl-2 pr-2 ml-5 font-light bg-orange-500 rounded-lg text-gray-50 hover:text-orange-500 hover:bg-gray-50 hover:border hover:border-orange-500 active:bg-white active:text-orange-500 max-md:text-xs">
-                      SIGN UP
+                    <button className="pt-1 pb-1 pl-3 pr-3 text-base font-medium bg-orange-500 rounded-full text-gray-50 hover:bg-gray-50 hover:text-orange-500 hover:border hover:border-orange-500 active:bg-white active:text-orange-500">
+                      Get Started
                     </button>
                   </Tooltip>
                 </Link>

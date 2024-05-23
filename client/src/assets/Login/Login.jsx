@@ -81,7 +81,7 @@ export const Login = () => {
     <>
       {alert && Snack}
       <div className="w-2/4 max-md:w-10/12">
-        <h1 className="mt-5 mb-5 text-xl font-semibold text-center text-orange-500 max-md:text-lg">
+        <h1 className="mt-5 mb-5 text-xl font-semibold text-center text-orange-500 max-md:text-sm">
           Login Page
         </h1>
         {/* <p ref={errMsg} aria-live="assertive">
@@ -93,47 +93,47 @@ export const Login = () => {
         >
           <label
             htmlFor="em"
-            className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center"
+            className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center max-md:text-vs"
           >
             Enter Your Email <span className="pl-1 text-red-700">*</span>
           </label>
           <input
             type="text"
-            className="w-full mt-2 border-b-2 border-orange-500 em focus:outline-none"
+            className="w-full mt-2 border-b-2 border-orange-500 em focus:outline-none max-md:text-xs"
             autoComplete="off"
             ref={Gmail}
             required
           ></input>
           <label
             htmlFor="em"
-            className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center"
+            className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center max-md:text-vs"
           >
             Enter Your Password <span className="pl-1 text-red-700">*</span>
           </label>
           <input
-            className="w-full mt-2 border-b-2 border-orange-500 em focus:outline-none"
+            className="w-full mt-2 border-b-2 border-orange-500 em focus:outline-none max-md:text-xs"
             type="password"
             ref={Passcode}
             required
           ></input>
 
-          <div className="flex flex-row items-center justify-around w-full mt-5 mb-2">
+          <div className="flex flex-row items-center justify-around w-full mt-5 mb-2 ">
             <Link to={"/SignUp/forgetusername"}>
-              <p className="forget">forget username</p>
+              <p className="forget max-md:text-xs">forget username</p>
             </Link>
             <Link to={"/SignUp/forgetpasscode"}>
-              <p className="forget">forget passcode</p>
+              <p className="forget max-md:text-xs">forget passcode</p>
             </Link>
           </div>
           <div className="mb-5">
             <Link to={"/SignUp"}>
-              <p className="text-red-700 hover:underline hover:underline-offset-1">
+              <p className="text-red-700 hover:underline hover:underline-offset-1 max-md:text-xs">
                 New User ? Register
               </p>
             </Link>
           </div>
           <button
-            className="pt-2 pb-2 pl-5 pr-5 bg-orange-500 rounded-xl text-gray-50 hover:border hover:border-orange-500 hover:bg-gray-50 hover:text-orange-500"
+            className="pt-2 pb-2 pl-5 pr-5 bg-orange-500 rounded-xl text-gray-50 hover:border hover:border-orange-500 hover:bg-gray-50 hover:text-orange-500 max-md:text-xs max-md:pt-1.5 max-md:pb-1.5 max-md:pr-4 max-md:pl-4"
             type="Submit"
           >
             Login

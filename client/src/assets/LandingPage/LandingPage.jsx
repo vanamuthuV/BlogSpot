@@ -127,7 +127,7 @@ export const LandingPage = () => {
         </div>
       </div>
       <div className="flex flex-col items-center justify-center w-full pb-5">
-        <h1 className="pt-10 pb-10 text-3xl font-bold text-center text-orange-500 max-md:pt-5 max-md:pb-5">
+        <h1 className="pt-10 pb-10 text-3xl font-bold text-center text-orange-500 max-md:pt-5 max-md:pb-5 max-md:text-xl">
           Trending Blogs
         </h1>
         {loading ? (
@@ -247,19 +247,19 @@ export const LandingPage = () => {
         )}
       </div>
       <div className="flex flex-row items-center justify-center w-full">
-        <div className="flex flex-row items-center justify-between w-11/12 mt-10 mb-20">
-          <div className="w-2/4 pr-10 max-md:pr-2">
-            <h1 className="text-6xl leading-snug max-md:text-2xl">
+        <div className="flex flex-row items-center justify-between w-11/12 mt-10 mb-20 max-md:flex-col">
+          <div className="w-2/4 pr-10 max-md:pr-2 max-md:w-full max-md:p-5 max-md:pb-0">
+            <h1 className="text-6xl leading-snug text-center max-md:text-xl">
               Create and share your blog effortlessly.
             </h1>
           </div>
-          <div className="w-2/4 pl-10 max-md:pl-2">
-            <p className="leading-relaxed max-md:text-xs">
+          <div className="w-2/4 pl-10 max-md:pl-2 max-md:w-full max-md:p-5">
+            <p className="leading-relaxed max-md:text-xs max-md:text-center">
               "Empower your voice with our blog platform, where you can
               effortlessly create and share your stories, building a community
               around your ideas that grows with you."
             </p>
-            <Link to={"/SignUp"}>
+            <Link className="flex flex-row items-center justify-center w-full" to={"/SignUp"}>
               <button className="flex flex-row items-center mt-5 text-black transition duration-150 delay-150 hover:text-orange-500 max-md:text-sm">
                 <p className="underline underline-offset-4">Get Started </p>
                 <svg
@@ -283,7 +283,7 @@ export const LandingPage = () => {
       </div>
 
       <div className="flex flex-col items-center justify-center mt-10 mb-10">
-        <h1 className="mb-10 text-3xl font-bold text-orange-500">
+        <h1 className="mb-10 text-3xl font-bold text-orange-500 max-md:text-xl max-md:mb-3">
           What We Have ?{" "}
         </h1>
         <div className="flex flex-row flex-wrap items-center justify-around w-11/12 gap-10 mt-10 mb-10">
@@ -342,7 +342,7 @@ export const LandingPage = () => {
       </div>
       <div className="flex flex-row items-center justify-center">
         <div className="flex flex-col items-start justify-start w-10/12">
-          <h1 className="text-2xl font-bold text-orange-500">FAQS</h1>
+          <h1 className="text-2xl font-bold text-orange-500 max-md:text-xl">FAQS</h1>
           <div className="mt-5 mb-10">
             {/* <Container sx={{ marginTop: "10px", marginBottom: "30px" }}> */}
             {AccordionDetail.map((info) => {

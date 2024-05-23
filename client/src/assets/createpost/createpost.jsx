@@ -259,7 +259,7 @@ export const CreatePost = () => {
         >
           {/* border-2 border-gray-500 border-solid */}
           <input
-            className="w-3/4 pt-3 pb-3 pl-5 pr-5 m-5 text-4xl border-l-4 border-gray-300 max-md:w-5/6"
+            className="w-3/4 pt-3 pb-3 pl-5 pr-5 m-5 text-4xl border-l-4 border-gray-300 max-md:w-11/12"
             type="title"
             ref={title}
             placeholder="Title"
@@ -301,26 +301,43 @@ export const CreatePost = () => {
             ref={content}
           /> */}
           <ReactQuill
-            className="w-3/4"
+            className="w-3/4 max-md:w-11/12"
             modules={modules}
             theme="snow"
             ref={content}
             placeholder="Unleash your creativity and share your story with the world. Write something amazing here!"
           />
           <input
-            className="w-3/4 pt-3 pb-3 pl-5 pr-5 m-5 text-xl border-l-4 border-gray-300 max-md:w-5/6"
+            className="w-3/4 pt-3 pb-3 pl-5 pr-5 m-5 text-xl border-l-4 border-gray-300 max-md:w-11/12"
             ref={category}
             type="text"
             placeholder="Category ?"
           ></input>
           <input
-            className="w-3/4 pt-3 pb-3 pl-5 pr-5 m-5 text-xl border-l-4 border-gray-300 max-md:w-5/6"
+            className="w-3/4 pt-3 pb-3 pl-5 pr-5 m-5 text-xl border-l-4 border-gray-300 max-md:w-11/12"
             ref={tags}
             type="text"
             placeholder="Tags"
           ></input>
+          <p className="flex flex-row items-center justify-start w-3/4 mt-5 mb-2 text-lg text-gray-500 max-md:w-11/12 animate-blinker">
+            Summarize Here{" "}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-5 ml-2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3"
+              />
+            </svg>
+          </p>
           <ReactQuill
-            className="w-3/4"
+            className="w-3/4 max-md:w-11/12"
             modules={modulesSummary}
             theme="snow"
             ref={summary}
