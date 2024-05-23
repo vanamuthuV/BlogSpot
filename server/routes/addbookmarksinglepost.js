@@ -1,10 +1,10 @@
-import express from "express";
 import pool from "../db.js";
+import express from "express";
 
 const router = express.Router();
 
-const query = `
-   SELECT users.*, profilepicture.*, posts.*, profileinformation.*, CASE 
+const query = `insert into bookmark values ($1, $2)`;
+const query1 = ` SELECT users.*, profilepicture.*, posts.*, profileinformation.*, CASE 
         WHEN bookmark.bookmarkid IS NOT NULL THEN TRUE
         ELSE FALSE
     END AS is_bookmarked,
@@ -25,22 +25,16 @@ LEFT JOIN
     where posts.post_id = $2
 `;
 
-const queryD = `SELECT * from users
-    join posts on users.user_id = posts.user_id
-    left outer join profilepicture on profilepicture.user_id = users.user_id
-    left outer join profileinformation on users.user_id = profileinformation.user_id
-    where posts.post_id = $1`;
-
 router.post("/", async (req, res) => {
- 
+  console.log(req.body);
+  const { user_id, post_id } = req?.body;
   try {
-    const post = req?.body?.user_id
-      ? await pool.query(query, [req.body.user_id, req.body.id])
-      : await pool.query(queryD, [ req.body.id]);
-
-    res.status(200).json({ post: post.rows[0] });
+    await pool.query(query, [user_id, post_id]);
+    const Posts = await pool.query(query1, [user_id, post_id]);
+    res.status(200).json({ posts: Posts.rows[0] });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.log(error);
+    res.status(501).json({ data: error });
   }
 });
 

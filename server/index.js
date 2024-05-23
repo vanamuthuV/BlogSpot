@@ -58,6 +58,10 @@ import UserCheck from "./routes/uncheck.js";
 import UserECheck from "./routes/uecheck.js"
 import CheckFollow from "./routes/checkfollower.js"
 import AddFollowerInPost from "./routes/addfollowerinpost.js"
+import AddBookMark from "./routes/addbookmark.js"
+import RemoveBookMark from "./routes/removebookmark.js"
+import AddBookMarkSingle from "./routes/addbookmarksinglepost.js"
+import RemoveBookMarkSingle from "./routes/removebookmarkforsinglepost.js";
 
 const Base_URL = "http://localhost:5173";
 dotenv.config();
@@ -133,7 +137,10 @@ app.use("/uncheck", UserCheck);
 app.use("/uecheck", UserECheck)
 app.use("/checkfollow", CheckFollow);
 app.use("/addfollowinpost", AddFollowerInPost)
-
+app.use("/addbookmark", AddBookMark);
+app.use("/removebookmark", RemoveBookMark);
+app.use("/addbookmarksingle", AddBookMarkSingle);
+app.use("/removebookmarksingle", RemoveBookMarkSingle)
 
 app.listen(5000, () => {
   console.log("Connected to postgres...");

@@ -39,6 +39,7 @@ export const Login = () => {
       const accessToken = response?.data?.accessToken;
       const user_name = response?.data?.user_name;
       localStorage.setItem("accessToken", accessToken);
+      // localStorage.setItem("user_id", response?.data?.user_details[0].user_id);
       setAuth({
         Gmail: Gmail.current.value,
         Passcode: Passcode.current.value,

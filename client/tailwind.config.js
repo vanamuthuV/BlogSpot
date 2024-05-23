@@ -11,6 +11,9 @@ export default {
           "50%": { opacity: "0" },
         },
       },
+      inset: {
+        "-38": "-9.5rem", // Assuming 1rem = 4 units in Tailwind (adjust accordingly)
+      },
     },
     fontFamily: {
       sans: ["ui-sans-serif", "system-ui"],

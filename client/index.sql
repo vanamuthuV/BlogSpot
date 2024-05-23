@@ -86,3 +86,11 @@ create table likes (
 	foreign key(user_id) references users(user_id) on delete cascade,
 	foreign key(post_id) references posts(post_id) on delete cascade
 );
+
+create table bookmark (
+	user_id uuid ,
+	post_id uuid, 
+	foreign key(user_id) references users(user_id) on delete cascade,
+	foreign key(post_id) references posts(post_id) on delete cascade,
+	bookmarkid uuid primary key default uuid_generate_v4()
+)

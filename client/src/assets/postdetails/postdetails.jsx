@@ -63,8 +63,41 @@ export const PostDetails = () => {
   const [follows, setFollows] = useState([]);
   const [followLoad, setFollowLoad] = useState(true);
 
-  const [bookMark, setBookMark] = useState(false);
-  const [bookMarkLoad, setbookMarkLoad] = useState(true);
+  const ADDBOOKMARK = "/addbookmarksingle";
+  const REMOVEBOOKMARK = "/removebookmarksingle";
+
+  const AddBookMark = async (post_id) => {
+    if (Object.keys(user).length === 0) navigate('/SignUp')
+    else {
+      try {
+        const response = await axios.post(ADDBOOKMARK, {
+          user_id: user.user_id,
+          post_id: post_id,
+        });
+        console.log(response);
+        setData(response?.data?.posts);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    
+  };
+
+  const RemoveBookMark = async (ev) => {
+    console.log("Hello");
+    console.log(ev.target.value);
+
+    try {
+      const response = await axios.post(REMOVEBOOKMARK, {
+        bookmarkid: ev.target.value,
+        user_id: user.user_id,
+        post_id : id
+      });
+      setData(response?.data?.posts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (Object.keys(user).length > 0) {
@@ -211,6 +244,7 @@ export const PostDetails = () => {
       try {
         const response = await axios.post(POSTDETAIL_URL, {
           id: id,
+          user_id: user.user_id,
         });
         console.log(response?.data);
         setData(response?.data?.post);
@@ -609,7 +643,7 @@ export const PostDetails = () => {
                       </div>
                     </div>
                     <div className="flex flex-row items-center justify-center">
-                      <Tooltip title="Bookmark">
+                      {/* <Tooltip title="Bookmark">
                         <div>
                           {bookMark ? (
                             <svg
@@ -639,6 +673,50 @@ export const PostDetails = () => {
                                 d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
                               />
                             </svg>
+                          )}
+                        </div>
+                      </Tooltip> */}
+                      <Tooltip
+                        className="flex flex-row items-center justify-center"
+                        title="Bookmark"
+                      >
+                        <div>
+                          {data.is_bookmarked ? (
+                            <button
+                              value={data.bookmarkid}
+                              onClick={RemoveBookMark}
+                              className="text-orange-500"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                className="w-5 h-5 ml-4 mr-4 text-orange-500 max-md:w-4 max-md:h-4"
+                              >
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z"
+                                  clip-rule="evenodd"
+                                />
+                              </svg>
+                            </button>
+                          ) : (
+                            <button onClick={() => AddBookMark(id)}>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                className="w-5 h-5 ml-4 mr-4 max-md:w-4 max-md:h-4"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+                                />
+                              </svg>
+                            </button>
                           )}
                         </div>
                       </Tooltip>
