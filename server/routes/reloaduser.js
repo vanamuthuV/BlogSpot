@@ -8,7 +8,7 @@ router.post('/',Authentication , async (req, res) => {
     const { user_id } = req.user
     
     const query = `
-        select * from users join profilepicture on users.user_id = profilepicture.user_id where users.user_id = $1
+        select * from users left join profilepicture on users.user_id = profilepicture.user_id where users.user_id = $1
     `
 
     const Profile = await pool.query(query, [user_id])

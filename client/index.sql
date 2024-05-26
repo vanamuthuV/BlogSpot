@@ -1,7 +1,10 @@
 create table users(user_name text unique not null,
 	user_email text unique not null,
-	user_password text,
 	account_created timestamp,
+	user_password text,
+	strategic_id text,
+	platform text,
+	verified boolean,
 	user_id uuid primary key default uuid_generate_v4()
 );
 

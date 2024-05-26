@@ -8,6 +8,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 const Login_URL = "/login";
 import { SnackBar } from "./Alert.jsx";
+import { FaGoogle } from "react-icons/fa";
 
 export const Login = () => {
   const { auth, setAuth, setUser } = useAuth();
@@ -18,6 +19,10 @@ export const Login = () => {
   // const [errMsg, seterrMsg] = useState('');
 
   const navigate = useNavigate();
+
+  const GoogleRequesterRegister = async () => {
+    window.open("http://localhost:5000/auth/google/callback", "_self");
+  };
 
   useEffect(() => {
     Gmail.current.focus();
@@ -139,6 +144,18 @@ export const Login = () => {
             Login
           </button>
         </form>
+
+        <hr className="h-0.5 mx-auto my-4 bg-gray-100 border-0 md:my-10 dark:bg-gray-300" />
+
+        <div className="flex flex-row items-center w-full mb-10 justify-evenly max-md:flex-col">
+          <button
+            className="flex flex-row items-center justify-center w-full pt-2 pb-2 pr-10 mt-2 mb-2 text-lg bg-red-500 text-gray-50"
+            onClick={GoogleRequesterRegister}
+          >
+            <FaGoogle size={"20px"} />
+            Google
+          </button>
+        </div>
       </div>
     </>
   );

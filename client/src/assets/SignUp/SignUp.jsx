@@ -2,11 +2,8 @@ import { useEffect, useRef, useState, useContext } from "react";
 import "./SignUp.css";
 import axios from "../../../api/axios.jsx";
 import { Link, useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
+import { FaGoogle } from "react-icons/fa";
 import { SnackBar } from "../Login/Alert.jsx";
-import TextField from "@mui/material/TextField";
 
 const SignUp_URL = "/SignUp";
 
@@ -31,14 +28,33 @@ export const SignUp = () => {
         email: Gmail.current.value,
         passcode: Passcode.current.value,
       });
-      setVisibleModel((prev) => !prev);
-      setSnack(<SnackBar message={response?.data?.data} variant={"success"} />);
+      setVisibleModel(response?.data?.Status);
+      setSnack(
+        response?.data?.Status ? (
+          <SnackBar
+            message={response?.data?.statusMessage + " , Now Login."}
+            variant={"success"}
+          />
+        ) : (
+          <SnackBar message={response?.data?.statusMessage} variant={"error"} />
+        )
+      );
+      console.log(response);
+      response?.data?.Status &&
+        (() => {
+          UserName.current.value = "";
+          Gmail.current.value = "";
+          Passcode.current.value = "";
+          setPos(false);
+          setPosE(false);
+        })();
     } else {
       setSnack(
-        <SnackBar message={"Registration Unsucessfull!!"} variant={"error"} />
+        <SnackBar message={"username or email is in use."} variant={"error"} />
       );
       console.log("Sorry !!");
     }
+
     setAlert(true);
   };
 
@@ -110,10 +126,14 @@ export const SignUp = () => {
     UserName.current.focus();
   }, []);
 
+  const GoogleRequesterRegister = async () => {
+    window.open("http://localhost:5000/auth/google/callback", "_self");
+  };
+
   return (
     <div div className="w-2/4 max-md:w-10/12">
       {alert && snack}
-      <p className="mt-5 mb-5 text-xl font-semibold text-center text-orange-500 max-md:text-sm">
+      <p className="mt-10 mb-5 text-xl font-semibold text-center text-orange-500 max-md:text-sm">
         Sign Up Page
       </p>
       <form
@@ -246,6 +266,19 @@ export const SignUp = () => {
           Register
         </button>
       </form>
+
+      <hr className="h-0.5 mx-auto my-4 bg-gray-100 border-0 md:my-10 dark:bg-gray-300" />
+
+      <div className="flex flex-row items-center w-full mb-10 justify-evenly max-md:flex-col">
+        <button
+          className="flex flex-row items-center justify-center w-full pt-2 pb-2 pr-10 mt-2 mb-2 text-lg bg-red-500 text-gray-50"
+          onClick={GoogleRequesterRegister}
+        >
+          <FaGoogle size={"20px"} />
+          Google
+        </button>
+      </div>
+
       {visiblemodel && (
         <Link to={"/SignUp/login"}>
           <p

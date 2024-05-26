@@ -9,13 +9,13 @@ router.post("/", async (req, res) => {
     const { username, email, passcode } = req.body;
     const HashedPasscode = await bcrypt.hash(passcode, 10);
     const NewUser = await pool.query(
-      "INSERT INTO users values($1, $2, $3,  CURRENT_TIMESTAMP)",
+      "INSERT INTO users values($1, $2,  CURRENT_TIMESTAMP, $3, 'manual_user', 'manual', false)",
       [username, email, HashedPasscode]
     );
-    res.status(200).json({ data: "Registration Successfull!!" });
+    res.status(200).json({ statusMessage:'Successfully Registered', Status : true , data: "Registration Successfull!!" });
   } catch (error) {
     console.log(error.message);
-    res.status(401).json({ error: error.message });
+    res.status(200).json({statusMessage : 'Sorry! problem at our end!', Status : false, error: error.message });
   }
 });
 

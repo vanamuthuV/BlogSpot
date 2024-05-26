@@ -9,6 +9,9 @@ import bodyParser from "body-parser";
 import reloadRouter from "./routes/reloaduser.js";
 import ReadBlog from "./routes/readblog.js";
 import path from "path";
+import session from "express-session";
+import passport, { Passport } from "passport";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import PostDetails from "./routes/postdetails.js";
 import EditResource from "./routes/EditResource.js";
 import ImageUpdater from "./routes/imageupdater.js";
@@ -55,31 +58,122 @@ import MoreLike from "./routes/loadlike.js";
 import MoreDisLike from "./routes/loaddislike.js";
 import LandingData from "./routes/landingdata.js";
 import UserCheck from "./routes/uncheck.js";
-import UserECheck from "./routes/uecheck.js"
-import CheckFollow from "./routes/checkfollower.js"
-import AddFollowerInPost from "./routes/addfollowerinpost.js"
-import AddBookMark from "./routes/addbookmark.js"
-import RemoveBookMark from "./routes/removebookmark.js"
-import AddBookMarkSingle from "./routes/addbookmarksinglepost.js"
+import UserECheck from "./routes/uecheck.js";
+import CheckFollow from "./routes/checkfollower.js";
+import AddFollowerInPost from "./routes/addfollowerinpost.js";
+import AddBookMark from "./routes/addbookmark.js";
+import RemoveBookMark from "./routes/removebookmark.js";
+import AddBookMarkSingle from "./routes/addbookmarksinglepost.js";
 import RemoveBookMarkSingle from "./routes/removebookmarkforsinglepost.js";
+import pool from "./db.js";
+import jwtToken from "./utils/jwtToken.js";
 
 const Base_URL = "http://localhost:5173";
 dotenv.config();
 
+const queryuserexists = `select * from users left join profilepicture on users.user_id = profilepicture.user_id where strategic_id = $1`;
+const querynewuser = `insert into users values ($1, $2, CURRENT_TIMESTAMP, 'google_user', $3, 'google', true)`;
+
 const app = express();
 const __dirname = path.resolve();
-const corOptions = {
-  Credential: true,
-  origin: process.env.url || Base_URL,
-  methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+const corsOptions = {
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  origin: process.env.URL || Base_URL, // Allow requests from this origin
+  methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"], // Allowed HTTP methods
+  allowedHeaders: ["Origin", "Content-Type", "Authorization"], // Allowed headers
 };
-
-app.use(cors(corOptions));
+app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: "5mb" }));
 app.use(express.json());
 app.use(cookieParser());
+
+app.use(
+  session({
+    secret: "3hr8923jhed932edj02347djnn3409r58234df34098hr54",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
+    },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "/auth/google/callback",
+      scope: ["profile", "email"],
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        const users = await pool.query(queryuserexists, [profile.id]);
+        console.log(profile);
+        if (users.rows.length === 0) {
+          await pool.query(querynewuser, [
+            profile._json.given_name.toLowerCase() +
+              profile._json.family_name.toLowerCase(),
+            profile._json.email,
+            profile.id,
+          ]);
+        }
+
+        const user = await pool.query(queryuserexists, [profile.id]);
+        const { accessToken, refreshToken } = jwtToken(user.rows[0]);
+        user.rows[0].accessToken = accessToken;
+        user.rows[0].refreshToken = refreshToken
+        return done(null, user);
+      } catch (error) {
+        return done(error, null);
+      }
+    }
+  )
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "http://localhost:5173",
+    failureRedirect: "http://localhost:5173/SignUp",
+  })
+);
+
+app.get("/login/success", (req, res) => {
+  console.log("Yoo", req?.user);
+  if (req.user) {
+    res
+      .status(200)
+      .json({ message: "Authentication Success", data: req?.user?.rows[0] });
+  } else {
+    res.status(401).json({ message: "Authentication Failed", data: null });
+  }
+});
+
+app.get("/logouts", (req, res, next) => {
+  req.logout(function (err) {
+    if (err) { return next(err) }
+    res.redirect("http://localhost:5173/SignUp");
+  })
+})
+
 app.use("/SignUp", signUpRouter);
 app.use("/login", loginRouter);
 app.use("/post", postRouter);
@@ -134,17 +228,17 @@ app.use("/likeload", MoreLike);
 app.use("/dislikeload", MoreDisLike);
 app.use("/landingdata", LandingData);
 app.use("/uncheck", UserCheck);
-app.use("/uecheck", UserECheck)
+app.use("/uecheck", UserECheck);
 app.use("/checkfollow", CheckFollow);
-app.use("/addfollowinpost", AddFollowerInPost)
+app.use("/addfollowinpost", AddFollowerInPost);
 app.use("/addbookmark", AddBookMark);
 app.use("/removebookmark", RemoveBookMark);
 app.use("/addbookmarksingle", AddBookMarkSingle);
-app.use("/removebookmarksingle", RemoveBookMarkSingle)
+app.use("/removebookmarksingle", RemoveBookMarkSingle);
 
 app.listen(5000, () => {
   console.log("Connected to postgres...");
-  console.log("server is listening...");
+  console.log("server is listening on port 5000 ...");
 });
 
 /*

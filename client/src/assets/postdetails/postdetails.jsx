@@ -35,6 +35,7 @@ import { getLinkedinUrl } from "@phntms/react-share";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { getFacebookUrl } from "@phntms/react-share";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import CircularProgress from "@mui/material/CircularProgress";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -67,7 +68,7 @@ export const PostDetails = () => {
   const REMOVEBOOKMARK = "/removebookmarksingle";
 
   const AddBookMark = async (post_id) => {
-    if (Object.keys(user).length === 0) navigate('/SignUp')
+    if (Object.keys(user).length === 0) navigate("/SignUp");
     else {
       try {
         const response = await axios.post(ADDBOOKMARK, {
@@ -80,7 +81,6 @@ export const PostDetails = () => {
         console.log(error);
       }
     }
-    
   };
 
   const RemoveBookMark = async (ev) => {
@@ -91,7 +91,7 @@ export const PostDetails = () => {
       const response = await axios.post(REMOVEBOOKMARK, {
         bookmarkid: ev.target.value,
         user_id: user.user_id,
-        post_id : id
+        post_id: id,
       });
       setData(response?.data?.posts);
     } catch (error) {
@@ -248,7 +248,7 @@ export const PostDetails = () => {
         });
         console.log(response?.data);
         setData(response?.data?.post);
-        setLoading(false);
+
         console.log(
           response?.data?.post?.post_tags
             .split("#")
@@ -259,6 +259,7 @@ export const PostDetails = () => {
             .split("#")
             .splice(1, response?.data?.post?.post_tags.split("#").length)
         );
+        setLoading(false);
       } catch (error) {
         console.error(error.message);
       }
@@ -555,10 +556,10 @@ export const PostDetails = () => {
 
   return (
     <>
-      <div>
+      <div className="relative">
         {loading ? (
-          <div className="flex flex-row items-center justify-center">
-            <h1 className="text-3xl">Turning on the lights</h1>
+          <div className="absolute flex flex-row items-center justify-center w-full h-[calc(100vh-57px)]">
+            <CircularProgress />
           </div>
         ) : (
           <>
@@ -1139,12 +1140,19 @@ export const PostDetails = () => {
                               className="mr-2 rounded-full min-h-10 min-w-10 max-h-10 max-w-10 max-md:max-h-8 max-md:max-w-8 max-md:min-w-8 max-md:min-h-8"
                               src={`http://localhost:5000/${user.profileimage}`}
                             /> */}
-                              <ImageComponent
-                                features={
-                                  "mr-2 rounded-full min-h-10 min-w-10 max-h-10 max-w-10 max-md:max-h-8 max-md:max-w-8 max-md:min-w-8 max-md:min-h-8"
-                                }
-                                base64String={user.profileimage}
-                              />
+                              {user.profileimage ? (
+                                <ImageComponent
+                                  features={
+                                    "mr-2 rounded-full min-h-10 min-w-10 max-h-10 max-w-10 max-md:max-h-8 max-md:max-w-8 max-md:min-w-8 max-md:min-h-8"
+                                  }
+                                  base64String={user.profileimage}
+                                />
+                              ) : (
+                                <img
+                                  className="mr-2 rounded-full min-h-10 min-w-10 max-h-10 max-w-10 max-md:max-h-8 max-md:max-w-8 max-md:min-w-8 max-md:min-h-8"
+                                  src={"../../../public/Profile.jpeg"}
+                                />
+                              )}
                             </Link>
                           )}
 
@@ -1193,12 +1201,19 @@ export const PostDetails = () => {
                                     className="rounded-full max-h-8 min-w-8 min-h-8 max-w-8"
                                     src={`http://localhost:5000/${com.profileimage}`}
                                   /> */}
-                                    <ImageComponent
-                                      features={
-                                        "rounded-full max-h-8 min-w-8 min-h-8 max-w-8"
-                                      }
-                                      base64String={com.profileimage}
-                                    />
+                                    {com.profileimage ? (
+                                      <ImageComponent
+                                        features={
+                                          "rounded-full max-h-8 min-w-8 min-h-8 max-w-8"
+                                        }
+                                        base64String={com.profileimage}
+                                      />
+                                    ) : (
+                                      <img
+                                        className="rounded-full max-h-8 min-w-8 min-h-8 max-w-8"
+                                        src={"../../../public/Profile.jpeg"}
+                                      />
+                                    )}
                                   </Link>
                                 </div>
                                 <div className="flex flex-col items-start justify-center w-10/12 ml-3 mr-3 max-md:w-9/12">

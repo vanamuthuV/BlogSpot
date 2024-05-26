@@ -26,6 +26,7 @@ import ImageComponent from "../../../utils/ImageComponent";
 import useSearch from "../../../hooks/useSearch";
 import { Input } from "@mui/material";
 import { FetchContinous } from "../search/search";
+import axios from "../../../api/axios";
 
 import SearchVideo from "../../../public/Search.mp4";
 
@@ -43,6 +44,35 @@ export const Navbar = () => {
 
   const { searchOpen, setSearchOpen } = useSearch();
 
+  const GOOGLE_USER = `/login/success`;
+
+  const getUser = async () => {
+    try {
+      const response = await axios.get(GOOGLE_USER);
+      console.log(response);
+      const accessToken = response?.data?.data?.accessToken;
+      localStorage.setItem("accessToken", accessToken);
+      const { user_name, user_email, user_id, profileimage } = response?.data?.data;
+      setAuth({
+        Gmail: user_email,
+        user_id: user_id,
+        accessToken,
+      });
+      setUser({
+        Gmail: user_email,
+        user_name: user_name,
+        user_id: user_id,
+        profileimage: profileimage,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   const Item = styled(Paper)(({ theme }) => ({
     textAlign: "center",
     color: "inherit",
@@ -58,6 +88,7 @@ export const Navbar = () => {
     localStorage.clear();
     setAuth({});
     setUser({});
+    window.open("http://localhost:5000/logouts", "_self")
     navigate("/SignUp");
   };
 
@@ -85,7 +116,6 @@ export const Navbar = () => {
     });
     setAnchorElNav(null);
   };
-
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -648,17 +678,17 @@ export const Navbar = () => {
                             : "../../../public/Profile.jpeg"
                         }
                       /> */}
-                      {user.profileimage === null ? (
-                        <img
-                          className="w-full h-full text-gray-500 rounded-full"
-                          alt={user.user_name}
-                          src={"../../../public/Profile.jpeg"}
-                        />
-                      ) : (
+                      {user.profileimage ? (
                         <ImageComponent
                           altName={user.user_name}
                           features={"w-full h-full text-gray-500 rounded-full"}
                           base64String={user.profileimage}
+                        />
+                      ) : (
+                        <img
+                          className="w-full h-full text-gray-500 rounded-full"
+                          alt={user.user_name}
+                          src={"../../../public/Profile.jpeg"}
                         />
                       )}
                     </button>

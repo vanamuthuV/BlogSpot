@@ -495,6 +495,7 @@ export const Profile = () => {
       };
 
       try {
+        console.log(localStorage.getItem("accessToken"));
         const response = await axios.post(SETPERSONALDETAILS, data, {
           headers: {
             "Content-Type": "application/json",

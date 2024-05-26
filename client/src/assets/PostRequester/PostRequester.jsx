@@ -121,7 +121,7 @@ export const PostRequester = () => {
   return (
     <>
       {loading ? (
-        <div className="flex flex-row items-center justify-center h-screen -mt-14">
+        <div className="flex flex-row items-center justify-center h-[calc(100vh-57px)] -mt-14">
           <CircularProgress />
         </div>
       ) : (
