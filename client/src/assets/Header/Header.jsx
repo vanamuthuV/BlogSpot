@@ -52,7 +52,7 @@ export const Navbar = () => {
       console.log(response);
       const accessToken = response?.data?.data?.accessToken;
       localStorage.setItem("accessToken", accessToken);
-      const { user_name, user_email, user_id, profileimage } = response?.data?.data;
+      const { user_name, user_email, user_id, profileimage, platform} = response?.data?.data;
       setAuth({
         Gmail: user_email,
         user_id: user_id,
@@ -63,6 +63,7 @@ export const Navbar = () => {
         user_name: user_name,
         user_id: user_id,
         profileimage: profileimage,
+        platform : platform
       });
     } catch (error) {
       console.log(error);

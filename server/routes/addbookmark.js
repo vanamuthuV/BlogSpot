@@ -3,7 +3,7 @@ import express from "express";
 
 const router = express.Router();
 
-const query = `insert into bookmark values ($1, $2)`;
+const query = `insert into bookmark values ($1, $2, CURRENT_TIMESTAMP)`;
 
 const querytrending = `SELECT
     posts.*,

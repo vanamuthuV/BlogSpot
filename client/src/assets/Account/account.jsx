@@ -460,141 +460,144 @@ export const Accounts = () => {
               </div>
             )}
           </div>
-
-          <div className="flex flex-col items-start w-full mt-10">
-            <h1 className="w-full pb-2 text-2xl font-bold border border-white border-b-gray-500">
-              Change E-mail{" "}
-            </h1>
-            <p className="pt-2 pb-3 text-base">
-              Changing your Email can have{" "}
-              <span className="text-red-500">unintended side effects</span>.
-            </p>
-            <button
-              onClick={EmailEditor}
-              className="pt-1 pb-1 pl-2 pr-2 text-sm border-2 border-gray-700 rounded-lg"
-            >
-              Change Email
-            </button>
-            {emailEdit && (
-              <div className="flex flex-col w-full mt-5">
-                <p className="flex flex-row items-center justify-start">
-                  {" "}
-                  Enter Your New Email{" "}
-                  <Tooltip
-                    title="Remember username should not contain Whitespaces and Capital letters"
-                    placement="right-start"
-                  >
-                    <button className="flex flex-row items-center text-gray-500">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-8 h-8 pl-2 "
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-                        />
-                      </svg>
-                    </button>
-                  </Tooltip>
+          {user.platform !== "google" && (
+            <>
+              <div className="flex flex-col items-start w-full mt-10">
+                <h1 className="w-full pb-2 text-2xl font-bold border border-white border-b-gray-500">
+                  Change E-mail{" "}
+                </h1>
+                <p className="pt-2 pb-3 text-base">
+                  Changing your Email can have{" "}
+                  <span className="text-red-500">unintended side effects</span>.
                 </p>
-                <div className="flex flex-col w-full pt-2">
-                  <div className="flex flex-row w-full">
-                    <input
-                      ref={email}
-                      onChange={EmailChecker}
-                      pattern="^[a-z0-9]+(?:[._][a-z0-9]+)*@[a-z]+\.[a-z]+$"
-                      title="This field won't allow whitespaces and required"
-                      className="w-full pt-1 pb-1 pl-5 mr-10 border-2 border-gray-700 rounded-full focus:outline-none"
-                    />
-                    <button
-                      onClick={EmailUpdation}
-                      className="pt-1 pb-1 pl-2 pr-2 text-white bg-gray-700 rounded-lg"
-                      disabled={emailDialogueSetterN}
-                      style={{
-                        cursor: emailDialogueSetterN && "not-allowed",
-                      }}
-                    >
-                      Update
-                    </button>
+                <button
+                  onClick={EmailEditor}
+                  className="pt-1 pb-1 pl-2 pr-2 text-sm border-2 border-gray-700 rounded-lg"
+                >
+                  Change Email
+                </button>
+                {emailEdit && (
+                  <div className="flex flex-col w-full mt-5">
+                    <p className="flex flex-row items-center justify-start">
+                      {" "}
+                      Enter Your New Email{" "}
+                      <Tooltip
+                        title="Remember username should not contain Whitespaces and Capital letters"
+                        placement="right-start"
+                      >
+                        <button className="flex flex-row items-center text-gray-500">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-8 h-8 pl-2 "
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                            />
+                          </svg>
+                        </button>
+                      </Tooltip>
+                    </p>
+                    <div className="flex flex-col w-full pt-2">
+                      <div className="flex flex-row w-full">
+                        <input
+                          ref={email}
+                          onChange={EmailChecker}
+                          pattern="^[a-z0-9]+(?:[._][a-z0-9]+)*@[a-z]+\.[a-z]+$"
+                          title="This field won't allow whitespaces and required"
+                          className="w-full pt-1 pb-1 pl-5 mr-10 border-2 border-gray-700 rounded-full focus:outline-none"
+                        />
+                        <button
+                          onClick={EmailUpdation}
+                          className="pt-1 pb-1 pl-2 pr-2 text-white bg-gray-700 rounded-lg"
+                          disabled={emailDialogueSetterN}
+                          style={{
+                            cursor: emailDialogueSetterN && "not-allowed",
+                          }}
+                        >
+                          Update
+                        </button>
+                      </div>
+                    </div>
+                    {emailDialogueSetterP && (
+                      <Alert severity="success">Email is available.</Alert>
+                    )}
+                    {emailDialogueSetterN && (
+                      <Alert severity="error">Email is already taken.</Alert>
+                    )}
                   </div>
-                </div>
-                {emailDialogueSetterP && (
-                  <Alert severity="success">Email is available.</Alert>
-                )}
-                {emailDialogueSetterN && (
-                  <Alert severity="error">Email is already taken.</Alert>
                 )}
               </div>
-            )}
-          </div>
 
-          <div className="flex flex-col items-start w-full mt-10">
-            <h1 className="w-full pb-2 text-2xl font-bold border border-white border-b-gray-500">
-              Change Password
-            </h1>
+              <div className="flex flex-col items-start w-full mt-10">
+                <h1 className="w-full pb-2 text-2xl font-bold border border-white border-b-gray-500">
+                  Change Password
+                </h1>
 
-            <p className="pt-2 pb-3 text-base">
-              Changing your Password can have{" "}
-              <span className="text-red-500">unintended side effects</span>.
-            </p>
-            <button
-              onClick={OldPassword}
-              className="pt-1 pb-1 pl-2 pr-2 text-sm border-2 border-gray-700 rounded-lg"
-            >
-              Change Password
-            </button>
-            {showOldPassword && (
-              <div className="flex flex-row items-center justify-center w-full">
-                <div className="flex flex-col justify-center w-4/6 mt-5 items-s">
-                  <label>Enter Your Current Password</label>
-                  <form
-                    onSubmit={OldPasswordHandle}
-                    className="flex flex-col items-center justify-center w-full"
-                  >
-                    <input
-                      type="password"
-                      ref={oldPassword}
-                      title="This field won't allow whitespaces and required"
-                      className="w-full pt-1 pb-1 pl-5 mt-3 border-2 border-gray-700 rounded-full focus:outline-none"
-                    />
-                    <button className="pt-1 pb-1 pl-2 pr-2 mt-5 text-sm border-2 border-gray-700 rounded-lg">
-                      Submit
-                    </button>
-                  </form>
-                </div>
+                <p className="pt-2 pb-3 text-base">
+                  Changing your Password can have{" "}
+                  <span className="text-red-500">unintended side effects</span>.
+                </p>
+                <button
+                  onClick={OldPassword}
+                  className="pt-1 pb-1 pl-2 pr-2 text-sm border-2 border-gray-700 rounded-lg"
+                >
+                  Change Password
+                </button>
+                {showOldPassword && (
+                  <div className="flex flex-row items-center justify-center w-full">
+                    <div className="flex flex-col justify-center w-4/6 mt-5 items-s">
+                      <label>Enter Your Current Password</label>
+                      <form
+                        onSubmit={OldPasswordHandle}
+                        className="flex flex-col items-center justify-center w-full"
+                      >
+                        <input
+                          type="password"
+                          ref={oldPassword}
+                          title="This field won't allow whitespaces and required"
+                          className="w-full pt-1 pb-1 pl-5 mt-3 border-2 border-gray-700 rounded-full focus:outline-none"
+                        />
+                        <button className="pt-1 pb-1 pl-2 pr-2 mt-5 text-sm border-2 border-gray-700 rounded-lg">
+                          Submit
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                )}
+
+                {isPass && (
+                  <div className="flex flex-row items-center justify-center w-full">
+                    <div className="flex flex-col justify-center w-4/6 mt-5 items-s">
+                      <label>
+                        Enter Your <span className="text-red-500">New</span>{" "}
+                        Password
+                      </label>
+                      <form
+                        onSubmit={PasswordUpdation}
+                        className="flex flex-col items-center justify-center w-full"
+                      >
+                        <input
+                          type="password"
+                          ref={newPassword}
+                          title="This field won't allow whitespaces and required"
+                          className="w-full pt-1 pb-1 pl-5 mt-3 border-2 border-gray-700 rounded-full focus:outline-none"
+                        />
+                        <button className="pt-1 pb-1 pl-2 pr-2 mt-5 text-sm border-2 border-gray-700 rounded-lg">
+                          Submit
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-
-            {isPass && (
-              <div className="flex flex-row items-center justify-center w-full">
-                <div className="flex flex-col justify-center w-4/6 mt-5 items-s">
-                  <label>
-                    Enter Your <span className="text-red-500">New</span>{" "}
-                    Password
-                  </label>
-                  <form
-                    onSubmit={PasswordUpdation}
-                    className="flex flex-col items-center justify-center w-full"
-                  >
-                    <input
-                      type="password"
-                      ref={newPassword}
-                      title="This field won't allow whitespaces and required"
-                      className="w-full pt-1 pb-1 pl-5 mt-3 border-2 border-gray-700 rounded-full focus:outline-none"
-                    />
-                    <button className="pt-1 pb-1 pl-2 pr-2 mt-5 text-sm border-2 border-gray-700 rounded-lg">
-                      Submit
-                    </button>
-                  </form>
-                </div>
-              </div>
-            )}
-          </div>
+            </>
+          )}
 
           <div className="flex flex-col items-start w-full mt-10">
             <h1 className="w-full pb-2 text-2xl font-bold text-red-500 border border-white border-b-gray-500">

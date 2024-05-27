@@ -3,7 +3,7 @@ import express from "express";
 
 const router = express.Router();
 
-const query = `insert into bookmark values ($1, $2)`;
+const query = `insert into bookmark values ($1, $2, CURRENT_TIMESTAMP)`;
 const query1 = ` SELECT users.*, profilepicture.*, posts.*, profileinformation.*, CASE 
         WHEN bookmark.bookmarkid IS NOT NULL THEN TRUE
         ELSE FALSE
