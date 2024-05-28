@@ -52,7 +52,8 @@ export const Navbar = () => {
       console.log(response);
       const accessToken = response?.data?.data?.accessToken;
       localStorage.setItem("accessToken", accessToken);
-      const { user_name, user_email, user_id, profileimage, platform} = response?.data?.data;
+      const { user_name, user_email, user_id, profileimage, platform } =
+        response?.data?.data;
       setAuth({
         Gmail: user_email,
         user_id: user_id,
@@ -63,7 +64,7 @@ export const Navbar = () => {
         user_name: user_name,
         user_id: user_id,
         profileimage: profileimage,
-        platform : platform
+        platform: platform,
       });
     } catch (error) {
       console.log(error);
@@ -89,7 +90,7 @@ export const Navbar = () => {
     localStorage.clear();
     setAuth({});
     setUser({});
-    window.open("http://localhost:5000/logouts", "_self")
+    window.open("http://localhost:5000/logouts", "_self");
     navigate("/SignUp");
   };
 
@@ -206,127 +207,57 @@ export const Navbar = () => {
                     sx={{ display: "flex", flexDirection: "column" }}
                     onClick={handleCloseNavMenu}
                   >
-                    <Link to={"/createpost"}>
-                      <Typography
-                        mt={"6px"}
-                        mb={"6px"}
-                        sx={{
-                          marginRight: "2px",
-                          marginLeft: "2px",
-                          fontSize: "12px",
-                          color: "#303030",
-                        }}
-                        textAlign="center"
-                      >
-                        Create Post
-                      </Typography>
-                    </Link>
                     <Tooltip title="Search">
                       {" "}
                       {/* Mobile View */}
-                      <Button
+                      <button
                         onClick={handleForSearchNavMenu}
-                        sx={{
-                          my: 2,
-                          color: "#303030",
-                          display: "block",
-                          fontSize: "16px",
-                          paddingRight: "10px",
-                        }}
+                        className="flex flex-row items-center justify-center mt-2 mb-2"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          height="24"
                           viewBox="0 0 24 24"
-                          width="24"
+                          fill="currentColor"
+                          class="size-4 mr-1"
                         >
-                          <path d="M0 0h24v24H0z" fill="none" />
-                          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                          <path
+                            fill-rule="evenodd"
+                            d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
+                            clip-rule="evenodd"
+                          />
                         </svg>
-                      </Button>
+                        <span className="text-xs ">Search</span>
+                      </button>
                     </Tooltip>
+                    <Link to={"/createpost"}>
+                      <button
+                        className="flex flex-row items-center mt-2 mb-2"
+                        onClick={handleCloseNavMenu}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="size-4 mr-1"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+                          />
+                        </svg>
+
+                        <span className="text-xs">Create Post</span>
+                      </button>
+                    </Link>
 
                     <Tooltip title="Read">
                       <Link to={`/read`}>
-                        <Button
+                        <button
                           onClick={handleCloseNavMenu}
-                          sx={{
-                            my: 2,
-                            color: "#303030",
-                            display: "block",
-                            fontSize: "16px",
-                            paddingRight: "10px",
-                          }}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            height={24}
-                            viewBox="0 0 30 30"
-                            id="blog"
-                            width={24}
-                          >
-                            <g>
-                              <path d="M26 12h-2V8a5 5 0 0 0-5-5H8a5 5 0 0 0-5 5v12a1 1 0 0 0 2 0V8a3 3 0 0 1 3-3h11a3 3 0 0 1 3 3v5a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3 1 1 0 0 0-2 0 5 5 0 0 0 5 5h16a5 5 0 0 0 5-5v-9a3 3 0 0 0-3-3Z"></path>
-                              <path d="M11.5 14h4a2.5 2.5 0 0 0 0-5h-4a2.5 2.5 0 0 0 0 5zm0-3h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1zm0 12h9a2.5 2.5 0 0 0 0-5h-9a2.5 2.5 0 0 0 0 5zm0-3h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1 0-1z"></path>
-                            </g>
-                          </svg>
-                        </Button>
-                      </Link>
-                    </Tooltip>
-
-                    <Tooltip title="LeaderBoard">
-                      <Link to={`/leaderboard`}>
-                        <Button
-                          onClick={handleCloseNavMenu}
-                          sx={{
-                            my: 2,
-                            color: "#303030",
-                            display: "block",
-                            fontSize: "16px",
-                            paddingRight: "10px",
-                          }}
-                        >
-                          {/* <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      enable-background="new 0 0 24 24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      width="24"
-                    >
-                      <rect fill="none" height="24" width="24" />
-                      <g>
-                        <path d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z" />
-                      </g>
-                    </svg> */}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            enable-background="new 0 0 24 24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            width="24"
-                          >
-                            <g>
-                              <path
-                                d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z"
-                                fill="none"
-                                stroke="#000000"
-                                stroke-width="1.5"
-                              />
-                            </g>
-                          </svg>
-                        </Button>
-                      </Link>
-                    </Tooltip>
-                    <Tooltip title="Notification">
-                      <Link to={`/notification`}>
-                        <Button
-                          onClick={handleCloseNavMenu}
-                          sx={{
-                            my: 2,
-                            color: "#303030",
-                            display: "block",
-                            fontSize: "16px",
-                          }}
+                          className="flex flex-row items-center justify-center mt-2 mb-2"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -334,15 +265,68 @@ export const Navbar = () => {
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="w-9 h-9 pl-3"
+                            class="size-4 mr-1"
                           >
                             <path
                               stroke-linecap="round"
                               stroke-linejoin="round"
-                              d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
+                              d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z"
                             />
                           </svg>
-                        </Button>
+
+                          <span className="text-xs">Read Blogs</span>
+                        </button>
+                      </Link>
+                    </Tooltip>
+
+                    <Tooltip title="LeaderBoard">
+                      <Link to={`/leaderboard`}>
+                        <button
+                          onClick={handleCloseNavMenu}
+                          className="flex flex-row items-center justify-center mt-2 mb-2"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="size-4 mr-1"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 0 0 2.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 0 1 2.916.52 6.003 6.003 0 0 1-5.395 4.972m0 0a6.726 6.726 0 0 1-2.749 1.35m0 0a6.772 6.772 0 0 1-3.044 0"
+                            />
+                          </svg>
+
+                          <span className="text-xs">Leaderboard</span>
+                        </button>
+                      </Link>
+                    </Tooltip>
+                    <Tooltip title="Notification">
+                      <Link to={`/notification`}>
+                        <button
+                          onClick={handleCloseNavMenu}
+                          className="flex flex-row items-center justify-center mt-2 mb-2"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="size-4 mr-1"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5"
+                            />
+                          </svg>
+
+                          <span className="text-xs">Notification</span>
+                        </button>
                       </Link>
                     </Tooltip>
                   </MenuItem>
@@ -376,51 +360,6 @@ export const Navbar = () => {
               INK
               <span className="text-orange-500">WELLIFY</span>
             </Typography>
-
-            {/* {Object.keys(user).length === 0 && (
-              <Link to={"Search"} className="max-md:hidden">
-                <Item elevation={1}>
-                  <button className="flex flex-row items-center justify-center text-gray-700 shadow-base max-md:hidden">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-6 h-6 pr-2"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                      />
-                    </svg>
-                    Search
-                  </button>
-                </Item>
-              </Link>
-            )} */}
-
-            {/* {Object.keys(user).length !== 0 && (
-              <Tooltip title="Searc">
-                <Link to={"/Search"} className="text-gray-900 md:hidden">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-6 h-6"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                    />
-                  </svg>
-                </Link>
-              </Tooltip>
-            )} */}
 
             {user.user_name && (
               <div
@@ -517,21 +456,20 @@ export const Navbar = () => {
                     <Button
                       onClick={handleForSearchNavMenu}
                       sx={{
-                        my: 2,
                         color: "#303030",
-                        display: "block",
-                        fontSize: "16px",
-                        paddingRight: "10px",
                       }}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        height="24"
                         viewBox="0 0 24 24"
-                        width="24"
+                        fill="currentColor"
+                        class="size-6"
                       >
-                        <path d="M0 0h24v24H0z" fill="none" />
-                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                        <path
+                          fill-rule="evenodd"
+                          d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </Button>
                     {/* </Link> */}
@@ -542,24 +480,22 @@ export const Navbar = () => {
                       <Button
                         onClick={handleCloseNavMenu}
                         sx={{
-                          my: 2,
                           color: "#303030",
-                          display: "block",
-                          fontSize: "16px",
-                          paddingRight: "10px",
                         }}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          height={24}
-                          viewBox="0 0 30 30"
-                          id="blog"
-                          width={24}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="size-6"
                         >
-                          <g>
-                            <path d="M26 12h-2V8a5 5 0 0 0-5-5H8a5 5 0 0 0-5 5v12a1 1 0 0 0 2 0V8a3 3 0 0 1 3-3h11a3 3 0 0 1 3 3v5a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v9a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3 1 1 0 0 0-2 0 5 5 0 0 0 5 5h16a5 5 0 0 0 5-5v-9a3 3 0 0 0-3-3Z"></path>
-                            <path d="M11.5 14h4a2.5 2.5 0 0 0 0-5h-4a2.5 2.5 0 0 0 0 5zm0-3h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1zm0 12h9a2.5 2.5 0 0 0 0-5h-9a2.5 2.5 0 0 0 0 5zm0-3h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1 0-1z"></path>
-                          </g>
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z"
+                          />
                         </svg>
                       </Button>
                     </Link>
@@ -570,40 +506,22 @@ export const Navbar = () => {
                       <Button
                         onClick={handleCloseNavMenu}
                         sx={{
-                          my: 2,
                           color: "#303030",
-                          display: "block",
-                          fontSize: "16px",
-                          paddingRight: "10px",
                         }}
                       >
-                        {/* <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      enable-background="new 0 0 24 24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      width="24"
-                    >
-                      <rect fill="none" height="24" width="24" />
-                      <g>
-                        <path d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z" />
-                      </g>
-                    </svg> */}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          enable-background="new 0 0 24 24"
-                          height="24"
+                          fill="none"
                           viewBox="0 0 24 24"
-                          width="24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="size-6"
                         >
-                          <g>
-                            <path
-                              d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z"
-                              fill="none"
-                              stroke="#000000"
-                              stroke-width="1.5"
-                            />
-                          </g>
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 0 0 2.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 0 1 2.916.52 6.003 6.003 0 0 1-5.395 4.972m0 0a6.726 6.726 0 0 1-2.749 1.35m0 0a6.772 6.772 0 0 1-3.044 0"
+                          />
                         </svg>
                       </Button>
                     </Link>
@@ -613,37 +531,22 @@ export const Navbar = () => {
                       <Button
                         onClick={handleCloseNavMenu}
                         sx={{
-                          my: 2,
                           color: "#303030",
-                          display: "block",
-                          fontSize: "16px",
-                          paddingRight: "10px",
+                          marginRight: "10px",
                         }}
                       >
-                        {/* <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      enable-background="new 0 0 24 24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      width="24"
-                    >
-                      <rect fill="none" height="24" width="24" />
-                      <g>
-                        <path d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z" />
-                      </g>
-                    </svg> */}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke-width="1.5"
                           stroke="currentColor"
-                          class="w-9 h-9 pl-3 m-0"
+                          class="size-6"
                         >
                           <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
+                            d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5"
                           />
                         </svg>
                       </Button>
