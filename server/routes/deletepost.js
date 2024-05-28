@@ -4,7 +4,7 @@ import Authentication from "../middleware/authorization.js"
 
 const router = express.Router();
 
-router.delete("/:id",  async (req, res) => {
+router.delete("/:id",Authentication,  async (req, res) => {
     console.log("Hola");
     console.log(req.params.id);
     console.log(req?.body);

@@ -5,7 +5,7 @@ import { populate } from "dotenv";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.post("/", Authentication, async (req, res) => {
   console.log(req.body);
   const { user_id, preferences } = req?.body;
   console.log(user_id);

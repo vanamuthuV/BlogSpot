@@ -52,6 +52,7 @@ export const Navbar = () => {
       console.log(response);
       const accessToken = response?.data?.data?.accessToken;
       localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("user_id", response?.data?.data?.user_id);
       const { user_name, user_email, user_id, profileimage, platform } =
         response?.data?.data;
       setAuth({

@@ -12,9 +12,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 const DASHBOARD = "/getdashboard";
-const MOREFAV = "/favload";
-const MORELIKE = "/likeload";
-const MOREDISLIKE = "/dislikeload";
 
 export const Dashboard = () => {
   const { user } = useAuth();
@@ -131,7 +128,7 @@ export const Dashboard = () => {
         setloading(true);
         const response = await axios.post(
           DASHBOARD,
-          { user_id: user.user_id, preferences: preferences },
+          { user_id: localStorage.getItem("user_id"), preferences: preferences },
           {
             headers: {
               "Content-Type": "application/json",

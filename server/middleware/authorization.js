@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 
 const Authentication = (req, res, next) => {
-  console.log(req.body);
+  console.log('req' , req.body);
   console.log("header");
   console.log(req.headers);
   const authHeader =

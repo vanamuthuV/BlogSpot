@@ -143,25 +143,6 @@ LEFT JOIN
     ) AS bookmark ON posts.post_id = bookmark.post_id
 where post_type='public'  order by post_upload_time desc`;
 
-// const queryforyou = `select A.*, 
-// coalesce(likedd.lik, 0) as likecount, 
-// coalesce(dislikedd.dislik, 0) as dislikecount
-// from 
-// (select posts.*, users.*, prof.* from posts join users on posts.user_id = users.user_id join
-//  (select
-//     follow.following_id,
-//     profilepicture.profileimage from follow join users on follow.follower_id = $1
-//     left join profilepicture on following_id =
-// profilepicture.user_id
-// 	group by following_id, profilepicture.profileimage) as prof
-//  		on posts.user_id = prof.following_id) as A 
-// left join (select post_id, count(*) as lik from likes 
-// where likes = 'true' 
-// group by 
-// likes.post_id) as likedd on A.post_id = likedd.post_id left join
-// (select post_id, count(*) as dislik from likes where dislikes = 'true' group by likes.post_id) 
-// as dislikedd on A.post_id = dislikedd.post_id where A.post_type = 'public' order by A.post_upload_time desc 
-// `;
 
 const querynetwork = `select A.*, 
 coalesce(likedd.lik, 0) as likecount, 

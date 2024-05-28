@@ -1,5 +1,6 @@
 import pool from "../db.js";
 import express from "express";
+import Authentication from "../middleware/authorization.js";
 
 const router = express.Router();
 
@@ -128,8 +129,8 @@ LEFT JOIN
 where A.post_type = 'public' order by A.post_upload_time desc
 `;
 
-router.post("/", async (req, res) => {
-  console.log(req.body);
+router.post("/", Authentication, async (req, res) => {
+  console.log('reqq',req.body);
   const { user_id, post_id, type } = req?.body;
   try {
     await pool.query(query, [user_id, post_id]);

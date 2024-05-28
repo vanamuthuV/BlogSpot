@@ -1,5 +1,6 @@
 import pool from "../db.js";
 import express from "express";
+import Authentication from "../middleware/authorization.js";
 
 const router = express.Router();
 
@@ -25,7 +26,7 @@ LEFT JOIN
     ) AS bookmark ON posts.post_id = bookmark.post_id
     where posts.post_id = $2`;
 
-router.post("/", async (req, res) => {
+router.post("/", Authentication, async (req, res) => {
   const { bookmarkid, user_id, post_id} = req?.body;
   try {
     await pool.query(query, [bookmarkid]);

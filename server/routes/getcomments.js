@@ -8,8 +8,8 @@ router.post("/", async (req, res) => {
 
   const query = `
        select * from users 
-        join comments on users.user_id = comments.user_id
-        join profilepicture on users.user_id = profilepicture.user_id
+        left join comments on users.user_id = comments.user_id
+        left join profilepicture on users.user_id = profilepicture.user_id
         where comments.post_id = $1 ORDER BY comments.comment_time DESC
     `;
 

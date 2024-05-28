@@ -37,9 +37,6 @@ const ADDBOOKMARK = "/addbookmark";
 const REMOVEBOOKMARK = "/removebookmark";
 
 export const PostRequester = () => {
-  // const [trendingdata, setTrendingData] = useState([]);
-  // const [newdata, setNewData] = useState([]);
-  // const [networkData, setNetworkData] = useState([]);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [ClickAnalyzer, setClickAnalyzser] = useState("trending");
@@ -50,16 +47,15 @@ export const PostRequester = () => {
     const ReadBlog = async () => {
       try {
         setLoading(true);
+        console.log(user.user_id);
+        console.log(localStorage.getItem("user_id"))
         const response = await axios.post(READ_URL, {
           type: ClickAnalyzer,
-          id: user.user_id
-            ? user.user_id
+          id: localStorage.getItem("user_id")
+            ? localStorage.getItem("user_id")
             : "123e4567-e89b-12d3-a456-426614174000",
         });
         console.log(response?.data);
-        // ClickAnalyzer === "trending" && setTrendingData(response?.data?.posts);
-        // ClickAnalyzer === "new" && setNewData(response?.data?.posts);
-        // ClickAnalyzer === "network" && setNetworkData(response?.data?.posts);
         setData(response?.data?.posts);
         setLoading(false);
       } catch (error) {
@@ -81,11 +77,16 @@ export const PostRequester = () => {
     if (Object.keys(user).length == 0) navigate("/SignUp");
     else {
       try {
-        const response = await axios.post(ADDBOOKMARK, {
+        const data = {
           user_id: user.user_id,
           post_id: post_id,
-          type : ClickAnalyzer
-        });
+          type: ClickAnalyzer,
+        };
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        };
+        const response = await axios.post(ADDBOOKMARK, data, {headers});
         console.log(response);
         // ClickAnalyzer === "trending" && setTrendingData(response?.data?.posts);
         // ClickAnalyzer === "new" && setNewData(response?.data?.posts);
@@ -101,12 +102,18 @@ export const PostRequester = () => {
     console.log("Hello");
     console.log(ev.target.value);
 
+    const data = {
+      bookmarkid: ev.target.value,
+      user_id: user.user_id,
+      type: ClickAnalyzer,
+    };
+     const headers = {
+       "Content-Type": "application/json",
+       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+     };
+
     try {
-      const response = await axios.post(REMOVEBOOKMARK, {
-        bookmarkid: ev.target.value,
-        user_id: user.user_id,
-        type : ClickAnalyzer
-      });
+      const response = await axios.post(REMOVEBOOKMARK,data, {headers});
       // ClickAnalyzer === "trending" && setTrendingData(response?.data?.posts);
       // ClickAnalyzer === "new" && setNewData(response?.data?.posts);
       // ClickAnalyzer === "network" && setNetworkData(response?.data?.posts);

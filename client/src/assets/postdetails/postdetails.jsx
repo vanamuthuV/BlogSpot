@@ -50,6 +50,8 @@ const CHECKFOLLOW = "/checkfollow";
 
 export const PostDetails = () => {
   const { id } = useParams();
+  const [ids, setIds] = useState(id);
+
   const [commentLoading, setcommentLoading] = useState(true);
   const [comments, setComments] = useState([]);
   const { user } = useAuth();
@@ -66,15 +68,19 @@ export const PostDetails = () => {
 
   const ADDBOOKMARK = "/addbookmarksingle";
   const REMOVEBOOKMARK = "/removebookmarksingle";
-
   const AddBookMark = async (post_id) => {
     if (Object.keys(user).length === 0) navigate("/SignUp");
     else {
       try {
-        const response = await axios.post(ADDBOOKMARK, {
+        const data = {
           user_id: user.user_id,
           post_id: post_id,
-        });
+        };
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        };
+        const response = await axios.post(ADDBOOKMARK, data, { headers });
         console.log(response);
         setData(response?.data?.posts);
       } catch (error) {
@@ -87,12 +93,17 @@ export const PostDetails = () => {
     console.log("Hello");
     console.log(ev.target.value);
 
+    const data = {
+      bookmarkid: ev.target.value,
+      user_id: user.user_id,
+      post_id: id,
+    };
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    };
     try {
-      const response = await axios.post(REMOVEBOOKMARK, {
-        bookmarkid: ev.target.value,
-        user_id: user.user_id,
-        post_id: id,
-      });
+      const response = await axios.post(REMOVEBOOKMARK, data, { headers });
       setData(response?.data?.posts);
     } catch (error) {
       console.log(error);
@@ -105,7 +116,7 @@ export const PostDetails = () => {
         const response = await axios.post(
           CHECKFOLLOW,
           {
-            follower_id: user.user_id,
+            follower_id: localStorage.getItem("user_id"),
             id: id,
           },
           {
@@ -115,6 +126,7 @@ export const PostDetails = () => {
             },
           }
         );
+        console.log(response?.data);
         setFollows(response?.data?.data);
       })();
     }
@@ -125,7 +137,7 @@ export const PostDetails = () => {
       try {
         const response = await axios.post(GETFAVORITE, {
           data: {
-            user_id: user.user_id,
+            user_id: localStorage.getItem("user_id"),
             post_id: id,
           },
           headers: {
@@ -244,7 +256,7 @@ export const PostDetails = () => {
       try {
         const response = await axios.post(POSTDETAIL_URL, {
           id: id,
-          user_id: user.user_id,
+          user_id: localStorage.getItem("user_id"),
         });
         console.log(response?.data);
         setData(response?.data?.post);

@@ -9,7 +9,7 @@ const UploadMiddleware = multer({ dest: "uploads/" });
 const router = express.Router();
 
 router.post(
-  "/",
+  "/", Authentication,
   UploadMiddleware.single("media"),
   Authentication,
   async (req, res) => {

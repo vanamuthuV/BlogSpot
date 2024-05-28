@@ -4,7 +4,7 @@ import Authentication from "../middleware/authorization.js";
 
 const router = express.Router();
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id",Authentication, async (req, res) => {
   console.log(req.params);
 
   const { id } = req.params;
@@ -20,9 +20,9 @@ router.delete("/:id", async (req, res) => {
     `;
 
   const query1 = `
-        select * from users 
-        join comments on users.user_id = comments.user_id
-        join profilepicture on users.user_id = profilepicture.user_id
+       select * from users 
+        left join comments on users.user_id = comments.user_id
+        left join profilepicture on users.user_id = profilepicture.user_id
         where comments.post_id = $1 ORDER BY comments.comment_time DESC
     `;
 
