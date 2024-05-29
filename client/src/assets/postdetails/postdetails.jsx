@@ -81,7 +81,7 @@ export const PostDetails = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         };
         const response = await axios.post(ADDBOOKMARK, data, { headers });
-        console.log(response);
+        // console.log(response);
         setData(response?.data?.posts);
       } catch (error) {
         console.log(error);
@@ -90,8 +90,8 @@ export const PostDetails = () => {
   };
 
   const RemoveBookMark = async (ev) => {
-    console.log("Hello");
-    console.log(ev.target.value);
+    // console.log("Hello");
+    // console.log(ev.target.value);
 
     const data = {
       bookmarkid: ev.target.value,
@@ -126,7 +126,7 @@ export const PostDetails = () => {
             },
           }
         );
-        console.log(response?.data);
+        // console.log(response?.data);
         setFollows(response?.data?.data);
       })();
     }
@@ -145,7 +145,7 @@ export const PostDetails = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setFavoriteDetails(response?.data?.data);
         Object.keys(response?.data?.data).length === 0
           ? setFavorite(false)
@@ -157,8 +157,12 @@ export const PostDetails = () => {
   }, [id]);
 
   const UploadComment = async () => {
-    console.log(comment.current.value);
+    // console.log(comment.current.value);
 
+    if (Object.keys(user).length === 0) {
+      return navigate("/SignUp");
+    }
+    
     const data = {
       comment: comment.current.value,
       user_id: user.user_id,
@@ -175,7 +179,7 @@ export const PostDetails = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
         },
       });
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
       setComments(response?.data?.data);
     } catch (error) {
       console.error(error);
@@ -183,7 +187,7 @@ export const PostDetails = () => {
   };
 
   const handleDeleteComment = async (ev) => {
-    console.log(ev.target.value);
+    // console.log(ev.target.value);
     const commentid = ev.target.value;
 
     try {
@@ -196,7 +200,7 @@ export const PostDetails = () => {
           },
         }
       );
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
       setComments(response?.data?.data);
     } catch (error) {
       console.log(error);
@@ -204,7 +208,7 @@ export const PostDetails = () => {
   };
 
   const handleReportComment = (ev) => {
-    console.log(ev.target);
+    // console.log(ev.target);
   };
 
   const [open, setOpen] = React.useState(false);
@@ -218,7 +222,7 @@ export const PostDetails = () => {
   };
 
   const handleDelete = async () => {
-    console.log("Hello");
+    // console.log("Hello");
 
     try {
       const response = await axios.delete(DELETEPOST + `/${id}`, {
@@ -227,7 +231,7 @@ export const PostDetails = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
     } catch (error) {
       console.error(error);
     }
@@ -240,7 +244,7 @@ export const PostDetails = () => {
     (async () => {
       try {
         const response = await axios.post(GETCOMMENT, { id });
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setComments(response?.data?.data);
         setcommentLoading(false);
       } catch (error) {
@@ -249,7 +253,7 @@ export const PostDetails = () => {
     })();
   }, [id]);
   const [tags, setTags] = useState([]);
-  console.log(data);
+  // console.log(data);
 
   useEffect(() => {
     (async () => {
@@ -258,14 +262,14 @@ export const PostDetails = () => {
           id: id,
           user_id: localStorage.getItem("user_id"),
         });
-        console.log(response?.data);
+        // console.log(response?.data);
         setData(response?.data?.post);
 
-        console.log(
-          response?.data?.post?.post_tags
-            .split("#")
-            .splice(1, response?.data?.post?.post_tags.split("#").length)
-        );
+        // console.log(
+        //   response?.data?.post?.post_tags
+        //     .split("#")
+        //     .splice(1, response?.data?.post?.post_tags.split("#").length)
+        // );
         setTags(
           response?.data?.post?.post_tags
             .split("#")
@@ -284,7 +288,7 @@ export const PostDetails = () => {
 
   const handleClickOpenEdit = (ev) => {
     setCommentID(ev.target.value);
-    console.log(ev.target.value);
+    // console.log(ev.target.value);
     setOpenEdit(true);
   };
 
@@ -296,10 +300,9 @@ export const PostDetails = () => {
   const UNFAVORITE = "/deletefavorite";
 
   const handleFavorite = async () => {
-    if (!user.user_id) {
+    if (Object.keys(user).length === 0) {
       return navigate("/SignUp");
     }
-
     if (favorite === true) {
       try {
         const response = await axios.delete(
@@ -311,7 +314,7 @@ export const PostDetails = () => {
             },
           }
         );
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setFavoriteDetails(response?.data?.data);
         setFavorite(false);
       } catch (error) {
@@ -329,7 +332,7 @@ export const PostDetails = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setFavoriteDetails(response?.data?.data);
       } catch (error) {
         console.log(error);
@@ -358,7 +361,7 @@ export const PostDetails = () => {
 
       try {
         const response = await axios.post(GETLIKES, data);
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setDislikeStatus(response?.data?.data?.Like?.dislikes);
         setLikestatus(response?.data?.data?.Like?.likes);
         setLikeInfo(response?.data?.data?.Like);
@@ -377,7 +380,11 @@ export const PostDetails = () => {
   const DELETEDISLIKE = "/deletedislike";
 
   const LikeUpdater = async () => {
-    console.log("Like Updater!!");
+    // console.log("Like Updater!!");
+
+    if (Object.keys(user).length === 0) {
+      return navigate("/SignUp");
+    }
 
     const data = {
       post_id: id,
@@ -395,7 +402,7 @@ export const PostDetails = () => {
             },
           }
         );
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setLikestatus(false);
         setDislikeStatus(false);
         setLikeInfo({});
@@ -412,7 +419,7 @@ export const PostDetails = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setLikestatus(response?.data?.data?.Like?.likes);
         setDislikeStatus(response?.data?.data?.Like?.dislikes);
         setLikeInfo(response?.data?.data?.Like);
@@ -425,7 +432,11 @@ export const PostDetails = () => {
   };
 
   const DisLikeUpdater = async () => {
-    console.log("Like Updater!!");
+    // console.log("Like Updater!!");
+
+    if (Object.keys(user).length === 0) {
+      return navigate("/SignUp");
+    }
 
     const data = {
       post_id: id,
@@ -443,7 +454,7 @@ export const PostDetails = () => {
             },
           }
         );
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setLikestatus(false);
         setDislikeStatus(false);
         setLikeInfo({});
@@ -460,7 +471,7 @@ export const PostDetails = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setLikestatus(response?.data?.data?.Like?.likes);
         setDislikeStatus(response?.data?.data?.Like?.dislikes);
         setLikeInfo(response?.data?.data?.Like);
@@ -493,7 +504,7 @@ export const PostDetails = () => {
   const FOLLOW = "/follow";
   const UNFOLLOW = "/unfollow";
   const UnfollowHandler = async (ev) => {
-    console.log(ev.target.id);
+    // console.log(ev.target.id);
 
     try {
       const response = await axios.delete(UNFOLLOW + `/${ev.target.id}`, {
@@ -511,6 +522,7 @@ export const PostDetails = () => {
   };
 
   const FollowHandler = async () => {
+    if (Object.keys(user).length === 0) return navigate("/SignUp");
     try {
       const response = await axios.post(
         ADDFOLLOWINPOST,
@@ -525,7 +537,7 @@ export const PostDetails = () => {
           },
         }
       );
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
       setFollows(response?.data?.data);
     } catch (error) {
       console.log(error);
@@ -1312,7 +1324,7 @@ export const PostDetails = () => {
                                                   formData.entries()
                                                 );
                                               const newComment = formJson.email;
-                                              console.log(newComment);
+                                              // console.log(newComment);
 
                                               const data = {
                                                 newComment: newComment,
@@ -1335,9 +1347,9 @@ export const PostDetails = () => {
                                                       },
                                                     }
                                                   );
-                                                console.log(
-                                                  response?.data?.data
-                                                );
+                                                // console.log(
+                                                //   response?.data?.data
+                                                // );
                                                 setComments(
                                                   response?.data?.data
                                                 );

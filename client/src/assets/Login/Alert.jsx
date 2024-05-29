@@ -15,13 +15,11 @@ export const SnackBar = ({ message, variant }) => {
     setOpen(false);
   };
 
-  console.log("Hh");
 
   setTimeout(() => {
     setOpen(false);
   }, 3000);
 
-  console.log("Hello");
   return (
     <SnackbarProvider maxSnack={3}>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>

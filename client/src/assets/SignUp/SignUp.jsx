@@ -39,7 +39,7 @@ export const SignUp = () => {
           <SnackBar message={response?.data?.statusMessage} variant={"error"} />
         )
       );
-      console.log(response);
+      // console.log(response);
       response?.data?.Status &&
         (() => {
           UserName.current.value = "";
@@ -52,7 +52,6 @@ export const SignUp = () => {
       setSnack(
         <SnackBar message={"username or email is in use."} variant={"error"} />
       );
-      console.log("Sorry !!");
     }
 
     setAlert(true);
@@ -74,7 +73,7 @@ export const SignUp = () => {
     };
 
     if (!UserName.current.value) {
-      console.log("Hello Null");
+      // console.log("Hello Null");
       setPos(false);
       setNeg(false);
       return;
@@ -99,9 +98,9 @@ export const SignUp = () => {
     const data = {
       email: Gmail.current.value,
     };
-    console.log(Gmail.current.value);
+    // console.log(Gmail.current.value);
     if (!Gmail.current.value) {
-      console.log("Hello Null");
+      // console.log("Hello Null");
       setPosE(false);
       setNegE(false);
       return;
@@ -109,7 +108,7 @@ export const SignUp = () => {
 
     try {
       const response = await axios.post(EMAILCHECK, data);
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
       if (response?.data?.data) {
         setPosE(true);
         setNegE(false);

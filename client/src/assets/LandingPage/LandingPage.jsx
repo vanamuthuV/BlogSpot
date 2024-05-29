@@ -87,11 +87,10 @@ export const LandingPage = () => {
   };
 
   useEffect(() => {
-    console.log(user);
     (async () => {
       try {
         const response = await axios.post(LANDINGDATA, value);
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setData(response?.data?.data);
         setLoading(false);
       } catch (error) {

@@ -79,7 +79,7 @@ export const Profile = () => {
   const [privatePost, setPrivatePost] = useState([]);
 
   const { user } = useAuth();
-  console.log({ user_name });
+  // console.log({ user_name });
   const [ProfileImage, setProfileImage] = useState();
   const [CoverImage, setCoverImage] = useState();
   const [userDetails, setUserDetails] = useState({});
@@ -113,7 +113,7 @@ export const Profile = () => {
   };
 
   const handleUnfollow = async (ev) => {
-    console.log(ev.target.value);
+    // console.log(ev.target.value);
 
     try {
       const response = await axios.delete(UNFOLLOW + `/${ev.target.value}`, {
@@ -122,7 +122,7 @@ export const Profile = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
         },
       });
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
       setFollow(response?.data?.data);
     } catch (error) {
       console.log(error);
@@ -146,27 +146,31 @@ export const Profile = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.post(GETPROFILEIMAGE, {
-          user_name: user_name,
-          user_id : user.user_id
-        }, {
-          headers: {
-            "Content-Type": "application/json",
+        const response = await axios.post(
+          GETPROFILEIMAGE,
+          {
+            user_name: user_name,
+            user_id: user.user_id,
           },
-        });
-        console.log(response?.data?.data);
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        // console.log(response?.data?.data);
         setProfileImage(
           response?.data?.data?.profilestatus[0].profileimage ||
             response?.data?.data?.profilestatus
         );
-        console.log(response?.data?.data?.profilestatus[0].profileimage);
+        // console.log(response?.data?.data?.profilestatus[0].profileimage);
         setCoverImage(
           response?.data?.data?.coverstatus[0].coverimage ||
             response?.data?.data?.coverstatus
         );
         setUserDetails(response?.data?.data?.userDetails[0]);
-        console.log(response);
-        console.log(response?.data?.data?.userDetails[0]);
+        // console.log(response);
+        // console.log(response?.data?.data?.userDetails[0]);
         setProfileInfo(response?.data?.data?.ProfileInfo[0]);
         setName(response?.data?.data?.ProfileInfo[0].userfullname || "");
         setBio(response?.data?.data?.ProfileInfo[0].bio || "");
@@ -178,18 +182,18 @@ export const Profile = () => {
         response?.data?.data?.FollowStatus === undefined
           ? setFollow([])
           : setFollow(response?.data?.data?.FollowStatus);
-        console.log(response?.data?.data?.FollowStatus);
+        // console.log(response?.data?.data?.FollowStatus);
         setFollowers(response?.data?.data?.Followers);
         setFollowing(response?.data?.data?.Followings);
-        console.log(CompleteProfileChecker);
+        // console.log(CompleteProfileChecker);
         for (const key in response?.data?.data?.ProfileInfo[0]) {
           if (response?.data?.data?.ProfileInfo[0][key] === "") {
             setCompleteProfileChecker(true);
             console.log("I'm Breaking");
           }
         }
-        console.log(CompleteProfileChecker);
-        console.log(ProfileInfo);
+        // console.log(CompleteProfileChecker);
+        // console.log(ProfileInfo);
 
         setLoading(false);
       } catch (error) {
@@ -225,7 +229,7 @@ export const Profile = () => {
           },
         });
 
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setProfileImage(response?.data?.data[0].profileimage);
       } catch (error) {
         console.error(error);
@@ -239,7 +243,7 @@ export const Profile = () => {
           },
         });
 
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setProfileImage(response?.data?.data[0].profileimage);
       } catch (error) {
         console.error(error);
@@ -254,14 +258,14 @@ export const Profile = () => {
 
     if (CoverImage === "NO") {
       try {
-        console.log(data);
+        // console.log(data);
         const response = await axios.post(SETCOVER, data, {
           headers: {
             "Content-Type": "multipart/form-data", // Adjust the content type as needed
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
           },
         });
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setCoverImage(response?.data?.data[0].coverimage);
       } catch (error) {
         console.error(error);
@@ -274,7 +278,7 @@ export const Profile = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
           },
         });
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setCoverImage(response?.data?.data[0].coverimage);
       } catch (error) {
         console.error(error);
@@ -478,13 +482,13 @@ export const Profile = () => {
 
   const PersonalDetails = async (ev) => {
     ev.preventDefault();
-    console.log(typeof Object.keys(ProfileInfo).length);
+    // console.log(typeof Object.keys(ProfileInfo).length);
 
     if (Object.keys(ProfileInfo).length === 0) {
-      console.log(name);
-      console.log(bio);
-      console.log(birthDay);
-      console.log(role);
+      // console.log(name);
+      // console.log(bio);
+      // console.log(birthDay);
+      // console.log(role);
 
       const data = {
         user_id: user.user_id,
@@ -495,24 +499,24 @@ export const Profile = () => {
       };
 
       try {
-        console.log(localStorage.getItem("accessToken"));
+        // console.log(localStorage.getItem("accessToken"));
         const response = await axios.post(SETPERSONALDETAILS, data, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setProfileInfo(response?.data?.data[0]);
         setOpen(false);
       } catch (error) {
         console.error(error);
       }
     } else {
-      console.log(name);
-      console.log(bio);
-      console.log(birthDay);
-      console.log(role);
+      // console.log(name);
+      // console.log(bio);
+      // console.log(birthDay);
+      // console.log(role);
 
       const data = {
         user_id: user.user_id,
@@ -529,7 +533,7 @@ export const Profile = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setProfileInfo(response?.data?.data[0]);
         setOpen(false);
       } catch (error) {
@@ -542,7 +546,7 @@ export const Profile = () => {
   const [deleteID, setDeleteID] = useState("");
 
   const handleDeletePost = async (post_id) => {
-    console.log(post_id);
+    // console.log(post_id);
     try {
       const response = await axios.delete(
         `/deletepost/${post_id + "." + user.user_name}`,
@@ -553,7 +557,7 @@ export const Profile = () => {
           },
         }
       );
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
       setPublicPost(response?.data?.data?.PublicPost);
       setPrivatePost(response?.data?.data?.PrivatePost);
     } catch (error) {
@@ -562,13 +566,15 @@ export const Profile = () => {
     setOpenDelete(false);
   };
 
+const navigate = useNavigate()
+  
   const handleClickDeleteManager = (ev) => {
     const post_id = ev.target.value;
     const PostArray = post_id.split("/../");
-    console.log(PostArray);
+    // console.log(PostArray);
     setDeleteVar(PostArray[1]);
     setDeleteID(PostArray[0]);
-    console.log(post_id);
+    // console.log(post_id);
     setOpenDelete(true);
   };
 
@@ -576,6 +582,10 @@ export const Profile = () => {
 
   const AddFollower = async () => {
     const data = {};
+
+    if (Object.keys(user).length === 0) {
+      return navigate("/SignUp");
+    }
 
     try {
       const response = await axios.post(FOLLOW, {
@@ -588,9 +598,9 @@ export const Profile = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(response?.data?.data);
-      console.log(response?.data?.data[0]);
-      setFollow(response?.data?.data[0]);   
+      // console.log(response?.data?.data);
+      // console.log(response?.data?.data[0]);
+      setFollow(response?.data?.data[0]);
     } catch (error) {
       console.log(error);
     }
@@ -792,7 +802,7 @@ export const Profile = () => {
                             value={bio}
                             ref={BIO}
                             onChange={() => {
-                              console.log(BIO.current.value);
+                              // console.log(BIO.current.value);
                               setBio(BIO.current.value);
                             }}
                           />

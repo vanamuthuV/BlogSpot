@@ -26,7 +26,7 @@ export const Accounts = () => {
 
   const navigate = useNavigate();
 
-  console.log(user);
+  // console.log(user);
 
   const username = useRef("");
   const email = useRef("");
@@ -102,7 +102,7 @@ export const Accounts = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
 
       if (response?.data?.data === true) {
         setMessageP("Account Deletion Complete. Redirecting Please wait...");
@@ -124,7 +124,7 @@ export const Accounts = () => {
 
   const OldPasswordHandle = async (ev) => {
     ev.preventDefault();
-    console.log(oldPassword.current.value);
+    // console.log(oldPassword.current.value);
 
     const Credentials = {
       user_passcode: oldPassword.current.value,
@@ -138,7 +138,7 @@ export const Accounts = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
       if (response?.data?.data === true) {
         setIsPass(true);
         setShowOldPassword(false);
@@ -185,13 +185,13 @@ export const Accounts = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
 
       if (response?.data?.data === true) {
         setemailDialogueSetterP(true);
         setemailDialogueSetterN(false);
       } else {
-        console.log("Hola");
+        // console.log("Hola");
         setemailDialogueSetterP(false);
         setemailDialogueSetterN(true);
       }
@@ -201,7 +201,7 @@ export const Accounts = () => {
   };
 
   const UserNameChecker = async () => {
-    console.log(username.current.value);
+    // console.log(username.current.value);
 
     if (username.current.value === "") {
       setUserNameDialogueSetterN(false);
@@ -220,13 +220,13 @@ export const Accounts = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
 
       if (response?.data?.data === true) {
         setUserNameDialogueSetterP(true);
         setUserNameDialogueSetterN(false);
       } else {
-        console.log("Hola");
+        // console.log("Hola");
         setUserNameDialogueSetterP(false);
         setUserNameDialogueSetterN(true);
       }
@@ -251,8 +251,8 @@ export const Accounts = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(response?.data?.data);
-        console.log(user);
+        // console.log(response?.data?.data);
+        // console.log(user);
         setUser(response?.data?.data);
         setemailEdit(false);
         setemailDialogueSetterN(false);
@@ -279,8 +279,8 @@ export const Accounts = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(response?.data?.data);
-        console.log(user);
+        // console.log(response?.data?.data);
+        // console.log(user);
         setUser(response?.data?.data);
         setUsernameEdit(false);
         setUserNameDialogueSetterN(false);
@@ -300,7 +300,7 @@ export const Accounts = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
       } catch (error) {
         console.log(error);
       }
@@ -323,7 +323,7 @@ export const Accounts = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
       if (response?.data?.data) {
         setMessageP("Password Changed Successfully!!");
         setIsPass(false);

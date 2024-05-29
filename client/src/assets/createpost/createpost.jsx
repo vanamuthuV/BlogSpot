@@ -136,7 +136,7 @@ export const CreatePost = () => {
   const type = useRef(null);
 
   const handleEditorChange = (contents, editor) => {
-    console.log("Content Value:", contents);
+    // console.log("Content Value:", contents);
     // You can also access the editor instance for more operations
   };
 
@@ -209,7 +209,7 @@ export const CreatePost = () => {
 
   const handleChange = () => {
     setAlignment(type.current.value);
-    console.log(alignment);
+    // console.log(alignment);
   };
 
   const [comments, setComments] = useState(true);
@@ -228,7 +228,7 @@ export const CreatePost = () => {
     data.set("tags", tags.current.value);
     data.set("summary", summary.current.value);
     data.set("posttype", alignment), data.set("comments", comments);
-    console.log(data);
+    // console.log(data);
     try {
       const response = await axios.post(CREATE_POST, data, {
         headers: {
@@ -236,9 +236,9 @@ export const CreatePost = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
         },
       });
-      console.log(response?.data?.success);
-      console.log(response?.data?.base);
-      console.log(response?.data?.Base);
+      // console.log(response?.data?.success);
+      // console.log(response?.data?.base);
+      // console.log(response?.data?.Base);
       navigate("/");
     } catch (error) {
       console.error(error.message);

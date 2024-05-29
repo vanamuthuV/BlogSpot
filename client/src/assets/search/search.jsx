@@ -11,7 +11,7 @@ const POSTSEARCH = "/postsearch";
 const TAGSEARCH = "/tagsearch";
 
 export const FetchContinous = ({ keyword }) => {
-  console.log(keyword);
+  // console.log(keyword);
 
   const { searchOpen, setSearchOpen } = useSearch();
 
@@ -38,7 +38,7 @@ export const FetchContinous = ({ keyword }) => {
     (async () => {
       try {
         const resposne = await axios.post(ACCOUNTSEARCH, Search);
-        console.log(resposne?.data?.data);
+        // console.log(resposne?.data?.data);
         setAccounts(resposne?.data?.data);
         setUserMaintainer(resposne?.data?.data.slice(0, 4));
         setLoading(false);
@@ -50,7 +50,7 @@ export const FetchContinous = ({ keyword }) => {
 
       try {
         const resposne = await axios.post(POSTSEARCH, Search);
-        console.log(resposne?.data?.data);
+        // console.log(resposne?.data?.data);
         setPosts(resposne?.data?.data);
         setPostMaintainer(resposne?.data?.data.slice(0, 4));
       } catch (error) {
@@ -61,7 +61,7 @@ export const FetchContinous = ({ keyword }) => {
 
       try {
         const resposne = await axios.post(CATEGORYSEARCH, Search);
-        console.log(resposne?.data?.data);
+        // console.log(resposne?.data?.data);
         setCategory(resposne?.data?.data);
         setCategoryMaintainer(resposne?.data?.data.slice(0, 4));
         setLoading(false);
@@ -73,7 +73,7 @@ export const FetchContinous = ({ keyword }) => {
 
       try {
         const resposne = await axios.post(TAGSEARCH, Search);
-        console.log(resposne?.data?.data);
+        // console.log(resposne?.data?.data);
         setTags(resposne?.data?.data);
         setTagMaintainer(resposne?.data?.data.slice(0, 4));
         setLoading(false);

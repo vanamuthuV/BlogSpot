@@ -23,7 +23,7 @@ const UNFOLLOW = "/unfollowuser";
 export const FollowersAndFollowingLayout = () => {
   const { user_name } = useParams();
 
-  console.log(user_name);
+  // console.log(user_name);
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -65,11 +65,11 @@ export const Followers = () => {
   const [users, setUser] = useState("");
 
   const handleClickOpen = (ev) => {
-    console.log(ev.target.value);
+    // console.log(ev.target.value);
     const value = ev.target.value;
     const Data = value.split("/../");
-    console.log(Data[0]);
-    console.log(Data[1]);
+    // console.log(Data[0]);
+    // console.log(Data[1]);
     setUser(Data[1]);
     setOpen(true);
   };
@@ -93,7 +93,7 @@ export const Followers = () => {
         }
       );
       setFollower(response?.data?.data);
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
     } catch (error) {
       console.log(error);
     }
@@ -109,7 +109,7 @@ export const Followers = () => {
             user_name: user_name,
           },
         });
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setFollower(response?.data?.data);
       } catch (error) {
         console.log(error);
@@ -240,11 +240,11 @@ export const Followings = () => {
   const [users, setUser] = useState("");
 
   const handleClickOpen = (ev) => {
-    console.log(ev.target.value);
+    // console.log(ev.target.value);
     const value = ev.target.value;
     const Data = value.split("/../");
-    console.log(Data[0]);
-    console.log(Data[1]);
+    // console.log(Data[0]);
+    // console.log(Data[1]);
     setUser(Data[1]);
     setOpen(true);
   };
@@ -268,7 +268,7 @@ export const Followings = () => {
         }
       );
       setFollowing(response?.data?.data);
-      console.log(response?.data?.data);
+      // console.log(response?.data?.data);
     } catch (error) {
       console.log(error);
     }
@@ -284,7 +284,7 @@ export const Followings = () => {
             user_name: user_name,
           },
         });
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setFollowing(response?.data?.data);
       } catch (error) {
         console.log(error);

@@ -42,20 +42,20 @@ export const PostRequester = () => {
   const [ClickAnalyzer, setClickAnalyzser] = useState("trending");
   const { user } = useAuth();
   const navigate = useNavigate();
-  console.log(user);
+  // console.log(user);
   useEffect(() => {
     const ReadBlog = async () => {
       try {
         setLoading(true);
-        console.log(user.user_id);
-        console.log(localStorage.getItem("user_id"))
+        // console.log(user.user_id);
+        // console.log(localStorage.getItem("user_id"))
         const response = await axios.post(READ_URL, {
           type: ClickAnalyzer,
           id: localStorage.getItem("user_id")
             ? localStorage.getItem("user_id")
             : "123e4567-e89b-12d3-a456-426614174000",
         });
-        console.log(response?.data);
+        // console.log(response?.data);
         setData(response?.data?.posts);
         setLoading(false);
       } catch (error) {
@@ -87,7 +87,7 @@ export const PostRequester = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         };
         const response = await axios.post(ADDBOOKMARK, data, {headers});
-        console.log(response);
+        // console.log(response);
         // ClickAnalyzer === "trending" && setTrendingData(response?.data?.posts);
         // ClickAnalyzer === "new" && setNewData(response?.data?.posts);
         // ClickAnalyzer === "network" && setNetworkData(response?.data?.posts);
@@ -99,8 +99,8 @@ export const PostRequester = () => {
   };
 
   const RemoveBookMark = async (ev) => {
-    console.log("Hello");
-    console.log(ev.target.value);
+    // console.log("Hello");
+    // console.log(ev.target.value);
 
     const data = {
       bookmarkid: ev.target.value,
@@ -123,7 +123,7 @@ export const PostRequester = () => {
     }
   };
 
-  console.log(user);
+  // console.log(user);
 
   return (
     <>
@@ -451,9 +451,9 @@ export const PostRequester = () => {
                             </div>
                           </Tooltip>
                         </div>
-                        <p className="pt-1 pb-1 pl-1 pr-1 text-sm font-normal rounded-md bg-orange-50 text-neutral-800 ">
+                        {/* <p className="pt-1 pb-1 pl-1 pr-1 text-sm font-normal rounded-md bg-orange-50 text-neutral-800 ">
                           {post_category}
-                        </p>
+                        </p> */}
                         <div className="flex flex-row items-center justify-center">
                           <p className="flex flex-row items-center justify-center pr-1 text-sm text-green-500 ">
                             <svg

@@ -22,13 +22,20 @@ export const SignUpLayout = () => {
   const [signUpAndLogin, setSignUpAnfLogin] = useState(true);
 
   useEffect(() => {
-    console.log(localStorage.getItem("page"));
-    setSignUpAnfLogin(
-      localStorage.getItem("page") === null
-        ? true
-        : localStorage.getItem("page")
-    );
+    // console.log(localStorage.getItem("page"));
+    setSignUpAnfLogin(localStorage.getItem("page"));
   }, []);
+
+  const HandleButton = () => {
+    localStorage.setItem("page", !signUpAndLogin);
+    setSignUpAnfLogin((prev) => !prev);
+  };
+
+  const styleTrue = {
+    border: "1px solid #ff6500",
+    backgroundColor: "#ff6500",
+    color: "#fffefd",
+  };
 
   return (
     <div
@@ -47,12 +54,8 @@ export const SignUpLayout = () => {
           <div className="flex flex-row items-center justify-around">
             <Link to={"/SignUp"}>
               <button
-                onClick={() => {
-                  setSignUpAnfLogin((prev) => !prev);
-                  localStorage.setItem("page", !signUpAndLogin);
-                  console.log(localStorage.getItem("page"));
-                }}
-                className="pt-2 pb-2 pl-3 pr-3 rounded-lg text-md max-md:text-vs  max-md:pt-1.5 max-md:pb-1.5"
+                onClick={HandleButton}
+                className="pt-2 pb-2 pl-3 pr-3 rounded-lg text-md max-md:text-vs  max-md:pt-1.5 max-md:pb-1.5 text-orange-500"
                 style={{
                   border: !signUpAndLogin && "1px solid #ff6500",
                   backgroundColor: signUpAndLogin && "#ff6500",
@@ -64,17 +67,14 @@ export const SignUpLayout = () => {
             </Link>
             <Link to={"/SignUp/login"}>
               <button
-                onClick={() => {
-                  setSignUpAnfLogin((prev) => !prev);
-                  localStorage.setItem("page", !signUpAndLogin);
-                  console.log(localStorage.getItem("page"));
-                }}
-                className="pt-2 pb-2 pl-3 pr-3 rounded-lg text-md max-md:text-vs  max-md:pt-1.5 max-md:pb-1.5"
+                onClick={HandleButton}
+                className="pt-2 pb-2 pl-3 pr-3 rounded-lg text-md max-md:text-vs  max-md:pt-1.5 max-md:pb-1.5 text-orange-500"
                 style={{
                   border: signUpAndLogin && "1px solid #ff6500",
                   backgroundColor: !signUpAndLogin && "#ff6500",
                   color: !signUpAndLogin ? "#fffefd" : "#ff6500",
                 }}
+                // style={signUpAndLogin === false ? styleTrue : {}}
               >
                 Login
               </button>
@@ -95,4 +95,3 @@ export const SignUpPersonalLayout = () => {
     </>
   );
 };
-

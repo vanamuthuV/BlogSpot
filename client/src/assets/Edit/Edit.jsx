@@ -130,7 +130,7 @@ export const Edit = ({ post_ids }) => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
           },
         });
-        console.log(response?.data);
+        // console.log(response?.data);
         const {
           post_title,
           post_images,
@@ -142,12 +142,12 @@ export const Edit = ({ post_ids }) => {
           post_tags,
           post_type,
         } = response?.data?.data[0];
-        console.log(post_title);
+        // console.log(post_title);
         setTitle(post_title);
         setContent(post_content);
         setCategory(post_category);
         setComments(post_comment_type === "true" ? true : false);
-        console.log(post_summary);
+        // console.log(post_summary);
         setSummary(post_summary);
         setTags(post_tags);
         setType(post_type);
@@ -177,7 +177,7 @@ export const Edit = ({ post_ids }) => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
           },
         });
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setCurrentImage(response?.data?.data);
       } catch (error) {
         console.error(error);
@@ -230,7 +230,7 @@ export const Edit = ({ post_ids }) => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
         },
       });
-      console.log(response?.data);
+      // console.log(response?.data);
       navigate("/");
     } catch (error) {
       console.error(error.message);
@@ -291,7 +291,7 @@ export const Edit = ({ post_ids }) => {
             ref={contents}
             onChange={(ev) => {
               setContent(() => contents.current.value);
-              console.log(content);
+              // console.log(content);
             }}
             style={{ fontFamily: "Space Mono" }}
           />
@@ -383,6 +383,6 @@ export const Edit = ({ post_ids }) => {
 
 export const EditCaller = () => {
   const { post_ids } = useParams();
-  console.log(post_ids);
+  // console.log(post_ids);
   return <Edit post_ids={post_ids} />;
 };

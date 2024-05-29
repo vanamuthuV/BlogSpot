@@ -116,15 +116,15 @@ export const Dashboard = () => {
   };
 
   const handleChange = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setPreferences(event.target.value);
   };
 
   useEffect(() => {
     (async () => {
       try {
-        console.log(preferences);
-        console.log(data);
+        // console.log(preferences);
+        // console.log(data);
         setloading(true);
         const response = await axios.post(
           DASHBOARD,
@@ -136,7 +136,7 @@ export const Dashboard = () => {
             },
           }
         );
-        console.log(response?.data?.data);
+        // console.log(response?.data?.data);
         setDataLen(response?.data?.data?.data.length);
         if (
           response?.data?.data?.data.length !== 0 &&

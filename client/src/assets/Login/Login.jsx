@@ -40,7 +40,7 @@ export const Login = () => {
           "Content-Type": "application/json",
         },
       });
-      console.log(response?.data);
+      // console.log(response?.data);
       const accessToken = response?.data?.accessToken;
       const user_name = response?.data?.user_name;
       response?.data?.user_details[0].verified === true &&
@@ -82,7 +82,7 @@ export const Login = () => {
   alert &&
     setTimeout(() => {
       setAlert(false);
-      console.log(Snack);
+      // console.log(Snack);
     }, 3000);
 
   return (
@@ -170,7 +170,7 @@ export const ForgetUsername = () => {
 
   const SubmitHandler = (event) => {
     event.preventDefault();
-    console.log(Gmail.current.value);
+    // console.log(Gmail.current.value);
     setVisibleModel((prev) => !prev);
   };
 
@@ -209,17 +209,14 @@ export const ForgetPasscode = () => {
 
   const SubmitHandler1 = (event) => {
     event.preventDefault();
-    console.log(Gmail.current.value);
   };
 
   const SubmitHandler2 = (event) => {
     event.preventDefault();
-    console.log(OTP.current.value);
   };
 
   const SubmitHandler3 = (event) => {
     event.preventDefault();
-    console.log(Passcode.current.value, ConfirmPasscode.current.value);
   };
 
   const Caller = () => {
@@ -329,10 +326,10 @@ export const GetUsers = () => {
   };
 
   const ClickHandler = async () => {
-    console.log(auth.accessToken);
+    // console.log(auth.accessToken);
     try {
       const response = await axios.post("/users", config);
-      console.log(response?.data);
+      // console.log(response?.data);
     } catch (error) {
       console.error(error);
     }

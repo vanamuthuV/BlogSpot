@@ -61,7 +61,7 @@ export const Navbar = () => {
   const getUser = async () => {
     try {
       const response = await axios.get(GOOGLE_USER);
-      console.log(response);
+      // console.log(response);
       const accessToken = response?.data?.data?.accessToken;
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("user_id", response?.data?.data?.user_id);
@@ -106,7 +106,7 @@ export const Navbar = () => {
   }));
 
   const handleLogout = () => {
-    console.log("Logout Success!!");
+    // console.log("Logout Success!!");
     localStorage.clear();
     setAuth({});
     setUser({});
@@ -156,13 +156,13 @@ export const Navbar = () => {
       email: user.Gmail ? user.Gmail : user.user_email,
     };
     try {
-      console.log(data);
+      // console.log(data);
       const response = await axios.post("/emailverify", data, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      console.log(response.data?.status, response?.data?.OTPs);
+      // console.log(response.data?.status, response?.data?.OTPs);
       SetOTP(response?.data?.OTPs);
       setSnackBar(
         response?.data?.status ? (
@@ -182,12 +182,10 @@ export const Navbar = () => {
   }
 
   const HandleVerification = async () => {
-    console.log(typeof otp.current.value);
-    console.log(typeof OTP);
     setLoading(true)
     if (Number(otp.current.value) === OTP) {
-      console.log(OTP);
-      console.log("Verification Success");
+      // console.log(OTP);
+      // console.log("Verification Success");
       const data = {
         user_id: localStorage.getItem("user_id"),
       };
@@ -197,7 +195,7 @@ export const Navbar = () => {
             "Content-Type": "application/json",
           },
         });
-        console.log(response?.data);
+        // console.log(response?.data);
         setUser(response?.data?.data);
         if (response?.data?.status) {
           setValidatory("success");
@@ -214,8 +212,7 @@ export const Navbar = () => {
         console.log(error);
       }
     } else {
-      console.log(OTP);
-      console.log("Verification Unsuccess");
+      setValidatory("failure");
     }
   };
 
@@ -495,17 +492,6 @@ export const Navbar = () => {
               {user.user_name ? (
                 <Tooltip title="Open settings">
                   <button className="w-10 h-10" onClick={handleOpenUserMenu}>
-                    {console.log(user.profileimage)}
-                    {/* <img
-                      className="w-full h-full text-gray-700 rounded-full"
-                      color="#303030"
-                      alt={user.user_name}
-                      src={
-                        user.profileimage
-                          ? `http://localhost:5000/${user.profileimage}`
-                          : "../../../public/Profile.jpeg"
-                      }
-                    /> */}
 
                     {user.profileimage ? (
                       <ImageComponent

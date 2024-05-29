@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
           });
-          console.log(response?.data?.data);
+          // console.log(response?.data?.data);
           setUser(response?.data?.data);
           setAuth(response?.data?.data);
         } catch (error) {
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
       ReloadUser();
     }
   }, [user]);
-  console.log(user);
+  // console.log(user);
 
   return (
     <AuthContext.Provider value={{ auth, setAuth, user, setUser }}>

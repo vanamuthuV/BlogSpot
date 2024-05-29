@@ -46,21 +46,21 @@ export const Post = ({
   is_bookmarked,
   bookmarkid,
 }) => {
-  console.log(post_images);
-  console.log(is_bookmarked);
-  console.log("Yobro", bookmarkid);
+  // console.log(post_images);
+  // console.log(is_bookmarked);
+  // console.log("Yobro", bookmarkid);
 
   const [bookMark, setbookMark] = useState(is_bookmarked);
   const [social, setSocial] = useState(false);
 
   const AddBookMark = async(ev) => {
     const response = await axios.post(ADDBOOKMARK, { user_id: user_id, post_id: post_id })
-    console.log(response);
+    // console.log(response);
   }
   
   const RemoveBookMark = (ev) => {
-    console.log("Hello");
-    console.log(ev.target.value);
+    // console.log("Hello");
+    // console.log(ev.target.value);
     setbookMark(false)
   }
 

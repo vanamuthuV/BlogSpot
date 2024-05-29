@@ -25,7 +25,7 @@ import { Notification } from "./assets/Notifications/notifications";
 
 function App() {
   const { searchOpen, setSearchOpen } = useSearch();
-  console.log(searchOpen);
+  // console.log(searchOpen);
   return (
     <BrowserRouter>
       <Routes>
