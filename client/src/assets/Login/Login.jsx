@@ -43,7 +43,8 @@ export const Login = () => {
       console.log(response?.data);
       const accessToken = response?.data?.accessToken;
       const user_name = response?.data?.user_name;
-      localStorage.setItem("accessToken", accessToken);
+      response?.data?.user_details[0].verified === true &&
+        localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("user_id", response?.data?.user_details[0].user_id);
       // localStorage.setItem("user_id", response?.data?.user_details[0].user_id);
       setAuth({
@@ -58,6 +59,7 @@ export const Login = () => {
         user_name: response?.data?.user_details[0].user_name,
         user_id: response?.data?.user_details[0].user_id,
         profileimage: response?.data?.user_details[0].profileimage,
+        verified: response?.data?.user_details[0].verified,
       });
       setTimeout(() => {
         navigate("/");

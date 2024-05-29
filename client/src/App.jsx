@@ -21,6 +21,7 @@ import { LandingPage } from "./assets/LandingPage/LandingPage";
 import { LeaderBoard } from "./assets/leaderboard/leaderboard";
 import { PageNotFound } from "./assets/pagenotfound/pagenotfound";
 import useSearch from "../hooks/useSearch";
+import { Notification } from "./assets/Notifications/notifications";
 
 function App() {
   const { searchOpen, setSearchOpen } = useSearch();
@@ -64,6 +65,7 @@ function App() {
           <Route path="/Account" element={<Accounts />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/Leaderboard" element={<LeaderBoard />} />
+          <Route path="/notification" element={<Notification />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>

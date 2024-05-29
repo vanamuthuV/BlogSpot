@@ -67,6 +67,7 @@ import AddBookMarkSingle from "./routes/addbookmarksinglepost.js";
 import RemoveBookMarkSingle from "./routes/removebookmarkforsinglepost.js";
 import pool from "./db.js";
 import jwtToken from "./utils/jwtToken.js";
+import EmailVerify from "./routes/emailverify.js"
 
 const Base_URL = "http://localhost:5173";
 dotenv.config();
@@ -90,7 +91,7 @@ app.use(cookieParser());
 
 app.use(
   session({
-    secret: "3hr8923jhed932edj02347djnn3409r58234df34098hr54",
+    secret: process.env.EXPRESS_SESSION_SECREST_KEY,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -235,6 +236,7 @@ app.use("/addbookmark", AddBookMark);
 app.use("/removebookmark", RemoveBookMark);
 app.use("/addbookmarksingle", AddBookMarkSingle);
 app.use("/removebookmarksingle", RemoveBookMarkSingle);
+app.use("/emailverify", EmailVerify)
 
 app.listen(5000, () => {
   console.log("Connected to postgres...");

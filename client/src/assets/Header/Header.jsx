@@ -27,9 +27,15 @@ import useSearch from "../../../hooks/useSearch";
 import { Input } from "@mui/material";
 import { FetchContinous } from "../search/search";
 import axios from "../../../api/axios";
-
+import Alert from "@mui/material/Alert";
 import SearchVideo from "../../../public/Search.mp4";
-
+import { SnackBar } from "../Login/Alert";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import CircularProgress from "@mui/material/CircularProgress";
 const darkTheme = createTheme({ palette: { mode: "dark" } });
 const lightTheme = createTheme({ palette: { mode: "light" } });
 
@@ -41,10 +47,16 @@ export const Navbar = () => {
   const [userFunc, setUserFunc] = useState(false);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  const [loading, setLoading] = useState(false)
   const { searchOpen, setSearchOpen } = useSearch();
-
+  const [verify, setverify] = useState(false);
   const GOOGLE_USER = `/login/success`;
+  const [snack, setSnack] = useState(false);
+  const [snackbar, setSnackBar] = useState();
+  const [open, setOpen] = React.useState(false);
+  const [OTP, SetOTP] = useState(0);
+  const otp = useRef();
+  const [validatory, setValidatory] = useState("content");
 
   const getUser = async () => {
     try {
@@ -53,8 +65,14 @@ export const Navbar = () => {
       const accessToken = response?.data?.data?.accessToken;
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("user_id", response?.data?.data?.user_id);
-      const { user_name, user_email, user_id, profileimage, platform } =
-        response?.data?.data;
+      const {
+        user_name,
+        user_email,
+        user_id,
+        profileimage,
+        platform,
+        verified,
+      } = response?.data?.data;
       setAuth({
         Gmail: user_email,
         user_id: user_id,
@@ -66,6 +84,7 @@ export const Navbar = () => {
         user_id: user_id,
         profileimage: profileimage,
         platform: platform,
+        verified: verified,
       });
     } catch (error) {
       console.log(error);
@@ -124,6 +143,82 @@ export const Navbar = () => {
     setAnchorElUser(null);
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const HandleEmailVerifier = async () => {
+    const data = {
+      email: user.Gmail ? user.Gmail : user.user_email,
+    };
+    try {
+      console.log(data);
+      const response = await axios.post("/emailverify", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response.data?.status, response?.data?.OTPs);
+      SetOTP(response?.data?.OTPs);
+      setSnackBar(
+        response?.data?.status ? (
+          <SnackBar message={"OTP sent successfully !!"} variant={"success"} />
+        ) : (
+          <SnackBar message={"OTP unsuccessfull !!"} />
+        )
+      );
+      setSnack(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (snack) {
+    setTimeout(() => setSnack(false), 3000);
+  }
+
+  const HandleVerification = async () => {
+    console.log(typeof otp.current.value);
+    console.log(typeof OTP);
+    setLoading(true)
+    if (Number(otp.current.value) === OTP) {
+      console.log(OTP);
+      console.log("Verification Success");
+      const data = {
+        user_id: localStorage.getItem("user_id"),
+      };
+      try {
+        const response = await axios.post("/emailverify/confirm", data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(response?.data);
+        setUser(response?.data?.data);
+        if (response?.data?.status) {
+          setValidatory("success");
+        } else setValidatory("failure");
+        setLoading(false)
+        setTimeout(() => {
+          localStorage.clear();
+          setAuth({});
+          setUser({});
+          window.open("http://localhost:5000/logouts", "_self");
+          navigate("/SignUp");
+        }, 4000)
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log(OTP);
+      console.log("Verification Unsuccess");
+    }
+  };
+
   return (
     <userUpdater.Provider value={setUserFunc}>
       <AppBar
@@ -137,6 +232,7 @@ export const Navbar = () => {
         }}
         position="static" /* Previous it was Sticky */
       >
+        {snack && snackbar}
         <Container maxWidth="xl">
           <div
             style={{
@@ -719,6 +815,104 @@ export const Navbar = () => {
               )}
             </div>
           </div>
+        </div>
+      )}
+      {Object.keys(user).length !== 0 && user.verified === false && (
+        <div className="flex flex-row items-center justify-between w-full h-12 pl-10 pr-10 bg-red-500 ">
+          <p className="text-gray-50">Please Verify Your Email.</p>
+          <button
+            className="h-full pl-2 pr-2 text-gray-50 hover:bg-red-300"
+            onClick={() => {
+              HandleEmailVerifier();
+              setOpen(true);
+            }}
+          >
+            Verify Now
+          </button>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            {loading ? (
+              <div className="flex flex-row items-center justify-center w-full h-full">
+                <CircularProgress />
+              </div>
+            ) : (
+              <>
+                <DialogTitle
+                  style={{ color: "orange" }}
+                  id="alert-dialog-title"
+                >
+                  {"Email Verification By InkWellify"}
+                </DialogTitle>
+                {validatory === "content" && (
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      Please enter the 4-digit OTP sent to your registered
+                      email.
+                      <div className="flex flex-row items-center justify-center w-full">
+                        <input
+                          className="pt-1 pb-1 pl-3 pr-3 mt-4 border-2 border-black rounded-md"
+                          ref={otp}
+                          type="number"
+                        />
+                      </div>
+                    </DialogContentText>
+                  </DialogContent>
+                )}
+                {validatory === "success" && (
+                  <div className="flex flex-col items-center justify-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      class="size-24 text-green-500"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    <p className="text-xl font-bold text-green-500">Verified</p>
+                  </div>
+                )}
+                {validatory === "failure" && (
+                  <div className="flex flex-col items-center justify-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      class="size-24 text-red-500"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    <p className="text-xl font-bold text-red-500">Verified</p>
+                  </div>
+                )}
+              </>
+            )}
+
+            {validatory === "content" && (
+              <DialogActions>
+                <Button onClick={() => setOpen(false)}>Cancel</Button>
+                <Button onClick={HandleVerification} autoFocus>
+                  Verify
+                </Button>
+              </DialogActions>
+            )}
+            {validatory !== "content" && (
+              <DialogActions>
+                <Button onClick={() => setOpen(false)}>Close</Button>
+              </DialogActions>
+            )}
+          </Dialog>
         </div>
       )}
     </userUpdater.Provider>
