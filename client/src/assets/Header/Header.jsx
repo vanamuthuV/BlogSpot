@@ -805,9 +805,9 @@ export const Navbar = () => {
       )}
       {Object.keys(user).length !== 0 && user.verified === false && (
         <div className="flex flex-row items-center justify-between w-full h-12 pl-10 pr-10 bg-red-500 ">
-          <p className="text-gray-50">Please Verify Your Email.</p>
+          <p className="text-gray-50 max-md:text-vs">Please Verify Your Email.   (If You Cannot Find The OTP Visit Spam Section Of Your Email)</p>
           <button
-            className="h-full pl-2 pr-2 text-gray-50 hover:bg-red-300"
+            className="h-full pl-2 pr-2 text-gray-50 hover:bg-red-300 max-md:text-vs"
             onClick={() => {
               HandleEmailVerifier();
               setOpen(true);
