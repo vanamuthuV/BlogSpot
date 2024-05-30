@@ -26,5 +26,13 @@ const poolconfig = process.env.DATABASE_URL
     }
   : newpool;
 
-const pool = new Pool(poolconfig);
+const connectionStrings = process.env.DATABASE_URL;
+
+const pool = new Pool({
+  connectionString: connectionStrings,
+  ssl: {
+    rejectUnauthorized: false, // Accept self-signed certificates
+  },  
+});
+
 export default pool;
