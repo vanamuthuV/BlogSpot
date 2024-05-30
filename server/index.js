@@ -238,6 +238,10 @@ app.use("/addbookmarksingle", AddBookMarkSingle);
 app.use("/removebookmarksingle", RemoveBookMarkSingle);
 app.use("/emailverify", EmailVerify)
 
+app.get("/", async (req, res) => {
+  res.send(`<h2>Hello Boy </h2>`)
+})
+
 app.listen(5000, () => {
   console.log("Connected to postgres...");
   console.log("server is listening on port 5000 ...");
