@@ -79,7 +79,7 @@ const app = express();
 const __dirname = path.resolve();
 const corsOptions = {
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-  origin: process.env.URL || Base_URL, // Allow requests from this origin
+  origin: Base_URL, // Allow requests from this origin
   methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"], // Allowed HTTP methods
   allowedHeaders: ["Origin", "Content-Type", "Authorization"], // Allowed headers
 };
