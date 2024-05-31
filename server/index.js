@@ -125,6 +125,7 @@ passport.use(
         }
 
         const user = await pool.query(queryuserexists, [profile.id]);
+        console.log("Heehee",user);
         const { accessToken, refreshToken } = jwtToken(user.rows[0]);
         user.rows[0].accessToken = accessToken;
         user.rows[0].refreshToken = refreshToken
