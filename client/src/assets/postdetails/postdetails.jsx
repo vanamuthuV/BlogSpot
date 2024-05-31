@@ -261,8 +261,6 @@ export const PostDetails = () => {
         const response = await axios.post(POSTDETAIL_URL, {
           id: id,
           user_id: localStorage.getItem("user_id")
-            ? localStorage.getItem("user_id")
-            : "110ec58a-a0f2-4ac4-8393-c866d813b8d1",
         });
         // console.log(response?.data);
         setData(response?.data?.post);
