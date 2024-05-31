@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-const jwtToken = ({user_id, user_name, user_email}) => {
+const jwtToken = async ({user_id, user_name, user_email}) => {
     const user = { user_id, user_name, user_email }
     
     const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: '1hr' })
