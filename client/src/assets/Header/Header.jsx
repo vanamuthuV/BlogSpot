@@ -47,7 +47,7 @@ export const Navbar = () => {
   const [userFunc, setUserFunc] = useState(false);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const { searchOpen, setSearchOpen } = useSearch();
   const [verify, setverify] = useState(false);
   const GOOGLE_USER = `/login/success`;
@@ -110,7 +110,11 @@ export const Navbar = () => {
     localStorage.clear();
     setAuth({});
     setUser({});
-    window.open("http://localhost:5000/logouts", "_self");
+    // window.open("http://localhost:5000/logouts", "_self");
+    window.open(
+      "https://inkwellifyserver-git-main-vanamuthu-vs-projects.vercel.app/logouts",
+      "_self"
+    );
     navigate("/SignUp");
   };
 
@@ -182,7 +186,7 @@ export const Navbar = () => {
   }
 
   const HandleVerification = async () => {
-    setLoading(true)
+    setLoading(true);
     if (Number(otp.current.value) === OTP) {
       // console.log(OTP);
       // console.log("Verification Success");
@@ -200,14 +204,18 @@ export const Navbar = () => {
         if (response?.data?.status) {
           setValidatory("success");
         } else setValidatory("failure");
-        setLoading(false)
+        setLoading(false);
         setTimeout(() => {
           localStorage.clear();
           setAuth({});
           setUser({});
-          window.open("http://localhost:5000/logouts", "_self");
+          // window.open("http://localhost:5000/logouts", "_self");
+          window.open(
+            "https://inkwellifyserver-git-main-vanamuthu-vs-projects.vercel.app/logouts",
+            "_self"
+          );
           navigate("/SignUp");
-        }, 4000)
+        }, 4000);
       } catch (error) {
         console.log(error);
       }
@@ -492,7 +500,6 @@ export const Navbar = () => {
               {user.user_name ? (
                 <Tooltip title="Open settings">
                   <button className="w-10 h-10" onClick={handleOpenUserMenu}>
-
                     {user.profileimage ? (
                       <ImageComponent
                         base64String={user.profileimage}
@@ -805,7 +812,10 @@ export const Navbar = () => {
       )}
       {Object.keys(user).length !== 0 && user.verified === false && (
         <div className="flex flex-row items-center justify-between w-full h-12 pl-10 pr-10 bg-red-500 ">
-          <p className="text-gray-50 max-md:text-vs">Please Verify Your Email.   (If You Cannot Find The OTP Visit Spam Section Of Your Email)</p>
+          <p className="text-gray-50 max-md:text-vs">
+            Please Verify Your Email. (If You Cannot Find The OTP Visit Spam
+            Section Of Your Email)
+          </p>
           <button
             className="h-full pl-2 pr-2 text-gray-50 hover:bg-red-300 max-md:text-vs"
             onClick={() => {

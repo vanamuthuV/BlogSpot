@@ -86,7 +86,7 @@ export const PostRequester = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         };
-        const response = await axios.post(ADDBOOKMARK, data, {headers});
+        const response = await axios.post(ADDBOOKMARK, data, { headers });
         // console.log(response);
         // ClickAnalyzer === "trending" && setTrendingData(response?.data?.posts);
         // ClickAnalyzer === "new" && setNewData(response?.data?.posts);
@@ -107,13 +107,13 @@ export const PostRequester = () => {
       user_id: user.user_id,
       type: ClickAnalyzer,
     };
-     const headers = {
-       "Content-Type": "application/json",
-       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-     };
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    };
 
     try {
-      const response = await axios.post(REMOVEBOOKMARK,data, {headers});
+      const response = await axios.post(REMOVEBOOKMARK, data, { headers });
       // ClickAnalyzer === "trending" && setTrendingData(response?.data?.posts);
       // ClickAnalyzer === "new" && setNewData(response?.data?.posts);
       // ClickAnalyzer === "network" && setNetworkData(response?.data?.posts);

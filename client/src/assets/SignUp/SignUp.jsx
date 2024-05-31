@@ -126,7 +126,11 @@ export const SignUp = () => {
   }, []);
 
   const GoogleRequesterRegister = async () => {
-    window.open("http://localhost:5000/auth/google/callback", "_self");
+    // window.open("http://localhost:5000/auth/google/callback", "_self");
+    window.open(
+      "https://inkwellifyserver-git-main-vanamuthu-vs-projects.vercel.app/auth/google/callback",
+      "_self"
+    );
   };
 
   return (
