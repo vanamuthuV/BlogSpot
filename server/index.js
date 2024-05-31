@@ -164,7 +164,7 @@ app.get("/login/success", (req, res) => {
       .status(200)
       .json({ message: "Authentication Success", data: req?.user?.rows[0] });
   } else {
-    res.status(401).json({ message: "Authentication Failed", data: null });
+    res.status(200).json({ message: "Authentication Failed", data: null });
   }
 });
 
