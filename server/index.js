@@ -193,13 +193,31 @@ app.get(
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-app.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
-    successRedirect: "https://inkwellify.vercel.app/",
-    failureRedirect: "https://inkwellify.vercel.app/SignUp",
-  })
-);
+// app.get(
+//   "/auth/google/callback",
+//   passport.authenticate("google", {
+//     successRedirect: "https://inkwellify.vercel.app/",
+//     failureRedirect: "https://inkwellify.vercel.app/SignUp",
+//   })
+// );
+
+app.get("/auth/google/callback", (req, res, next) => {
+  passport.authenticate("google", async (err, user) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.redirect("https://inkwellify.vercel.app/SignUp");
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect("https://inkwellify.vercel.app/");
+    });
+  })(req, res, next);
+});
+
 
 app.get("/login/success", (req, res) => {
   console.log("Yoo", req?.user);
