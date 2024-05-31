@@ -158,6 +158,7 @@ export const Login = () => {
           <button
             className="flex flex-row items-center justify-center w-full pt-2 pb-2 pr-10 mt-2 mb-2 text-lg bg-red-500 text-gray-50"
             onClick={GoogleRequesterRegister}
+            disabled={true}
           >
             <FaGoogle size={"20px"} />
             Google
