@@ -103,6 +103,40 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// passport.use(
+//   new GoogleStrategy(
+//     {
+//       clientID: process.env.GOOGLE_CLIENT_ID,
+//       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+//       callbackURL: "/auth/google/callback",
+//       scope: ["profile", "email"],
+//     },
+//     async (accessToken, refreshToken, profile, done) => {
+//       try {
+//         const users = await pool.query(queryuserexists, [profile.id]);
+//         console.log(profile);
+//         if (users.rows.length === 0) {
+//           await pool.query(querynewuser, [
+//             profile._json.given_name.toLowerCase() +
+//               profile._json.family_name.toLowerCase(),
+//             profile._json.email,
+//             profile.id,
+//           ]);
+//         }
+
+//         const user = await pool.query(queryuserexists, [profile.id]);
+//         console.log("Heehee",user);
+//         const { accessToken, refreshToken } = await jwtToken(user.rows[0]);
+//         user.rows[0].accessToken = accessToken;
+//         user.rows[0].refreshToken = refreshToken
+//         return done(null, user);
+//       } catch (error) {
+//         return done(error, null);
+//       }
+//     }
+//   )
+// );
+
 passport.use(
   new GoogleStrategy(
     {
@@ -111,31 +145,40 @@ passport.use(
       callbackURL: "/auth/google/callback",
       scope: ["profile", "email"],
     },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        const users = await pool.query(queryuserexists, [profile.id]);
-        console.log(profile);
-        if (users.rows.length === 0) {
-          await pool.query(querynewuser, [
-            profile._json.given_name.toLowerCase() +
-              profile._json.family_name.toLowerCase(),
-            profile._json.email,
-            profile.id,
-          ]);
-        }
+    (accessToken, refreshToken, profile, done) => {
+      // Custom function to fetch user details
+      const fetchUserDetails = async () => {
+        try {
+          const users = await pool.query(queryuserexists, [profile.id]);
+          console.log(profile);
+          if (users.rows.length === 0) {
+            await pool.query(querynewuser, [
+              profile._json.given_name.toLowerCase() +
+                profile._json.family_name.toLowerCase(),
+              profile._json.email,
+              profile.id,
+            ]);
+          }
 
-        const user = await pool.query(queryuserexists, [profile.id]);
-        console.log("Heehee",user);
-        const { accessToken, refreshToken } = await jwtToken(user.rows[0]);
-        user.rows[0].accessToken = accessToken;
-        user.rows[0].refreshToken = refreshToken
-        return done(null, user);
-      } catch (error) {
-        return done(error, null);
-      }
+          const user = await pool.query(queryuserexists, [profile.id]);
+          console.log("Heehee", user);
+          const { accessToken, refreshToken } = await jwtToken(user.rows[0]);
+          user.rows[0].accessToken = accessToken;
+          user.rows[0].refreshToken = refreshToken;
+          return user;
+        } catch (error) {
+          throw error;
+        }
+      };
+
+      // Call fetchUserDetails and pass the result to done callback
+      fetchUserDetails()
+        .then((user) => done(null, user))
+        .catch((error) => done(error, null));
     }
   )
 );
+
 
 passport.serializeUser((user, done) => {
   done(null, user);
