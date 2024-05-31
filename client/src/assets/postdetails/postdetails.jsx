@@ -262,7 +262,7 @@ export const PostDetails = () => {
           id: id,
           user_id: localStorage.getItem("user_id")
         });
-        console.log(response?.data);
+        console.log("Yo bRo" , response?.data);
         setData(response?.data?.post);
 
         // console.log(
