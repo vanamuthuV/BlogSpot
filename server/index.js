@@ -69,7 +69,7 @@ import pool from "./db.js";
 import jwtToken from "./utils/jwtToken.js";
 import EmailVerify from "./routes/emailverify.js"
 
-const Base_URL = "http://localhost:5173";
+const Base_URL = "https://inkwellify.vercel.app/";
 dotenv.config();
 
 const queryuserexists = `select * from users left join profilepicture on users.user_id = profilepicture.user_id where strategic_id = $1`;
@@ -152,8 +152,8 @@ app.get(
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    successRedirect: "http://localhost:5173",
-    failureRedirect: "http://localhost:5173/SignUp",
+    successRedirect: "https://inkwellify.vercel.app/",
+    failureRedirect: "https://inkwellify.vercel.app/SignUp",
   })
 );
 
@@ -171,7 +171,7 @@ app.get("/login/success", (req, res) => {
 app.get("/logouts", (req, res, next) => {
   req.logout(function (err) {
     if (err) { return next(err) }
-    res.redirect("http://localhost:5173/SignUp");
+    res.redirect("https://inkwellify.vercel.app/SignUp");
   })
 })
 
