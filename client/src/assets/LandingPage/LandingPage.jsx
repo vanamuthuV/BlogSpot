@@ -89,7 +89,7 @@ export const LandingPage = () => {
   useEffect(() => {
     (async () => {
       try {
-        setLoading(true)
+        setLoading(true);
         const response = await axios.post(LANDINGDATA, value);
         // console.log(response?.data?.data);
         setData(response?.data?.data);
@@ -99,7 +99,6 @@ export const LandingPage = () => {
       }
     })();
   }, [user]);
-
 
   return (
     <div>
@@ -176,7 +175,6 @@ export const LandingPage = () => {
                                 : post.user_name}
                             </span>
                           </Link>
-                         
                         </p>
                         <p className="text-sm text-neutral-500 ">
                           {/* Uploaded on{" "} */}
@@ -259,7 +257,10 @@ export const LandingPage = () => {
               effortlessly create and share your stories, building a community
               around your ideas that grows with you."
             </p>
-            <Link className="flex flex-row items-center justify-center w-full" to={"/SignUp"}>
+            <Link
+              className="flex flex-row items-center justify-center w-full"
+              to={"/SignUp"}
+            >
               <button className="flex flex-row items-center mt-5 text-black transition duration-150 delay-150 hover:text-orange-500 max-md:text-sm">
                 <p className="underline underline-offset-4">Get Started </p>
                 <svg
@@ -342,7 +343,9 @@ export const LandingPage = () => {
       </div>
       <div className="flex flex-row items-center justify-center">
         <div className="flex flex-col items-start justify-start w-10/12">
-          <h1 className="text-2xl font-bold text-orange-500 max-md:text-xl">FAQS</h1>
+          <h1 className="text-2xl font-bold text-orange-500 max-md:text-xl">
+            FAQS
+          </h1>
           <div className="mt-5 mb-10">
             {/* <Container sx={{ marginTop: "10px", marginBottom: "30px" }}> */}
             {AccordionDetail.map((info) => {
@@ -353,19 +356,20 @@ export const LandingPage = () => {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                   >
-                    <Typography
-                      sx={{ fontWeight: 500, fontFamily: '"Wix Madefor Text"' }}
+                    <p
+                      // sx={{ fontWeight: 500, fontFamily: '"Wix Madefor Text"' }}
+                      className="font-normal max-md:text-sm"
                     >
                       {info.Question}
-                    </Typography>
+                    </p>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography
-                      sx={{ fontFamily: "Wix Madefor Text" }}
-                      className="italic"
+                    <p
+                      // sx={{ fontFamily: "Wix Madefor Text" }}
+                      className=" max-md:text-xs"
                     >
                       {info.Answers}
-                    </Typography>
+                    </p>
                   </AccordionDetails>
                 </Accordion>
               );

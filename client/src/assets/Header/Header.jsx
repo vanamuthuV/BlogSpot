@@ -519,7 +519,7 @@ export const Navbar = () => {
               ) : (
                 <Link to={"/SignUp"}>
                   <Tooltip title="SignUp / Login">
-                    <button className="pt-1 pb-1 pl-3 pr-3 text-base font-medium bg-orange-500 rounded-full text-gray-50 hover:bg-gray-50 hover:text-orange-500 hover:border hover:border-orange-500 active:bg-white active:text-orange-500">
+                    <button className="pt-1 pb-1 pl-3 pr-3 text-base font-medium bg-orange-500 rounded-full text-gray-50 hover:bg-gray-50 hover:text-orange-500 hover:border hover:border-orange-500 active:bg-white active:text-orange-500 max-md:text-sm max-md:pt-0.5 max-md:pb-0.5 max-md:pl-2 max-md:pr-2">
                       Get Started
                     </button>
                   </Tooltip>
