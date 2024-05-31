@@ -4,18 +4,18 @@ import pool from "../db.js";
 import multer from "multer";
 import fs from "fs";
 
-const UploadMiddleware = multer({ dest: "uploads/" });
+const UploadMiddleware = multer();
 
 const router = express.Router();
 
 router.post(
   "/", Authentication,
-  UploadMiddleware.single("media"),
+  UploadMiddleware.none(),
   Authentication,
   async (req, res) => {
     console.log(req.body);
     console.log(req.file);
-    if (req.file === undefined)
+    if (req.body.media === undefined)
       res.status(200).json({ data: "No Data Found For Updation..." });
     else {
       try {

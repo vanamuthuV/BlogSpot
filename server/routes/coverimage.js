@@ -5,87 +5,83 @@ import multer from "multer";
 import fs from "fs";
 
 const router = express.Router();
-const Cover = multer({ dest: "coverimages/" });
+const Cover = multer();
 
-router.post("/", Authentication, Cover.single("media"), async (req, res) => {
+router.post("/", Authentication, Cover.none(), async (req, res) => {
   console.log(req.file);
   console.log("Hey Boy");
-  const { originalname, path } = req.file;
-  const parts = originalname.split(".");
-  const extension = parts[parts.length - 1];
-  const newPath = path + "." + extension;
-  fs.renameSync(path, newPath);
+  console.log("HHH");
+  // const { originalname, path } = req.file;
+  // const parts = originalname.split(".");
+  // const extension = parts[parts.length - 1];
+  // const newPath = path + "." + extension;
+  // fs.renameSync(path, newPath);
 
-  const { user_id } = req.body;
+  const { user_id, media } = req.body;
 
-  fs.readFile(newPath, (err, data) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
+  // fs.readFile(newPath, (err, data) => {
+  //   if (err) {
+  //     console.error(err);
+  //     return;
+  //   }
 
-    const base64String = data.toString("base64");
-    fs.unlinkSync(newPath);
+  //   const base64String = data.toString("base64");
+  //   fs.unlinkSync(newPath);
 
-    (async () => {
-      try {
-        const query = `
+  (async () => {
+    try {
+      const query = `
         insert into coverpicture values ($1, $2, current_timestamp)
     `;
-        const query1 = `
+      const query1 = `
         select * from coverpicture where user_id = $1
       `;
 
-        await pool.query(query, [user_id, base64String]);
-        const imgPath = await pool.query(query1, [user_id]);
-        res.status(200).json({ data: imgPath.rows });
-      } catch (error) {
-        console.log(error);
-        res.status(200).json({ data: error });
-      }
-    })();
-  });
+      await pool.query(query, [user_id, media]);
+      const imgPath = await pool.query(query1, [user_id]);
+      res.status(200).json({ data: imgPath.rows });
+    } catch (error) {
+      console.log(error);
+      res.status(200).json({ data: error });
+    }
+  })();
 });
 
-router.put("/", Authentication, Cover.single("media"), async (req, res) => {
-  const { user_id } = req.body;
-  const { originalname, path } = req.file;
-  const parts = originalname.split(".");
-  const extension = parts[parts.length - 1];
-  const newPath = path + "." + extension;
-  fs.renameSync(path, newPath);
+router.put("/", Authentication, Cover.none(), async (req, res) => {
+  const { user_id, media} = req.body;
+  // const { originalname, path } = req.file;
+  // const parts = originalname.split(".");
+  // const extension = parts[parts.length - 1];
+  // const newPath = path + "." + extension;
+  // fs.renameSync(path, newPath);
 
-  fs.readFile(newPath, (err, data) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
+  // fs.readFile(newPath, (err, data) => {
+  //   if (err) {
+  //     console.error(err);
+  //     return;
+  //   }
 
-    const base64String = data.toString("base64");
-    fs.unlinkSync(newPath);
+  //   const base64String = data.toString("base64");
+  //   fs.unlinkSync(newPath);
 
-
-    (async () => {
-     try {
-       const query = `
+  (async () => {
+    try {
+      const query = `
         update coverpicture set coverimage = $1, covertime = current_timestamp where user_id = $2
     `;
 
-       const query1 = `
+      const query1 = `
         select * from coverpicture where user_id = $1
       `;
 
-       await pool.query(query, [base64String, user_id]);
-       const imgPath = await pool.query(query1, [user_id]);
-       res.status(200).json({ data: imgPath.rows });
-     } catch (error) {
-       console.log(error);
-       res.status(200).json({ data: error });
-     }
-    })();
-  });
-
-  
+      await pool.query(query, [media, user_id]);
+      const imgPath = await pool.query(query1, [user_id]);
+      res.status(200).json({ data: imgPath.rows });
+    } catch (error) {
+      console.log(error);
+      res.status(200).json({ data: error });
+    }
+  })();
 });
 
 export default router;

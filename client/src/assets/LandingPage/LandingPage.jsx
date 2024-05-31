@@ -89,6 +89,7 @@ export const LandingPage = () => {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true)
         const response = await axios.post(LANDINGDATA, value);
         // console.log(response?.data?.data);
         setData(response?.data?.data);

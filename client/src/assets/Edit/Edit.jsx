@@ -169,18 +169,11 @@ export const Edit = ({ post_ids }) => {
 
   useEffect(() => {
     (async () => {
-      try {
-        datas.set("media", media || post_images);
-        const response = await axios.post(IMAGEUPDATER, datas, {
-          headers: {
-            "Content-Type": "multipart/form-data", // Adjust the content type as needed
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
-          },
-        });
-        // console.log(response?.data?.data);
-        setCurrentImage(response?.data?.data);
-      } catch (error) {
-        console.error(error);
+      if (media || currentImage) {
+        const base64String = await readFileAsDataURL(media);
+        setCurrentImage(base64String);
+      } else {
+        console.error("No file selected");
       }
     })();
   }, [media]);
@@ -197,6 +190,19 @@ export const Edit = ({ post_ids }) => {
     -> To overcome this just use useEffect with the dependency array as the useState variable when ever the state is
     updated then i automatically fires the useEffect. So, useEffect will be having the communication code to the server.
   */
+
+  const readFileAsDataURL = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        resolve(e.target.result.split(",")[1]); // Resolve with base64 string
+      };
+      reader.onerror = function (error) {
+        reject(error);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
 
   const SubmitHandler = async (ev) => {
     ev.preventDefault();
@@ -272,8 +278,8 @@ export const Edit = ({ post_ids }) => {
               src={`http://localhost:5000/${currentImage}`}
             /> */}
             <ImageComponent
-                features={"max-w-full min-w-full max-h-96 rounded-xl"}
-                base64String={currentImage}
+              features={"max-w-full min-w-full max-h-96 rounded-xl"}
+              base64String={currentImage}
             />
           </div>
 

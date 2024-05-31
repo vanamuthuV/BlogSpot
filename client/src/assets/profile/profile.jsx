@@ -10,7 +10,7 @@ import ListItemText from "@mui/material/ListItemText";
 import CloseIcon from "@mui/icons-material/Close";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import UploadIcon from "@mui/icons-material/Upload";
-import { Divider, Typography } from "@mui/material";
+import { CircularProgress, Divider, Typography } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -103,6 +103,19 @@ export const Profile = () => {
   const data = {
     user_name: user_name,
     user_id: user.user_id,
+  };
+
+  const readFileAsDataURL = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        resolve(e.target.result.split(",")[1]); // Resolve with base64 string
+      };
+      reader.onerror = function (error) {
+        reject(error);
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const [openDelete, setOpenDelete] = React.useState(false);
@@ -218,7 +231,13 @@ export const Profile = () => {
   const ProfilePictureUpdater = async () => {
     const formdata = new FormData();
     formdata.append("user_id", user.user_id);
-    formdata.append("media", profilePic);
+
+    if (profilePic) {
+      const base64String = await readFileAsDataURL(profilePic);
+      formdata.append("media", base64String);
+    } else {
+      console.error("No file selected");
+    }
 
     if (ProfileImage === "NO") {
       try {
@@ -254,7 +273,13 @@ export const Profile = () => {
   const CoverPictureUpdater = async () => {
     const data = new FormData();
     data.set("user_id", user.user_id);
-    data.set("media", coverShow);
+
+    if (coverShow) {
+      const base64String = await readFileAsDataURL(coverShow);
+      data.set("media", base64String);
+    } else {
+      console.error("No file selected");
+    }
 
     if (CoverImage === "NO") {
       try {
@@ -566,8 +591,8 @@ export const Profile = () => {
     setOpenDelete(false);
   };
 
-const navigate = useNavigate()
-  
+  const navigate = useNavigate();
+
   const handleClickDeleteManager = (ev) => {
     const post_id = ev.target.value;
     const PostArray = post_id.split("/../");
@@ -609,7 +634,9 @@ const navigate = useNavigate()
   return (
     <>
       {loading ? (
-        <h1>Loading...</h1>
+        <div className="w-full h-[calc(100vh-57px)] flex flex-row items-center justify-center">
+          <CircularProgress />
+        </div>
       ) : (
         <div className="flex flex-col items-center justify-center">
           <div className="w-5/6 max-md:w-full">
