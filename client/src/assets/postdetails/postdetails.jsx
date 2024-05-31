@@ -162,7 +162,7 @@ export const PostDetails = () => {
     if (Object.keys(user).length === 0) {
       return navigate("/SignUp");
     }
-    
+
     const data = {
       comment: comment.current.value,
       user_id: user.user_id,
@@ -260,9 +260,9 @@ export const PostDetails = () => {
       try {
         const response = await axios.post(POSTDETAIL_URL, {
           id: id,
-          user_id:
-            localStorage.getItem("user_id") ||
-            "110ec58a-a0f2-4ac4-8393-c866d813b8d1",
+          user_id: localStorage.getItem("user_id")
+            ? localStorage.getItem("user_id")
+            : "110ec58a-a0f2-4ac4-8393-c866d813b8d1",
         });
         // console.log(response?.data);
         setData(response?.data?.post);
