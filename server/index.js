@@ -91,11 +91,14 @@ app.use(cookieParser());
 
 app.use(
   session({
+    name: "connect.sid",
     secret: process.env.EXPRESS_SESSION_SECREST_KEY,
     resave: false,
     saveUninitialized: true,
     cookie: {
-      maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
+      secure: true, // Ensures the cookie is only used over HTTPS
+      httpOnly: true, // Ensures the cookie is not accessible via JavaScript
+      sameSite: "None", // Allows cross-site requests
     },
   })
 );
