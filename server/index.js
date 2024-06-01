@@ -99,6 +99,7 @@ app.use(
       secure: true, // Ensures the cookie is only used over HTTPS
       httpOnly: true, // Ensures the cookie is not accessible via JavaScript
       sameSite: "None", // Allows cross-site requests
+      Partitioned: "Lax",
     },
   })
 );
