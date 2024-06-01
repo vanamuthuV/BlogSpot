@@ -37,6 +37,7 @@ router.post("/", async (req, res) => {
         sameSite: "none",
         secure: true,
       });
+      console.log(Token);
       res.status(200).json({
         accessToken: Token.accessToken,
         refreshToken: Token.refreshToken,

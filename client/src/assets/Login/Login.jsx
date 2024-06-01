@@ -51,6 +51,7 @@ export const Login = () => {
         localStorage.setItem("accessToken", accessToken);
       }
       console.log(accessToken);
+      console.log(response?.data?.accessToken);
       console.log(response?.data?.user_details[0].verified);
       localStorage.setItem("user_id", response?.data?.user_details[0].user_id);
       // localStorage.setItem("user_id", response?.data?.user_details[0].user_id);
