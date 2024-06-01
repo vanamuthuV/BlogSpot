@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
   console.log("Ya MAn", req?.body);
   try {
     const post =
-      user_id !== undefined
+      user_id !== undefined || user_id !== 'undefined'
         ? await pool.query(query, [user_id, id])
         : await pool.query(queryD, [id]);
     console.log("No bRo", id);
