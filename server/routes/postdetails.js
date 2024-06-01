@@ -32,12 +32,13 @@ const queryD = `SELECT * from users
     where posts.post_id = $1`;
 
 router.post("/", async (req, res) => {
- 
-  try {
-    const post = req?.body?.user_id
-      ? await pool.query(query, [req.body.user_id, req.body.id])
-      : await pool.query(queryD, [ req.body.id]);
+  const { id, user_id } = req?.body;
 
+  try {
+    const post = user_id
+      ? await pool.query(query, [user_id, id])
+      : await pool.query(queryD, [id]);
+    console.log("No bRo" , id);
     res.status(200).json({ post: post.rows[0] });
   } catch (error) {
     console.log(error);
