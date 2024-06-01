@@ -1148,7 +1148,7 @@ export const Profile = () => {
                               className="pl-2 pr-2"
                               onClick={() => setSocial((prev) => !prev)}
                               href={getWhatsAppUrl({
-                                url: `https://inkwellify.com/${user_name}`,
+                                url: `https://inkwellify.vercel.app/${user_name}`,
                                 text: `Hey check this profile - `,
                               })}
                             >
@@ -1162,7 +1162,7 @@ export const Profile = () => {
                               onClick={() => {
                                 setSocial((prev) => !prev);
                                 return copyToClipboard(
-                                  `https://inkwellify.com/${user_name}`
+                                  `https://inkwellify.vercel.app/${user_name}`
                                 );
                               }}
                             >
@@ -1175,8 +1175,8 @@ export const Profile = () => {
                               onClick={() => setSocial((prev) => !prev)}
                               className="pl-2 pr-2"
                               href={getTwitterUrl({
-                                url: `https://inkwellify.com/${user_name}`,
-                                text: `Hey check this profile from ${"https://inkwellify.com"}`,
+                                url: `https://inkwellify.vercel.app/${user_name}`,
+                                text: `Hey check this profile from ${"https://inkwellify.vercel.app"}`,
                               })}
                             >
                               <XIcon />
@@ -1188,8 +1188,8 @@ export const Profile = () => {
                               onClick={() => setSocial((prev) => !prev)}
                               className="pl-2 pr-2"
                               href={getLinkedinUrl({
-                                url: `https://inkwellify.com/${user_name}`,
-                                source: `${"https://inkwellify.com"}`,
+                                url: `https://inkwellify.vercel.app/${user_name}`,
+                                source: `${"https://inkwellify.vercel.app"}`,
                               })}
                             >
                               <LinkedInIcon />
@@ -1200,7 +1200,7 @@ export const Profile = () => {
                             <a
                               className="pl-2 pr-2"
                               href={getFacebookUrl({
-                                url: `https://inkwellify.com/${user_name}`,
+                                url: `https://inkwellify.vercel.app/${user_name}`,
                               })}
                             >
                               <FacebookIcon />

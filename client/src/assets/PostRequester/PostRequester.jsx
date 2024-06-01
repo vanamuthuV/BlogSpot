@@ -366,7 +366,7 @@ export const PostRequester = () => {
                                   className="pl-2 pr-2 max-md:pl-1 max-md:pr-1"
                                   onClick={() => setSocial((prev) => !prev)}
                                   href={getWhatsAppUrl({
-                                    url: `https://inkwellify.com/read/${post_id}`,
+                                    url: `https://inkwellify.vercel.app/read/${post_id}`,
                                     text: `Hey check this amazing post - `,
                                   })}
                                 >
@@ -380,7 +380,7 @@ export const PostRequester = () => {
                                   onClick={() => {
                                     setSocial((prev) => !prev);
                                     return copyToClipboard(
-                                      `https://inkwellify.com/read/${post_id}`
+                                      `https://inkwellify.vercel.app/read/${post_id}`
                                     );
                                   }}
                                 >
@@ -393,8 +393,8 @@ export const PostRequester = () => {
                                   onClick={() => setSocial((prev) => !prev)}
                                   className="pl-2 pr-2 max-md:pl-1 max-md:pr-1"
                                   href={getTwitterUrl({
-                                    url: `https://inkwellify.com/read/${post_id}`,
-                                    text: `Hey check this amazing post from ${"https://inkwellify.com"}`,
+                                    url: `https://inkwellify.vercel.app/read/${post_id}`,
+                                    text: `Hey check this amazing post from ${"https://inkwellify.vercel.app"}`,
                                     hashtags: post_tags,
                                     related: post_category,
                                   })}
@@ -408,9 +408,9 @@ export const PostRequester = () => {
                                   onClick={() => setSocial((prev) => !prev)}
                                   className="pl-2 pr-2 max-md:pl-1 max-md:pr-1"
                                   href={getLinkedinUrl({
-                                    url: `https://inkwellify.com/read/${post_id}`,
+                                    url: `https://inkwellify.vercel.app/read/${post_id}`,
                                     title: post_title,
-                                    source: `${"https://inkwellify.com"}`,
+                                    source: `${"https://inkwellify.vercel.app"}`,
                                   })}
                                 >
                                   <LinkedInIcon fontSize="small" />
@@ -421,7 +421,7 @@ export const PostRequester = () => {
                                 <a
                                   className="pl-2 pr-2 max-md:pl-1 max-md:pr-1"
                                   href={getFacebookUrl({
-                                    url: `https://inkwellify.com/read/${post_id}`,
+                                    url: `https://inkwellify.vercel.app/read/${post_id}`,
                                     hashtag: post_tags,
                                   })}
                                 >
