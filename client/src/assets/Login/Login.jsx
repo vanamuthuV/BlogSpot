@@ -47,8 +47,9 @@ export const Login = () => {
       // console.log(response?.data);
       const accessToken = response?.data?.accessToken;
       const user_name = response?.data?.user_name;
-      response?.data?.user_details[0].verified === true &&
+      if (response?.data?.user_details[0].verified) {
         localStorage.setItem("accessToken", accessToken);
+      }
       console.log(response?.data?.user_details[0].verified);
       localStorage.setItem("user_id", response?.data?.user_details[0].user_id);
       // localStorage.setItem("user_id", response?.data?.user_details[0].user_id);
