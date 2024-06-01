@@ -31,12 +31,12 @@ router.post("/", async (req, res) => {
 
     const valid = await bcrypt.compare(passcode, User.rows[0].user_password);
     if (valid) {
-      const Token = jwtToken(User.rows[0]);
-      res.cookie("refresh_token", Token.refreshToken, {
-        httpOnly: true,
-        sameSite: "none",
-        secure: true,
-      });
+      const Token = await jwtToken(User.rows[0]);
+      // res.cookie("refresh_token", Token.refreshToken, {
+      //   httpOnly: true,
+      //   sameSite: "none",
+      //   secure: true,
+      // });
       console.log(Token);
       res.status(200).json({
         accessToken: Token.accessToken,
