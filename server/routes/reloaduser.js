@@ -6,13 +6,15 @@ const router = express.Router();
 router.post("/", Authentication, async (req, res) => {
   console.log(req.user);
   const { user_id } = req.user;
-  const { accessToken } = req?.body?.data;
+  const { accessToken } = req?.user;
   const query = `
         select * from users left join profilepicture on users.user_id = profilepicture.user_id where users.user_id = $1
     `;
 
   const Profile = await pool.query(query, [user_id]);
-  const obj = Object.assign({}, req.user, Profile.rows[0], {accessToken : accessToken});
+  const obj = Object.assign({}, req.user, Profile.rows[0], {
+    accessToken: accessToken,
+  });
   console.log(Profile.rows);
   console.log("Hoo");
   console.log(obj);

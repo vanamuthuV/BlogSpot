@@ -67,9 +67,10 @@ import AddBookMarkSingle from "./routes/addbookmarksinglepost.js";
 import RemoveBookMarkSingle from "./routes/removebookmarkforsinglepost.js";
 import pool from "./db.js";
 import jwtToken from "./utils/jwtToken.js";
-import EmailVerify from "./routes/emailverify.js"
+import EmailVerify from "./routes/emailverify.js";
 
 const Base_URL = "https://inkwellify.vercel.app";
+// const Base_URL = "http://localhost:5173";
 dotenv.config();
 
 const queryuserexists = `select * from users left join profilepicture on users.user_id = profilepicture.user_id where strategic_id = $1`;
@@ -78,8 +79,8 @@ const querynewuser = `insert into users values ($1, $2, CURRENT_TIMESTAMP, 'goog
 const app = express();
 const __dirname = path.resolve();
 const corsOptions = {
-  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   origin: Base_URL, // Allow requests from this origin
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"], // Allowed HTTP methods
   allowedHeaders: ["Origin", "Content-Type", "Authorization"], // Allowed headers
 };
@@ -183,7 +184,6 @@ passport.use(
   )
 );
 
-
 passport.serializeUser((user, done) => {
   done(null, user);
 });
@@ -222,7 +222,6 @@ app.get("/auth/google/callback", (req, res, next) => {
   })(req, res, next);
 });
 
-
 app.get("/login/success", (req, res) => {
   console.log("Yoo", req?.user);
   if (req.user) {
@@ -236,10 +235,12 @@ app.get("/login/success", (req, res) => {
 
 app.get("/logouts", (req, res, next) => {
   req.logout(function (err) {
-    if (err) { return next(err) }
+    if (err) {
+      return next(err);
+    }
     res.redirect("https://inkwellify.vercel.app/SignUp");
-  })
-})
+  });
+});
 
 app.use("/SignUp", signUpRouter);
 app.use("/login", loginRouter);
@@ -302,11 +303,11 @@ app.use("/addbookmark", AddBookMark);
 app.use("/removebookmark", RemoveBookMark);
 app.use("/addbookmarksingle", AddBookMarkSingle);
 app.use("/removebookmarksingle", RemoveBookMarkSingle);
-app.use("/emailverify", EmailVerify)
+app.use("/emailverify", EmailVerify);
 
 app.get("/", async (req, res) => {
-  res.send(`<h2>Hello Boy </h2>`)
-})
+  res.send(`<h2>Hello Boy </h2>`);
+});
 
 app.listen(5000, () => {
   console.log("Connected to postgres...");

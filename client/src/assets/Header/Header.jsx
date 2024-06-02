@@ -105,11 +105,11 @@ export const Navbar = () => {
     backgroundColor: "inherit",
   }));
 
-  const handleLogout = () => {
+  const handleLogout = async() => {
     // console.log("Logout Success!!");
     localStorage.clear();
-    setAuth({});
-    setUser({});
+    await setAuth({});
+    await setUser({});
     // window.open("http://localhost:5000/logouts", "_self");
     window.open(
       "https://inkwellifyserver-git-main-vanamuthu-vs-projects.vercel.app/logouts",

@@ -15,7 +15,9 @@ const Authentication = (req, res, next) => {
   if (token == null) return res.status(403).json({ error: "Token Is Null" });
 
   jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
-    if (error) return res.status(403).json({ error: error.message});
+    if (error) return res.status(403).json({ error: error.message });
+    console.log("THe user uis", user);
+    user.accessToken = req?.body?.accessToken
     req.user = user;
     next();
   });
