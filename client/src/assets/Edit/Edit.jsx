@@ -14,6 +14,7 @@ import axios from "../../../api/axios";
 import "../createpost/createpost.css";
 import { Navigate, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 import ImageComponent from "../../../utils/ImageComponent";
 
 const modules = {
@@ -205,6 +206,7 @@ export const Edit = ({ post_ids }) => {
   };
 
   const SubmitHandler = async (ev) => {
+    setLoading(true)
     ev.preventDefault();
     // const data = new FormData();
     // data.set("title", title);
@@ -237,6 +239,7 @@ export const Edit = ({ post_ids }) => {
         },
       });
       // console.log(response?.data);
+      setLoading(false)
       navigate("/");
     } catch (error) {
       console.error(error.message);
@@ -244,7 +247,9 @@ export const Edit = ({ post_ids }) => {
   };
 
   return loading ? (
-    <h1>Loading...</h1>
+    <div className="flex flex-row items-center justify-center w-full h-[calc(100vh-57px)]">
+      <CircularProgress />
+    </div>
   ) : (
     <div className="flex flex-col items-center justify-center">
       <h1 className="m-5 text-3xl font-bold">Editing Blog</h1>
