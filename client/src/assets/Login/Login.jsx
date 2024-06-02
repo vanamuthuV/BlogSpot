@@ -96,7 +96,7 @@ export const Login = () => {
   return (
     <>
       {alert && Snack}
-      <div className="w-2/4 max-md:w-10/12">
+      <div className="w-2/4 max-md:w-11/12">
         <h1 className="mt-5 mb-5 text-xl font-semibold text-center text-orange-500 max-md:text-sm">
           Login Page
         </h1>
@@ -133,17 +133,17 @@ export const Login = () => {
             required
           ></input>
 
-          <div className="flex flex-row items-center justify-around w-full mt-5 mb-2 ">
+          {/* <div className="flex flex-row items-center justify-around w-full mt-5 mb-2 ">
             <Link to={"/SignUp/forgetusername"}>
               <p className="forget max-md:text-xs">forget username</p>
             </Link>
             <Link to={"/SignUp/forgetpasscode"}>
               <p className="forget max-md:text-xs">forget passcode</p>
             </Link>
-          </div>
-          <div className="mb-5">
+          </div> */}
+          <div className="mt-5 mb-5">
             <Link to={"/SignUp"}>
-              <p className="text-red-700 hover:underline hover:underline-offset-1 max-md:text-xs">
+              <p className="text-blue-500 max-md:text-xs">
                 New User ? Register
               </p>
             </Link>

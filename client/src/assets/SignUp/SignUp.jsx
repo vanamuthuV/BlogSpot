@@ -4,6 +4,7 @@ import axios from "../../../api/axios.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { SnackBar } from "../Login/Alert.jsx";
+import { Tooltip } from "@mui/material";
 
 const SignUp_URL = "/SignUp";
 
@@ -134,7 +135,7 @@ export const SignUp = () => {
   };
 
   return (
-    <div div className="w-2/4 max-md:w-10/12">
+    <div div className="w-2/4 max-md:w-11/12">
       {alert && snack}
       <p className="mt-10 mb-5 text-xl font-semibold text-center text-orange-500 max-md:text-sm">
         Sign Up Page
@@ -187,7 +188,25 @@ export const SignUp = () => {
           htmlFor="un"
           className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center max-md:text-vs"
         >
-          Enter Your username <span className="pl-1 text-red-700">*</span>
+          Enter Your username <span className="pl-1 text-red-700">*</span>{" "}
+          <Tooltip title="usern name must be completely lowercase with no whitespace allowed" placement="top">
+            <span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-5 ml-2 text-blue-500"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                />
+              </svg>
+            </span>
+          </Tooltip>
         </label>
         <input
           type="text"

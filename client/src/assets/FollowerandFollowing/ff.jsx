@@ -12,6 +12,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import ImageComponent from "../../../utils/ImageComponent";
+import { CircularProgress } from "@mui/material";
 
 import img from "../../../public/Profile.jpeg";
 
@@ -22,8 +23,14 @@ const UNFOLLOW = "/unfollowuser";
 
 export const FollowersAndFollowingLayout = () => {
   const { user_name } = useParams();
-
+  const [color, setColor] = useState(true);
   // console.log(user_name);
+
+  const colored =
+    "flex flex-row items-center justify-center  pt-1 pb-1 pr-4 pl-4 text-md text-white bg-orange-500 border-none rounded-full max-md:text-xs";
+
+  const notcolored =
+    "flex flex-row items-center justify-center pt-1 pb-1 pl-4 pr-4 text-md bg-gray-50 rounded-full max-md:text-xs border border-orange-500 text-orange-500";
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -32,18 +39,18 @@ export const FollowersAndFollowingLayout = () => {
           className="flex flex-row items-center justify-center w-3/4"
           to={`/${user_name}/followers`}
         >
-          <div className="flex flex-row items-center justify-center w-3/4 pt-2 pb-2 text-lg text-white bg-orange-500 border-none rounded-full max-md:text-sm">
+          <button className={color ? colored : notcolored} onClick={() => setColor(true)}>
             Followers
-          </div>
+          </button>
         </Link>
 
         <Link
           className="flex flex-row items-center justify-center w-3/4"
           to={`/${user_name}/followings`}
         >
-          <div className="flex flex-row items-center justify-center w-3/4 pt-2 pb-2 text-lg text-white bg-orange-500 border-none rounded-full max-md:text-sm">
+          <button className={color ? notcolored : colored} onClick={() => setColor(false)}>
             Followings
-          </div>
+          </button>
         </Link>
       </div>
       <Outlet />
@@ -55,7 +62,7 @@ export const Followers = () => {
   const { user_name } = useParams();
 
   const [follower, setFollower] = useState([]);
-
+  const [loading, setLoading] = useState(true)
   const { user } = useAuth();
   const Use = user;
   const [open, setOpen] = React.useState(false);
@@ -83,6 +90,7 @@ export const Followers = () => {
     const { follow_id } = Data[0];
 
     try {
+      setLoading(true)
       const response = await axios.delete(
         REMOVE + `/${follow_id}..${user_name}`,
         {
@@ -93,6 +101,7 @@ export const Followers = () => {
         }
       );
       setFollower(response?.data?.data);
+      setLoading(false)
       // console.log(response?.data?.data);
     } catch (error) {
       console.log(error);
@@ -104,6 +113,7 @@ export const Followers = () => {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true)
         const response = await axios.post(GETFOLLOWERS, {
           data: {
             user_name: user_name,
@@ -111,6 +121,7 @@ export const Followers = () => {
         });
         // console.log(response?.data?.data);
         setFollower(response?.data?.data);
+        setLoading(false)
       } catch (error) {
         console.log(error);
       }
@@ -119,21 +130,27 @@ export const Followers = () => {
 
   return (
     <div className="w-2/4 max-md:w-3/4">
-      <div className="flex flex-col items-center justify-start w-full">
-        <h1 className="pt-5 pb-5 text-2xl underline max-md:text-lg">
-          {user_name}'s Followers
-        </h1>
-        {follower.length === 0 ? (
-          <div>
-            <h1>No Followers</h1>
-          </div>
-        ) : (
-          follower.map((user, index) => {
-            return (
-              <div className="flex flex-row items-center justify-between w-full mt-2 mb-2 max-md:mt-1 max-md:mb-1">
-                <div className="flex flex-row items-center justify-center">
-                  <div className="max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16">
-                    {/* <img
+      {loading ? (
+        <div className="flex flex-row items-center justify-center w-full h-[calc(100vh-144px)]"><CircularProgress /></div>
+      ) : (
+        <div className="flex flex-col items-center justify-start w-full">
+          <Link to={`/${user_name}`}>
+            <h1 className="pt-5 pb-5 text-xl max-md:text-sm">
+                <span className="font-bold">{user_name}</span>'s Followers
+            </h1>
+          </Link>
+
+          {follower.length === 0 ? (
+            <div>
+              <h1 className="m-5 text-red-500">No Followers</h1>
+            </div>
+          ) : (
+            follower.map((user, index) => {
+              return (
+                <div className="flex flex-row items-center justify-between w-full mt-2 mb-2 max-md:mt-1 max-md:mb-1">
+                  <div className="flex flex-row items-center justify-center">
+                    <div className="max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16">
+                      {/* <img
                       className="rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
                       src={
                         user.profileimage
@@ -141,87 +158,85 @@ export const Followers = () => {
                           : `../../../public/Profile.jpeg`
                       }
                     /> */}
-                    {user.profileimage === null ? (
-                      <img
-                        className="rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
-                        src={`../../../public/Profile.jpeg`}
-                      />
-                    ) : (
-                      <ImageComponent
-                        features={
-                          "rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
-                        }
-                        base64String={user.profileimage}
-                      />
-                    )}
-                  </div>
-                  <Link to={`/${user.user_name}`}>
-                    <div className="flex flex-col justify-center ml-5">
-                      <p className="max-md:text-base">{user.userfullname}</p>
-                      <Link to={`/${user.user_name}`}>
-                        <p className="hover:underline max-md:text-sm">
-                          {user.user_name}
-                        </p>
-                      </Link>
+                      {user.profileimage === null ? (
+                        <img
+                          className="rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
+                          src={`../../../public/Profile.jpeg`}
+                        />
+                      ) : (
+                        <ImageComponent
+                          features={
+                            "rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
+                          }
+                          base64String={user.profileimage}
+                        />
+                      )}
                     </div>
-                  </Link>
-                </div>
+                    <Link to={`/${user.user_name}`}>
+                      <div className="flex flex-col justify-center ml-5">
+                        <p className="max-md:text-base">{user.userfullname}</p>
+                        <Link to={`/${user.user_name}`}>
+                          <p className="hover:underline max-md:text-sm">
+                            {user.user_name}
+                          </p>
+                        </Link>
+                      </div>
+                    </Link>
+                  </div>
 
-                {Use.user_name === user_name && (
-                  <>
-                    <button
-                      className="pt-1 pb-1 pl-5 pr-5 border-2 border-gray-700 rounded-lg max-md:pl-2 max-md:pr-2 max-md:text-sm"
-                      value={`${user.follow_id}/../${user.user_name}`}
-                      onClick={handleClickOpen}
-                    >
-                      Remove
-                    </button>
-                    <Dialog
-                      fullScreen={fullScreen}
-                      open={open}
-                      onClose={handleClose}
-                      aria-labelledby="responsive-dialog-title"
-                    >
-                      <DialogTitle
-                        sx={{ fontFamily: "Space Mono" }}
-                        id="responsive-dialog-title"
+                  {Use.user_name === user_name && (
+                    <>
+                      <button
+                        className="pt-1 pb-1 pl-5 pr-5 text-red-500 border-2 border-red-500 rounded-lg max-md:pl-2 max-md:pr-2 max-md:text-xs"
+                        value={`${user.follow_id}/../${user.user_name}`}
+                        onClick={handleClickOpen}
                       >
-                        {"Remove Alert!!"}
-                      </DialogTitle>
-                      <DialogContent>
-                        <DialogContentText sx={{ fontFamily: "Space Mono" }}>
-                          Are You Sure To Remove{" "}
-                          <span className="text-red-500 underline">
-                            {users}
-                          </span>{" "}
-                          From Following You ?
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button
-                          sx={{ fontFamily: "Space Mono" }}
-                          autoFocus
-                          onClick={handleClose}
-                        >
-                          Cancel
-                        </Button>
-                        <button
-                          style={{ fontFamily: "Space Mono" }}
-                          className="text-red-500"
-                          onClick={handleRemove}
-                          key={index}
-                        >
-                          Remove
-                        </button>
-                      </DialogActions>
-                    </Dialog>
-                  </>
-                )}
-              </div>
-            );
-          })
-        )}
-      </div>
+                        Remove
+                      </button>
+                      <Dialog
+                        fullScreen={fullScreen}
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="responsive-dialog-title"
+                      >
+                        <p className="m-5 text-red-500">
+                          Remove Alert!!
+                        </p>
+                        <DialogContent>
+                          <p className="text-md">
+                            Are You Sure To Remove{" "}
+                            <span className="text-red-500 underline">
+                              {users}
+                            </span>{" "}
+                            From Following You ?
+                          </p>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button
+                            sx={{ fontFamily: "Space Mono" }}
+                            autoFocus
+                            onClick={handleClose}
+                          >
+                            Cancel
+                          </Button>
+                          <button
+                            style={{ fontFamily: "Space Mono" }}
+                            className="text-red-500"
+                            onClick={handleRemove}
+                            key={index}
+                          >
+                            Remove
+                          </button>
+                        </DialogActions>
+                      </Dialog>
+                    </>
+                  )}
+                </div>
+              );
+            })
+          )}
+        </div>
+      )}
     </div>
   );
 };
@@ -230,7 +245,7 @@ export const Followings = () => {
   const { user_name } = useParams();
 
   const [following, setFollowing] = useState([]);
-
+    const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const Use = user;
   const [open, setOpen] = React.useState(false);
@@ -258,6 +273,7 @@ export const Followings = () => {
     const { follow_id } = Data[0];
 
     try {
+      setLoading(true)
       const response = await axios.delete(
         UNFOLLOW + `/${follow_id}..${user_name}`,
         {
@@ -268,6 +284,7 @@ export const Followings = () => {
         }
       );
       setFollowing(response?.data?.data);
+      setLoading(false)
       // console.log(response?.data?.data);
     } catch (error) {
       console.log(error);
@@ -279,6 +296,7 @@ export const Followings = () => {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true)
         const response = await axios.post(GETFOLLOWINGS, {
           data: {
             user_name: user_name,
@@ -286,6 +304,7 @@ export const Followings = () => {
         });
         // console.log(response?.data?.data);
         setFollowing(response?.data?.data);
+        setLoading(false)
       } catch (error) {
         console.log(error);
       }
@@ -294,21 +313,26 @@ export const Followings = () => {
 
   return (
     <div className="w-2/4 max-md:w-3/4">
-      <div className="flex flex-col items-center justify-start w-full">
-        <h1 className="pt-5 pb-5 text-2xl underline max-md:text-lg">
-          {user_name}'s Followings
-        </h1>
-        {following.length === 0 ? (
-          <div>
-            <h1>No Followings</h1>
-          </div>
-        ) : (
-          following.map((user) => {
-            return (
-              <div className="flex flex-row items-center justify-between w-full mt-2 mb-2 max-md:mt-1 max-md:mb-1 ">
-                <div className="flex flex-row items-center justify-center">
-                  <div className="max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16">
-                    {/* 
+      {loading ? (
+        <div className="flex flex-row items-center justify-center w-full h-[calc(100vh-144px)]">
+          <CircularProgress />
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-start w-full">
+          <h1 className="pt-5 pb-5 text-xl max-md:text-sm">
+            <span className="font-bold">{user_name}</span>'s Followings
+          </h1>
+          {following.length === 0 ? (
+            <div>
+              <h1>No Followings</h1>
+            </div>
+          ) : (
+            following.map((user) => {
+              return (
+                <div className="flex flex-row items-center justify-between w-full mt-2 mb-2 max-md:mt-1 max-md:mb-1 ">
+                  <div className="flex flex-row items-center justify-center">
+                    <div className="max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16">
+                      {/* 
                      <img
                       className="rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
                       src={
@@ -318,86 +342,87 @@ export const Followings = () => {
                       }
                     /> */}
 
-                    {user.profileimage === null ? (
-                      <img
-                        className="rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
-                        src={`../../../public/Profile.jpeg`}
-                      />
-                    ) : (
-                      <ImageComponent
-                        features={
-                          "rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
-                        }
-                        base64String={user.profileimage}
-                      />
-                    )}
-                  </div>
-                  <Link to={`/${user.user_name}`}>
-                    <div className="flex flex-col justify-center ml-5">
-                      <p className="max-md:text-base">{user.userfullname}</p>
-                      <Link to={`/${user.user_name}`}>
-                        <p className="hover:underline max-md:text-sm">
-                          {user.user_name}
-                        </p>
-                      </Link>
+                      {user.profileimage === null ? (
+                        <img
+                          className="rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
+                          src={`../../../public/Profile.jpeg`}
+                        />
+                      ) : (
+                        <ImageComponent
+                          features={
+                            "rounded-full max-w-24 min-w-24 max-h-24 min-h-24 max-md:max-w-16 max-md:min-w-16 max-md:min-h-16 max-md:max-h-16"
+                          }
+                          base64String={user.profileimage}
+                        />
+                      )}
                     </div>
-                  </Link>
-                </div>
+                    <Link to={`/${user.user_name}`}>
+                      <div className="flex flex-col justify-center ml-5">
+                        <p className="max-md:text-base">{user.userfullname}</p>
+                        <Link to={`/${user.user_name}`}>
+                          <p className="hover:underline max-md:text-sm">
+                            {user.user_name}
+                          </p>
+                        </Link>
+                      </div>
+                    </Link>
+                  </div>
 
-                {Use.user_name === user_name && (
-                  <>
-                    <button
-                      className="pt-1 pb-1 pl-5 pr-5 border-2 border-gray-700 rounded-lg max-md:pl-2 max-md:pr-2 max-md:text-sm"
-                      value={`${user.follow_id}/../${user.user_name}`}
-                      onClick={handleClickOpen}
-                    >
-                      Unfollow
-                    </button>
-                    <Dialog
-                      fullScreen={fullScreen}
-                      open={open}
-                      onClose={handleClose}
-                      aria-labelledby="responsive-dialog-title"
-                    >
-                      <DialogTitle
-                        sx={{ fontFamily: "Space Mono" }}
-                        id="responsive-dialog-title"
+                  {Use.user_name === user_name && (
+                    <>
+                      <button
+                        className="pt-1 pb-1 pl-5 pr-5 text-red-500 border-2 border-red-500 rounded-lg max-md:pl-2 max-md:pr-2 max-md:text-xs"
+                        value={`${user.follow_id}/../${user.user_name}`}
+                        onClick={handleClickOpen}
                       >
-                        {"Unfollow Alert!!"}
-                      </DialogTitle>
-                      <DialogContent>
-                        <DialogContentText sx={{ fontFamily: "Space Mono" }}>
-                          Are You Sure To Unfollow{" "}
-                          <span className="text-red-500 underline">
-                            {users}
-                          </span>{" "}
-                          ?
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button
+                        Unfollow
+                      </button>
+                      <Dialog
+                        fullScreen={fullScreen}
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="responsive-dialog-title"
+                      >
+                        <DialogTitle
                           sx={{ fontFamily: "Space Mono" }}
-                          autoFocus
-                          onClick={handleClose}
+                          id="responsive-dialog-title"
                         >
-                          Cancel
-                        </Button>
-                        <button
-                          style={{ fontFamily: "Space Mono" }}
-                          className="text-red-500"
-                          onClick={handleRemove}
-                        >
-                          Unfollow
-                        </button>
-                      </DialogActions>
-                    </Dialog>
-                  </>
-                )}
-              </div>
-            );
-          })
-        )}
-      </div>
+                          {"Unfollow Alert!!"}
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText sx={{ fontFamily: "Space Mono" }}>
+                            Are You Sure To Unfollow{" "}
+                            <span className="text-red-500 underline">
+                              {users}
+                            </span>{" "}
+                            ?
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button
+                            sx={{ fontFamily: "Space Mono" }}
+                            autoFocus
+                            onClick={handleClose}
+                          >
+                            Cancel
+                          </Button>
+                          <button
+                            style={{ fontFamily: "Space Mono" }}
+                            className="text-red-500"
+                            onClick={handleRemove}
+                          >
+                            Unfollow
+                          </button>
+                        </DialogActions>
+                      </Dialog>
+                    </>
+                  )}
+                </div>
+              );
+            })
+          )}
+        </div>
+      )}
     </div>
   );
 };

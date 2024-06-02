@@ -39,15 +39,10 @@ export const SignUpLayout = () => {
 
   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+      className="h-[calc(100vh-57px)] flex flex-col items-center justify-center"
     >
-      <div className="flex flex-col items-center justify-center w-3/4 p-5 mt-10 shadow-2xl">
-        <div className="w-2/4 max-md:w-3/4">
+      <div className="flex flex-col items-center justify-center w-3/4 p-5 mt-10 shadow-2xl max-md:w-11/12">
+        <div className="w-2/4 max-md:w-11/12">
           <h1 className="mt-10 mb-10 text-2xl font-bold text-center max-md:text-base">
             Join Inkwellify.
           </h1>

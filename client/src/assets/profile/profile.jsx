@@ -721,20 +721,20 @@ export const Profile = () => {
                       </Toolbar>
                     </AppBar>
                     <div className="flex flex-col items-center justify-center">
-                      <div className="flex flex-col items-center justify-center w-3/4 mt-5">
+                      <div className="flex flex-col items-center justify-center w-11/12 mt-5">
                         <form
                           onSubmit={PersonalDetails}
                           className="flex flex-col items-center justify-center w-full"
                         >
                           <label
                             htmlFor="name"
-                            className="pb-5 text-xl font-bold"
+                            className="pb-5 text-xl font-bold max-md:text-sm"
                           >
                             Enter Your Full Name
                           </label>
                           <textarea
                             rows={"1"}
-                            className="w-full p-4 mb-5 text-xl border-2 border-gray-600 resize-none rounded-xl focus:outline-none"
+                            className="w-full p-4 mb-5 text-xl border-2 border-gray-600 resize-none rounded-xl focus:outline-none max-md:p-1 max-md:text-xs max-md:rounded-lg"
                             ref={Name}
                             onChange={() => setName(Name.current.value)}
                           >
@@ -745,12 +745,12 @@ export const Profile = () => {
                             <>
                               <label
                                 htmlFor="dof"
-                                className="pb-5 text-xl font-bold"
+                                className="pb-5 text-xl font-bold max-md:text-sm"
                               >
                                 {ShowEditable && "Old "}Date Of Birth{" "}
                               </label>
                               <p
-                                className="flex flex-row items-center mb-5"
+                                className="flex flex-row items-center mb-5 max-md:text-sm"
                                 ref={DOF}
                                 contentEditable={false}
                               >
@@ -782,14 +782,14 @@ export const Profile = () => {
                           {(ProfileInfo.dateofbirth === undefined ||
                             ShowEditable) && (
                             <>
-                              <p className="pb-5 text-xl font-bold">
+                              <p className="pb-5 text-xl font-bold max-md:text-sm">
                                 New Date Of Birth
                               </p>
                               <input
                                 ref={DOF}
                                 type="date"
                                 id="dof"
-                                className="p-4 mb-5 text-xl border-2 border-gray-600 resize-none rounded-xl focus:outline-none"
+                                className="p-4 mb-5 text-xl border-2 border-gray-600 resize-none rounded-xl focus:outline-none max-md:text-xs max-md:p-2 max-md:rounded-lg"
                                 onChange={() => {
                                   setBirthDay(DOF.current.value);
                                 }}
@@ -800,14 +800,14 @@ export const Profile = () => {
 
                           <label
                             htmlFor="role"
-                            className="pb-5 text-xl font-bold text-justify "
+                            className="pb-5 text-xl font-bold text-justify max-md:text-sm"
                           >
                             Who are you? (eg : Student, Professor, Developer
                             etc...)
                           </label>
 
                           <textarea
-                            className="w-full p-4 mb-5 text-xl border-2 border-gray-600 resize-none rounded-xl focus:outline-none"
+                            className="w-full p-4 mb-5 text-xl border-2 border-gray-600 resize-none rounded-xl focus:outline-none max-md:p-1 max-md:text-xs max-md:rounded-lg"
                             rows={"1"}
                             ref={Role}
                             onChange={() => setRole(Role.current.value)}
@@ -817,7 +817,7 @@ export const Profile = () => {
 
                           <label
                             htmlFor="bio"
-                            className="pb-2 text-xl font-bold"
+                            className="pb-2 text-xl font-bold max-md:text-sm"
                           >
                             Bio
                           </label>
@@ -848,7 +848,7 @@ export const Profile = () => {
                           </textarea> */}
 
                           <button
-                            className="w-24 pt-2 pb-2 pl-5 pr-5 mt-10 mb-10 text-white bg-gray-700 border-2 border-gray-900 rounded-xl hover:bg-white hover:text-gray-700"
+                            className="pt-2 pb-2 pl-5 pr-5 mt-10 mb-10 text-white bg-gray-700 border-2 border-gray-900 rounded-xl hover:bg-white hover:text-gray-700 max-md:p-2 max-md:text-xs"
                             type="submit"
                           >
                             Update
@@ -954,7 +954,7 @@ export const Profile = () => {
                       <Tooltip title="Change Cover Image">
                         <button
                           onClick={toggleDrawer(anchor, true)}
-                          className="flex-row justify-center pt-2 pb-2 pl-2 pr-2 font-bold text-white bg-gray-900 rounded-full opacity-50 items-9-center hover:opacity-100"
+                          className="flex-row justify-center pt-2 pb-2 pl-2 pr-2 font-bold text-white bg-gray-900 rounded-full opacity-50 items-9-center hover:opacity-100 max-md:p-2"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -962,7 +962,7 @@ export const Profile = () => {
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="w-7 h-7 pb-1"
+                            class="w-7 h-7 max-md:w-4 max-md:h-4"
                           >
                             <path
                               stroke-linecap="round"
@@ -1235,7 +1235,7 @@ export const Profile = () => {
                       {console.log(follow)}
                       {follow.length === 0 ? (
                         <button
-                          className="pt-2 pb-2 text-xl text-white bg-orange-500 border-none w-60 max-md:text-lg max-md:pb-1 max-md:pt-1 rounded-xl"
+                          className="pt-2 pb-2 pl-12 pr-12 text-white bg-orange-500 border-none text-md rounded-xl max-md:text-xs max-md:pl-5 max-md:pr-5 max-md:rounded-lg max-md:pt-1 max-md:pb-1"
                           onClick={AddFollower}
                         >
                           Follow
@@ -1245,7 +1245,7 @@ export const Profile = () => {
                           <button
                             onClick={handleClickOpenUnfollow}
                             value={follow.follow_id}
-                            className="pt-2 pb-2 text-xl text-orange-500 border-2 border-orange-500 w-60 max-md:text-lg max-md:pb-1 max-md:pt-1 rounded-xl "
+                            className="pt-2 pb-2 pl-12 pr-12 text-white bg-orange-500 border-none text-md rounded-xl max-md:text-xs max-md:pl-5 max-md:pr-5 max-md:rounded-lg max-md:pt-1 max-md:pb-1"
                           >
                             Following
                           </button>
@@ -1255,40 +1255,32 @@ export const Profile = () => {
                             aria-labelledby="customized-dialog-title"
                             open={openUnfollow}
                           >
-                            <DialogTitle
-                              sx={{ m: 0, p: 2 }}
-                              id="customized-dialog-title"
-                              fontFamily={"Space Mono"}
-                            >
-                              Unfollow Alert
-                            </DialogTitle>
-                            <IconButton
-                              aria-label="close"
-                              onClick={handleCloseUnfollow}
-                              sx={{
-                                position: "absolute",
-                                right: 8,
-                                top: 8,
-                                color: (theme) => theme.palette.grey[500],
-                              }}
-                            >
-                              <CloseIcon />
-                            </IconButton>
+                            <div className="flex flex-row items-center justify-between">
+                              <p className="mt-2 mb-2 ml-5 mr-5 max-md:text-base">
+                                Unfollow Alert
+                              </p>
+                              <IconButton
+                                aria-label="close"
+                                onClick={handleCloseUnfollow}
+                              >
+                                <CloseIcon  />
+                              </IconButton>
+                            </div>
+
                             <DialogContent dividers>
-                              <Typography
-                                sx={{ fontFamily: "Space Mono" }}
-                                gutterBottom
+                              <p
+                              className="max-md:text-sm"
                               >
                                 Are You Sure To Unfollow{" "}
                                 <span className="text-red-500">
                                   {user_name}
                                 </span>
-                              </Typography>
+                              </p>
                             </DialogContent>
                             <DialogActions>
                               <button
                                 value={follow.follow_id}
-                                className="text-red-600"
+                                className="p-1 text-red-600 bg-red-100 rounded-md max-md:text-sm"
                                 onClick={handleUnfollow}
                               >
                                 Unfollow
