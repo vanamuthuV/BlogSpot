@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }) => {
             "accessToken",
             response?.data?.data?.accessToken
           );
+          localStorage.setItem("user_id", response?.data?.data?.user_id);
           setUser(response?.data?.data);
           setAuth(response?.data?.data);
         } catch (error) {
