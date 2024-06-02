@@ -169,7 +169,9 @@ passport.use(
           console.log("Heehee", user);
           const { accessToken, refreshToken } = await jwtToken(user.rows[0]);
           user.rows[0].accessToken = accessToken;
+
           user.rows[0].refreshToken = refreshToken;
+          console.log("This the user", user);
           return user;
         } catch (error) {
           throw error;
@@ -205,19 +207,24 @@ app.get(
 //   })
 // );
 
+const Fail = "https://inkwellify.vercel.app/SignUp";
+const DummyFail = "http://localhost:5173/SignUp";
+const Success = "https://inkwellify.vercel.app/";
+const DummySuccess = "http://localhost:5173";
+
 app.get("/auth/google/callback", (req, res, next) => {
   passport.authenticate("google", async (err, user) => {
     if (err) {
       return next(err);
     }
     if (!user) {
-      return res.redirect("https://inkwellify.vercel.app/SignUp");
+      return res.redirect(Fail);
     }
     req.logIn(user, (err) => {
       if (err) {
         return next(err);
       }
-      return res.redirect("https://inkwellify.vercel.app/");
+      return res.redirect(Success);
     });
   })(req, res, next);
 });
