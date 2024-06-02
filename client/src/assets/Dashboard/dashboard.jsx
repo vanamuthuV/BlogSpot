@@ -210,7 +210,7 @@ export const Dashboard = () => {
               <div className="flex flex-col items-center justify-center w-full">
                 {datalen === 0 ? (
                   <div className="flex flex-row items-center justify-center">
-                    <h1 className="text-rose-400">No Favorites.</h1>
+                      <h1 className="text-rose-400">No {preferences}</h1>
                   </div>
                 ) : (
                   data.map((favs) => {
