@@ -753,7 +753,7 @@ export const PostDetails = () => {
                               className="pl-2 pr-2"
                               onClick={() => setSocial((prev) => !prev)}
                               href={getWhatsAppUrl({
-                                url: `https://inkwellify.com/read/${data.post_id}`,
+                                url: `https://inkwellify.vercel.app/read/${data.post_id}`,
                                 text: `Hey check this amazing post - `,
                               })}
                             >
@@ -767,7 +767,7 @@ export const PostDetails = () => {
                               onClick={() => {
                                 setSocial((prev) => !prev);
                                 return copyToClipboard(
-                                  `https://inkwellify.com/read/${data.post_id}`
+                                  `https://inkwellify.vercel.app/read/${data.post_id}`
                                 );
                               }}
                             >
@@ -780,8 +780,8 @@ export const PostDetails = () => {
                               onClick={() => setSocial((prev) => !prev)}
                               className="pl-2 pr-2"
                               href={getTwitterUrl({
-                                url: `https://inkwellify.com/read/${data.post_id}`,
-                                text: `Hey check this amazing post from ${"https://inkwellify.com"}`,
+                                url: `https://inkwellify.vercel.app/read/${data.post_id}`,
+                                text: `Hey check this amazing post from ${"https://inkwellify.vercel.app"}`,
                                 hashtags: data.post_tags,
                                 related: data.post_category,
                               })}
@@ -795,9 +795,9 @@ export const PostDetails = () => {
                               onClick={() => setSocial((prev) => !prev)}
                               className="pl-2 pr-2"
                               href={getLinkedinUrl({
-                                url: `https://inkwellify.com/read/${data.post_id}`,
+                                url: `https://inkwellify.vercel.app/read/${data.post_id}`,
                                 title: data.post_title,
-                                source: `${"https://inkwellify.com"}`,
+                                source: `${"https://inkwellify.vercel.app"}`,
                               })}
                             >
                               <LinkedInIcon />
@@ -808,7 +808,7 @@ export const PostDetails = () => {
                             <a
                               className="pl-2 pr-2"
                               href={getFacebookUrl({
-                                url: `https://inkwellify.com/read/${data.post_id}`,
+                                url: `https://inkwellify.vercel.app/read/${data.post_id}`,
                                 hashtag: data.post_tags,
                               })}
                             >
