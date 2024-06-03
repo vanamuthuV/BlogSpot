@@ -143,7 +143,6 @@ LEFT JOIN
     ) AS bookmark ON posts.post_id = bookmark.post_id
 where post_type='public'  order by post_upload_time desc`;
 
-
 const querynetwork = `select A.*, 
 coalesce(likedd.lik, 0) as likecount, 
 coalesce(dislikedd.dislik, 0) as dislikecount,
@@ -180,28 +179,53 @@ where A.post_type = 'public' order by A.post_upload_time desc `;
 
 router.post("/", async (req, res) => {
   try {
+    const dummyID = "123e4567-e89b-12d3-a456-426614174000";
     console.log(req?.body?.type);
     console.log(req.body?.id);
-    if (req?.body?.type === "trending") {
-      const posts = await pool.query(querytrending, [req?.body?.id]);
-      res.status(200).json({ posts: posts.rows });
-    }
+    if (req?.body?.id !== 'undefined') {
+      if (req?.body?.type === "trending") {
+        const posts = await pool.query(querytrending, [req?.body?.id]);
+        res.status(200).json({ posts: posts.rows });
+      }
 
-    if (req?.body?.type === "new") {
-      const posts = await pool.query(querynew, [req?.body?.id]);
-      res.status(200).json({ posts: posts.rows });
-    }
+      if (req?.body?.type === "new") {
+        const posts = await pool.query(querynew, [req?.body?.id]);
+        res.status(200).json({ posts: posts.rows });
+      }
 
-    if (req?.body?.type === "network") {
-      const posts = await pool.query(querynetwork, [req?.body?.id]);
-      console.log(posts.rowCount);
-      res.status(200).json({ posts: posts.rows });
-    }
+      if (req?.body?.type === "network") {
+        const posts = await pool.query(querynetwork, [req?.body?.id]);
+        console.log(posts.rowCount);
+        res.status(200).json({ posts: posts.rows });
+      }
 
-    if (req?.body?.type === "foryou") {
-      // const posts = await pool.query(queryforyou, [req?.body?.id]);
-      // console.log(posts.rowCount);
-      res.status(200).json({ posts: [] });
+      if (req?.body?.type === "foryou") {
+        // const posts = await pool.query(queryforyou, [req?.body?.id]);
+        // console.log(posts.rowCount);
+        res.status(200).json({ posts: [] });
+      }
+    } else {
+      if (req?.body?.type === "trending") {
+        const posts = await pool.query(querytrending, [dummyID]);
+        res.status(200).json({ posts: posts.rows });
+      }
+
+      if (req?.body?.type === "new") {
+        const posts = await pool.query(querynew, [dummyID]);
+        res.status(200).json({ posts: posts.rows });
+      }
+
+      if (req?.body?.type === "network") {
+        const posts = await pool.query(querynetwork, [dummyID]);
+        console.log(posts.rowCount);
+        res.status(200).json({ posts: posts.rows });
+      }
+
+      if (req?.body?.type === "foryou") {
+        // const posts = await pool.query(queryforyou, [req?.body?.id]);
+        // console.log(posts.rowCount);
+        res.status(200).json({ posts: [] });
+      }
     }
   } catch (error) {
     console.log(error);
