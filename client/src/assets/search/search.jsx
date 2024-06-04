@@ -30,18 +30,20 @@ export const FetchContinous = ({ keyword }) => {
   const [categoryMaintainer, setCategoryMaintainer] = useState([]);
   const [tagMaintainer, setTagMaintainer] = useState([]);
 
+
+
   const Search = {
     val: keyword,
   };
 
   useEffect(() => {
     (async () => {
+      setLoading(true)
       try {
         const resposne = await axios.post(ACCOUNTSEARCH, Search);
         // console.log(resposne?.data?.data);
         setAccounts(resposne?.data?.data);
         setUserMaintainer(resposne?.data?.data.slice(0, 4));
-        setLoading(false);
       } catch (error) {
         console.error(error);
       }
@@ -49,10 +51,12 @@ export const FetchContinous = ({ keyword }) => {
       // Post Fetching
 
       try {
+
         const resposne = await axios.post(POSTSEARCH, Search);
         // console.log(resposne?.data?.data);
         setPosts(resposne?.data?.data);
         setPostMaintainer(resposne?.data?.data.slice(0, 4));
+
       } catch (error) {
         console.error(error);
       }
@@ -60,11 +64,12 @@ export const FetchContinous = ({ keyword }) => {
       // Category Fetching
 
       try {
+
         const resposne = await axios.post(CATEGORYSEARCH, Search);
         // console.log(resposne?.data?.data);
         setCategory(resposne?.data?.data);
         setCategoryMaintainer(resposne?.data?.data.slice(0, 4));
-        setLoading(false);
+
       } catch (error) {
         console.error(error);
       }
@@ -72,14 +77,16 @@ export const FetchContinous = ({ keyword }) => {
       // Tags Fetching
 
       try {
+
         const resposne = await axios.post(TAGSEARCH, Search);
         // console.log(resposne?.data?.data);
         setTags(resposne?.data?.data);
         setTagMaintainer(resposne?.data?.data.slice(0, 4));
-        setLoading(false);
+
       } catch (error) {
         console.error(error);
       }
+      setLoading(false)
     })();
   }, [keyword]);
 
@@ -100,8 +107,106 @@ export const FetchContinous = ({ keyword }) => {
             </video>
           </div>
         ) : loading ? (
+          // <div className="flex flex-row items-center justify-center w-full h-full">
+          //   <h1>loading...</h1>
+          // </div>
           <div className="flex flex-row items-center justify-center w-full h-full">
-            <h1>loading...</h1>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+              <circle
+                fill="#F97316"
+                stroke="#F97316"
+                stroke-width="28"
+                r="15"
+                cx="35"
+                cy="100"
+              >
+                <animate
+                  attributeName="cx"
+                  calcMode="spline"
+                  dur="1.5"
+                  values="35;165;165;35;35"
+                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                  repeatCount="indefinite"
+                  begin="0"
+                ></animate>
+              </circle>
+              <circle
+                fill="#F97316"
+                stroke="#F97316"
+                stroke-width="28"
+                opacity=".8"
+                r="15"
+                cx="35"
+                cy="100"
+              >
+                <animate
+                  attributeName="cx"
+                  calcMode="spline"
+                  dur="1.5"
+                  values="35;165;165;35;35"
+                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                  repeatCount="indefinite"
+                  begin="0.05"
+                ></animate>
+              </circle>
+              <circle
+                fill="#F97316"
+                stroke="#F97316"
+                stroke-width="28"
+                opacity=".6"
+                r="15"
+                cx="35"
+                cy="100"
+              >
+                <animate
+                  attributeName="cx"
+                  calcMode="spline"
+                  dur="1.5"
+                  values="35;165;165;35;35"
+                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                  repeatCount="indefinite"
+                  begin=".1"
+                ></animate>
+              </circle>
+              <circle
+                fill="#F97316"
+                stroke="#F97316"
+                stroke-width="28"
+                opacity=".4"
+                r="15"
+                cx="35"
+                cy="100"
+              >
+                <animate
+                  attributeName="cx"
+                  calcMode="spline"
+                  dur="1.5"
+                  values="35;165;165;35;35"
+                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                  repeatCount="indefinite"
+                  begin=".15"
+                ></animate>
+              </circle>
+              <circle
+                fill="#F97316"
+                stroke="#F97316"
+                stroke-width="28"
+                opacity=".2"
+                r="15"
+                cx="35"
+                cy="100"
+              >
+                <animate
+                  attributeName="cx"
+                  calcMode="spline"
+                  dur="1.5"
+                  values="35;165;165;35;35"
+                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                  repeatCount="indefinite"
+                  begin=".2"
+                ></animate>
+              </circle>
+            </svg>
           </div>
         ) : (
           <>

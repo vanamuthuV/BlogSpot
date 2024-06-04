@@ -248,7 +248,102 @@ export const Edit = ({ post_ids }) => {
 
   return loading ? (
     <div className="flex flex-row items-center justify-center w-full h-[calc(100vh-57px)]">
-      <CircularProgress />
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+        <circle
+          fill="#F97316"
+          stroke="#F97316"
+          stroke-width="28"
+          r="15"
+          cx="35"
+          cy="100"
+        >
+          <animate
+            attributeName="cx"
+            calcMode="spline"
+            dur="1.5"
+            values="35;165;165;35;35"
+            keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+            repeatCount="indefinite"
+            begin="0"
+          ></animate>
+        </circle>
+        <circle
+          fill="#F97316"
+          stroke="#F97316"
+          stroke-width="28"
+          opacity=".8"
+          r="15"
+          cx="35"
+          cy="100"
+        >
+          <animate
+            attributeName="cx"
+            calcMode="spline"
+            dur="1.5"
+            values="35;165;165;35;35"
+            keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+            repeatCount="indefinite"
+            begin="0.05"
+          ></animate>
+        </circle>
+        <circle
+          fill="#F97316"
+          stroke="#F97316"
+          stroke-width="28"
+          opacity=".6"
+          r="15"
+          cx="35"
+          cy="100"
+        >
+          <animate
+            attributeName="cx"
+            calcMode="spline"
+            dur="1.5"
+            values="35;165;165;35;35"
+            keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+            repeatCount="indefinite"
+            begin=".1"
+          ></animate>
+        </circle>
+        <circle
+          fill="#F97316"
+          stroke="#F97316"
+          stroke-width="28"
+          opacity=".4"
+          r="15"
+          cx="35"
+          cy="100"
+        >
+          <animate
+            attributeName="cx"
+            calcMode="spline"
+            dur="1.5"
+            values="35;165;165;35;35"
+            keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+            repeatCount="indefinite"
+            begin=".15"
+          ></animate>
+        </circle>
+        <circle
+          fill="#F97316"
+          stroke="#F97316"
+          stroke-width="28"
+          opacity=".2"
+          r="15"
+          cx="35"
+          cy="100"
+        >
+          <animate
+            attributeName="cx"
+            calcMode="spline"
+            dur="1.5"
+            values="35;165;165;35;35"
+            keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+            repeatCount="indefinite"
+            begin=".2"
+          ></animate>
+        </circle>
+      </svg>
     </div>
   ) : (
     <div className="flex flex-col items-center justify-center">

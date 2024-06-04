@@ -199,7 +199,102 @@ export const Dashboard = () => {
 
         {loading ? (
           <div className="flex flex-row items-center justify-center w-full h-[calc(100vh-96px)]">
-            <CircularProgress />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+              <circle
+                fill="#F97316"
+                stroke="#F97316"
+                stroke-width="28"
+                r="15"
+                cx="35"
+                cy="100"
+              >
+                <animate
+                  attributeName="cx"
+                  calcMode="spline"
+                  dur="1.5"
+                  values="35;165;165;35;35"
+                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                  repeatCount="indefinite"
+                  begin="0"
+                ></animate>
+              </circle>
+              <circle
+                fill="#F97316"
+                stroke="#F97316"
+                stroke-width="28"
+                opacity=".8"
+                r="15"
+                cx="35"
+                cy="100"
+              >
+                <animate
+                  attributeName="cx"
+                  calcMode="spline"
+                  dur="1.5"
+                  values="35;165;165;35;35"
+                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                  repeatCount="indefinite"
+                  begin="0.05"
+                ></animate>
+              </circle>
+              <circle
+                fill="#F97316"
+                stroke="#F97316"
+                stroke-width="28"
+                opacity=".6"
+                r="15"
+                cx="35"
+                cy="100"
+              >
+                <animate
+                  attributeName="cx"
+                  calcMode="spline"
+                  dur="1.5"
+                  values="35;165;165;35;35"
+                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                  repeatCount="indefinite"
+                  begin=".1"
+                ></animate>
+              </circle>
+              <circle
+                fill="#F97316"
+                stroke="#F97316"
+                stroke-width="28"
+                opacity=".4"
+                r="15"
+                cx="35"
+                cy="100"
+              >
+                <animate
+                  attributeName="cx"
+                  calcMode="spline"
+                  dur="1.5"
+                  values="35;165;165;35;35"
+                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                  repeatCount="indefinite"
+                  begin=".15"
+                ></animate>
+              </circle>
+              <circle
+                fill="#F97316"
+                stroke="#F97316"
+                stroke-width="28"
+                opacity=".2"
+                r="15"
+                cx="35"
+                cy="100"
+              >
+                <animate
+                  attributeName="cx"
+                  calcMode="spline"
+                  dur="1.5"
+                  values="35;165;165;35;35"
+                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                  repeatCount="indefinite"
+                  begin=".2"
+                ></animate>
+              </circle>
+            </svg>
           </div>
         ) : (
           <div className="flex flex-col items-start justify-center w-11/12 max-md:w-full">
@@ -210,7 +305,7 @@ export const Dashboard = () => {
               <div className="flex flex-col items-center justify-center w-full">
                 {datalen === 0 ? (
                   <div className="flex flex-row items-center justify-center">
-                      <h1 className="text-rose-400">No {preferences}</h1>
+                    <h1 className="text-rose-400">No {preferences}</h1>
                   </div>
                 ) : (
                   data.map((favs) => {
@@ -226,7 +321,9 @@ export const Dashboard = () => {
                         </div>
                         <div className="flex flex-row items-center justify-start w-full pl-2 pr-2">
                           <Link to={`/Read/${favs.post_id}`}>
-                            <p className="hover:underline max-md:text-sm">{favs.post_title}</p>
+                            <p className="hover:underline max-md:text-sm">
+                              {favs.post_title}
+                            </p>
                           </Link>
                         </div>
                         {/* <div className="flex flex-row items-center justify-center pl-5">

@@ -131,12 +131,109 @@ export const Followers = () => {
   return (
     <div className="w-2/4 max-md:w-3/4">
       {loading ? (
-        <div className="flex flex-row items-center justify-center w-full h-[calc(100vh-144px)]"><CircularProgress /></div>
+        <div className="flex flex-row items-center justify-center w-full h-[calc(100vh-144px)]">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+            <circle
+              fill="#F97316"
+              stroke="#F97316"
+              stroke-width="28"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="1.5"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin="0"
+              ></animate>
+            </circle>
+            <circle
+              fill="#F97316"
+              stroke="#F97316"
+              stroke-width="28"
+              opacity=".8"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="1.5"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin="0.05"
+              ></animate>
+            </circle>
+            <circle
+              fill="#F97316"
+              stroke="#F97316"
+              stroke-width="28"
+              opacity=".6"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="1.5"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin=".1"
+              ></animate>
+            </circle>
+            <circle
+              fill="#F97316"
+              stroke="#F97316"
+              stroke-width="28"
+              opacity=".4"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="1.5"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin=".15"
+              ></animate>
+            </circle>
+            <circle
+              fill="#F97316"
+              stroke="#F97316"
+              stroke-width="28"
+              opacity=".2"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="1.5"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin=".2"
+              ></animate>
+            </circle>
+          </svg>
+        </div>
       ) : (
         <div className="flex flex-col items-center justify-start w-full">
           <Link to={`/${user_name}`}>
             <h1 className="pt-5 pb-5 text-xl max-md:text-sm">
-                <span className="font-bold">{user_name}</span>'s Followers
+              <span className="font-bold">{user_name}</span>'s Followers
             </h1>
           </Link>
 
@@ -199,9 +296,7 @@ export const Followers = () => {
                         onClose={handleClose}
                         aria-labelledby="responsive-dialog-title"
                       >
-                        <p className="m-5 text-red-500">
-                          Remove Alert!!
-                        </p>
+                        <p className="m-5 text-red-500">Remove Alert!!</p>
                         <DialogContent>
                           <p className="text-md">
                             Are You Sure To Remove{" "}
@@ -315,7 +410,102 @@ export const Followings = () => {
     <div className="w-2/4 max-md:w-3/4">
       {loading ? (
         <div className="flex flex-row items-center justify-center w-full h-[calc(100vh-144px)]">
-          <CircularProgress />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+            <circle
+              fill="#F97316"
+              stroke="#F97316"
+              stroke-width="28"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="1.5"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin="0"
+              ></animate>
+            </circle>
+            <circle
+              fill="#F97316"
+              stroke="#F97316"
+              stroke-width="28"
+              opacity=".8"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="1.5"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin="0.05"
+              ></animate>
+            </circle>
+            <circle
+              fill="#F97316"
+              stroke="#F97316"
+              stroke-width="28"
+              opacity=".6"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="1.5"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin=".1"
+              ></animate>
+            </circle>
+            <circle
+              fill="#F97316"
+              stroke="#F97316"
+              stroke-width="28"
+              opacity=".4"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="1.5"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin=".15"
+              ></animate>
+            </circle>
+            <circle
+              fill="#F97316"
+              stroke="#F97316"
+              stroke-width="28"
+              opacity=".2"
+              r="15"
+              cx="35"
+              cy="100"
+            >
+              <animate
+                attributeName="cx"
+                calcMode="spline"
+                dur="1.5"
+                values="35;165;165;35;35"
+                keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
+                repeatCount="indefinite"
+                begin=".2"
+              ></animate>
+            </circle>
+          </svg>
         </div>
       ) : (
         <div className="flex flex-col items-center justify-start w-full">
