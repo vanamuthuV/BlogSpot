@@ -69,8 +69,8 @@ import pool from "./db.js";
 import jwtToken from "./utils/jwtToken.js";
 import EmailVerify from "./routes/emailverify.js";
 
-const Base_URL = "https://inkwellify.vercel.app";
-// const Base_URL = "http://localhost:5173";
+// const Base_URL = "https://inkwellify.vercel.app";
+const Base_URL = "http://localhost:5173";
 dotenv.config();
 
 const queryuserexists = `select * from users left join profilepicture on users.user_id = profilepicture.user_id where strategic_id = $1`;
