@@ -93,6 +93,7 @@ export const LandingPage = () => {
         const response = await axios.post(LANDINGDATA, value);
         // console.log(response?.data?.data);
         setData(response?.data?.data);
+        console.log(response?.data?.data);
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -230,12 +231,19 @@ export const LandingPage = () => {
           </div>
         ) : (
           <div className="flex flex-row flex-wrap items-center justify-around w-full gap-5 p-5">
-            {data.map((post) => {
-              return (
-                <div className="flex flex-col items-center justify-center p-5 rounded-lg shadow-xl hover:shadow-xl w-96">
-                  <div className="flex flex-row flex-wrap items-center justify-between w-full mt-2 mb-2">
-                    <div className="flex flex-row items-center justify-center w-full mr-2">
-                      {/* <img
+            {data.length === 0 ? (
+              <div>
+                <p className="text-orange-500">
+                  No posts yet. Would you like to create one?
+                </p>
+              </div>
+            ) : (
+              data.map((post) => {
+                return (
+                  <div className="flex flex-col items-center justify-center p-5 rounded-lg shadow-xl hover:shadow-xl w-96">
+                    <div className="flex flex-row flex-wrap items-center justify-between w-full mt-2 mb-2">
+                      <div className="flex flex-row items-center justify-center w-full mr-2">
+                        {/* <img
                         className="rounded-full min-w-6 max-w-6 min-h-6 max-h-6"
                         src={
                           post.profileimage
@@ -243,99 +251,100 @@ export const LandingPage = () => {
                             : "../../../public/Profile.jpeg"
                         }
                       /> */}
-                      {post.profileimage ? (
-                        <ImageComponent
-                          base64String={post.profileimage}
-                          features={
-                            "rounded-full min-w-6 max-w-6 min-h-6 max-h-6"
-                          }
-                        />
-                      ) : (
-                        <img
-                          className="rounded-full min-w-6 max-w-6 min-h-6 max-h-6"
-                          src={"../../../public/Profile.jpeg"}
-                        />
-                      )}
+                        {post.profileimage ? (
+                          <ImageComponent
+                            base64String={post.profileimage}
+                            features={
+                              "rounded-full min-w-6 max-w-6 min-h-6 max-h-6"
+                            }
+                          />
+                        ) : (
+                          <img
+                            className="rounded-full min-w-6 max-w-6 min-h-6 max-h-6"
+                            src={"../../../public/Profile.jpeg"}
+                          />
+                        )}
 
-                      <div className="flex flex-row items-center justify-between w-full pl-2">
-                        <p className="font-normal">
-                          <Link to={`/${post.user_name}`}>
-                            <span className="pr-2 text-sm hover:underline">
-                              {post.userfullname
-                                ? post.userfullname.length > 26
-                                  ? post.userfullname.substring(0, 26) + "..."
-                                  : post.userfullname
-                                : post.user_name.length > 26
-                                ? post.user_name.substring(0, 26) + "..."
-                                : post.user_name}
-                            </span>
-                          </Link>
+                        <div className="flex flex-row items-center justify-between w-full pl-2">
+                          <p className="font-normal">
+                            <Link to={`/${post.user_name}`}>
+                              <span className="pr-2 text-sm hover:underline">
+                                {post.userfullname
+                                  ? post.userfullname.length > 26
+                                    ? post.userfullname.substring(0, 26) + "..."
+                                    : post.userfullname
+                                  : post.user_name.length > 26
+                                  ? post.user_name.substring(0, 26) + "..."
+                                  : post.user_name}
+                              </span>
+                            </Link>
+                          </p>
+                          <p className="text-sm text-neutral-500 ">
+                            {/* Uploaded on{" "} */}
+                            {format(post.post_upload_time, "MMM dd,yyyy")}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex flex-row items-center justify-between w-full mt-2 mb-2 max-md:mt-1 max-md:mb-1">
+                      <Link
+                        className="flex flex-row items-center justify-between w-full mt-2 mb-2"
+                        to={`/Read/${post.post_id}`}
+                      >
+                        <p className="pr-2 mt-3 mb-2 text-base font-bold max-md:text-sm">
+                          {post.post_title.length > 40
+                            ? post.post_title.substring(0, 60) + "..."
+                            : post.post_title}
                         </p>
-                        <p className="text-sm text-neutral-500 ">
-                          {/* Uploaded on{" "} */}
-                          {format(post.post_upload_time, "MMM dd,yyyy")}
+                        {/* <img
+                        className=" min-h-14 min-w-20 max-h-14 max-w-20"
+                        src={`http://localhost:5000/${post.post_images}`}
+                      /> */}
+                        <ImageComponent
+                          features={"min-h-14 min-w-20 max-h-14 max-w-20"}
+                          base64String={post.post_images}
+                        />
+                      </Link>
+                    </div>
+                    <div className="flex flex-row items-center justify-between w-full pl-3 pr-3 ">
+                      <p className="pt-1 pb-1 pl-1 pr-1 text-sm font-normal rounded-md bg-orange-50 text-neutral-800 ">
+                        {post.post_category}
+                      </p>
+                      <p className="flex flex-row items-center justify-center ml-2 mr-2 text-sm text-neutral-500">
+                        {Math.round(post.post_content.split("").length / 200)}
+                        <span className="pl-1">min read</span>
+                      </p>
+                      <div className="flex flex-row items-center justify-center ">
+                        <p className="flex flex-row items-center justify-center pr-1 text-sm text-green-500 ">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            class="w-5 h-5 pr-1 max-md:w-4 max-md:h-4"
+                          >
+                            <path d="M1 8.25a1.25 1.25 0 1 1 2.5 0v7.5a1.25 1.25 0 1 1-2.5 0v-7.5ZM11 3V1.7c0-.268.14-.526.395-.607A2 2 0 0 1 14 3c0 .995-.182 1.948-.514 2.826-.204.54.166 1.174.744 1.174h2.52c1.243 0 2.261 1.01 2.146 2.247a23.864 23.864 0 0 1-1.341 5.974C17.153 16.323 16.072 17 14.9 17h-3.192a3 3 0 0 1-1.341-.317l-2.734-1.366A3 3 0 0 0 6.292 15H5V8h.963c.685 0 1.258-.483 1.612-1.068a4.011 4.011 0 0 1 2.166-1.73c.432-.143.853-.386 1.011-.814.16-.432.248-.9.248-1.388Z" />
+                          </svg>
+
+                          {post.likes_count}
+                        </p>
+                        <p className="flex flex-row items-center justify-center pl-1 text-sm text-red-500 ">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            class="w-5 h-5 pr-1 max-md:w-4 max-md:h-4"
+                          >
+                            <path d="M15.73 5.5h1.035A7.465 7.465 0 0 1 18 9.625a7.465 7.465 0 0 1-1.235 4.125h-.148c-.806 0-1.534.446-2.031 1.08a9.04 9.04 0 0 1-2.861 2.4c-.723.384-1.35.956-1.653 1.715a4.499 4.499 0 0 0-.322 1.672v.633A.75.75 0 0 1 9 22a2.25 2.25 0 0 1-2.25-2.25c0-1.152.26-2.243.723-3.218.266-.558-.107-1.282-.725-1.282H3.622c-1.026 0-1.945-.694-2.054-1.715A12.137 12.137 0 0 1 1.5 12.25c0-2.848.992-5.464 2.649-7.521C4.537 4.247 5.136 4 5.754 4H9.77a4.5 4.5 0 0 1 1.423.23l3.114 1.04a4.5 4.5 0 0 0 1.423.23ZM21.669 14.023c.536-1.362.831-2.845.831-4.398 0-1.22-.182-2.398-.52-3.507-.26-.85-1.084-1.368-1.973-1.368H19.1c-.445 0-.72.498-.523.898.591 1.2.924 2.55.924 3.977a8.958 8.958 0 0 1-1.302 4.666c-.245.403.028.959.5.959h1.053c.832 0 1.612-.453 1.918-1.227Z" />
+                          </svg>
+
+                          {post.dislikes_count}
                         </p>
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-row items-center justify-between w-full mt-2 mb-2 max-md:mt-1 max-md:mb-1">
-                    <Link
-                      className="flex flex-row items-center justify-between w-full mt-2 mb-2"
-                      to={`/Read/${post.post_id}`}
-                    >
-                      <p className="pr-2 mt-3 mb-2 text-base font-bold max-md:text-sm">
-                        {post.post_title.length > 40
-                          ? post.post_title.substring(0, 60) + "..."
-                          : post.post_title}
-                      </p>
-                      {/* <img
-                        className=" min-h-14 min-w-20 max-h-14 max-w-20"
-                        src={`http://localhost:5000/${post.post_images}`}
-                      /> */}
-                      <ImageComponent
-                        features={"min-h-14 min-w-20 max-h-14 max-w-20"}
-                        base64String={post.post_images}
-                      />
-                    </Link>
-                  </div>
-                  <div className="flex flex-row items-center justify-between w-full pl-3 pr-3 ">
-                    <p className="pt-1 pb-1 pl-1 pr-1 text-sm font-normal rounded-md bg-orange-50 text-neutral-800 ">
-                      {post.post_category}
-                    </p>
-                    <p className="flex flex-row items-center justify-center ml-2 mr-2 text-sm text-neutral-500">
-                      {Math.round(post.post_content.split("").length / 200)}
-                      <span className="pl-1">min read</span>
-                    </p>
-                    <div className="flex flex-row items-center justify-center ">
-                      <p className="flex flex-row items-center justify-center pr-1 text-sm text-green-500 ">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          class="w-5 h-5 pr-1 max-md:w-4 max-md:h-4"
-                        >
-                          <path d="M1 8.25a1.25 1.25 0 1 1 2.5 0v7.5a1.25 1.25 0 1 1-2.5 0v-7.5ZM11 3V1.7c0-.268.14-.526.395-.607A2 2 0 0 1 14 3c0 .995-.182 1.948-.514 2.826-.204.54.166 1.174.744 1.174h2.52c1.243 0 2.261 1.01 2.146 2.247a23.864 23.864 0 0 1-1.341 5.974C17.153 16.323 16.072 17 14.9 17h-3.192a3 3 0 0 1-1.341-.317l-2.734-1.366A3 3 0 0 0 6.292 15H5V8h.963c.685 0 1.258-.483 1.612-1.068a4.011 4.011 0 0 1 2.166-1.73c.432-.143.853-.386 1.011-.814.16-.432.248-.9.248-1.388Z" />
-                        </svg>
-
-                        {post.likes_count}
-                      </p>
-                      <p className="flex flex-row items-center justify-center pl-1 text-sm text-red-500 ">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          class="w-5 h-5 pr-1 max-md:w-4 max-md:h-4"
-                        >
-                          <path d="M15.73 5.5h1.035A7.465 7.465 0 0 1 18 9.625a7.465 7.465 0 0 1-1.235 4.125h-.148c-.806 0-1.534.446-2.031 1.08a9.04 9.04 0 0 1-2.861 2.4c-.723.384-1.35.956-1.653 1.715a4.499 4.499 0 0 0-.322 1.672v.633A.75.75 0 0 1 9 22a2.25 2.25 0 0 1-2.25-2.25c0-1.152.26-2.243.723-3.218.266-.558-.107-1.282-.725-1.282H3.622c-1.026 0-1.945-.694-2.054-1.715A12.137 12.137 0 0 1 1.5 12.25c0-2.848.992-5.464 2.649-7.521C4.537 4.247 5.136 4 5.754 4H9.77a4.5 4.5 0 0 1 1.423.23l3.114 1.04a4.5 4.5 0 0 0 1.423.23ZM21.669 14.023c.536-1.362.831-2.845.831-4.398 0-1.22-.182-2.398-.52-3.507-.26-.85-1.084-1.368-1.973-1.368H19.1c-.445 0-.72.498-.523.898.591 1.2.924 2.55.924 3.977a8.958 8.958 0 0 1-1.302 4.666c-.245.403.028.959.5.959h1.053c.832 0 1.612-.453 1.918-1.227Z" />
-                        </svg>
-
-                        {post.dislikes_count}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         )}
       </div>
