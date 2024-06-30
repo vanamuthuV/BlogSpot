@@ -1,3 +1,5 @@
+create EXTENSION if not exists "uuid-ossp"; 
+
 create table users(user_name text unique not null,
 	user_email text unique not null,
 	account_created timestamp,
