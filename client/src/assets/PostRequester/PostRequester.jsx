@@ -128,7 +128,7 @@ export const PostRequester = () => {
   return (
     <>
       {loading ? (
-        <div className="flex flex-row items-center justify-center">
+        <div className="flex flex-row items-center justify-center h-[calc(100vh-57px)]">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
             <circle
               fill="#F97316"

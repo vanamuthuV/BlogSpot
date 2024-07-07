@@ -583,7 +583,7 @@ export const PostDetails = () => {
     <>
       <div className="relative">
         {loading ? (
-          <div className="absolute flex flex-row items-center justify-center w-full h-screen">
+          <div className="flex flex-row items-center justify-center w-full h-screen">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
               <circle
                 fill="#F97316"
