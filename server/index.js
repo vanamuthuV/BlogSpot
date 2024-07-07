@@ -100,50 +100,13 @@ app.use(
     cookie: {
       secure: process.env.NODE_ENV === "production", // Ensures the cookie is only used over HTTPS
       httpOnly: true, // Ensures the cookie is not accessible via JavaScript
-      sameSite: "None", // Allows cross-site requests
-      Partitioned: "Lax",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     },
   })
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-
-// passport.use(
-//   new GoogleStrategy(
-//     {
-//       clientID: process.env.GOOGLE_CLIENT_ID,
-//       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//       callbackURL: "/auth/google/callback",
-//       scope: ["profile", "email"],
-//     },
-//     async (accessToken, refreshToken, profile, done) => {
-//       try {
-//         const users = await pool.query(queryuserexists, [profile.id]);
-//         console.log(profile);
-//         if (users.rows.length === 0) {
-//           await pool.query(querynewuser, [
-//             profile._json.given_name.toLowerCase() +
-//               profile._json.family_name.toLowerCase(),
-//             profile._json.email,
-//             profile.id,
-//           ]);
-//         }
-
-//         const user = await pool.query(queryuserexists, [profile.id]);
-//         console.log("Heehee",user);
-//         const { accessToken, refreshToken } = await jwtToken(user.rows[0]);
-//         user.rows[0].accessToken = accessToken;
-//         user.rows[0].refreshToken = refreshToken
-//         return done(null, user);
-//       } catch (error) {
-//         return done(error, null);
-//       }
-//     }
-//   )
-// );
 
 passport.use(
   new GoogleStrategy(
@@ -175,9 +138,10 @@ passport.use(
           console.log("The access Token", accessToken);
           user.rows[0].refreshToken = refreshToken;
           console.log("This the user", user);
-          return user;
+          return done(null, user);
         } catch (error) {
           console.log(error.message);
+          return done(error, null);
         }
       };
 
@@ -199,36 +163,27 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-app.use(
-  session({
-    name: "connect.sid",
-    secret: process.env.EXPRESS_SESSION_SECREST_KEY,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: process.env.NODE_ENV === "production", // Ensures the cookie is only used over HTTPS
-      httpOnly: true, // Ensures the cookie is not accessible via JavaScript
-      sameSite: "None", // Allows cross-site requests
-      Partitioned: "Lax",
-    },
-  })
-);
+// app.use(
+//   session({
+//     name: "connect.sid",
+//     secret: process.env.EXPRESS_SESSION_SECREST_KEY,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//       secure: process.env.NODE_ENV === "production", // Ensures the cookie is only used over HTTPS
+//       httpOnly: true, // Ensures the cookie is not accessible via JavaScript
+//       sameSite: "None", // Allows cross-site requests
+//     },
+//   })
+// );
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
-
-// app.get(
-//   "/auth/google/callback",
-//   passport.authenticate("google", {
-//     successRedirect: "https://inkwellify.vercel.app/",
-//     failureRedirect: "https://inkwellify.vercel.app/SignUp",
-//   })
-// );
 
 const Fail = "https://inkwellify.vercel.app/SignUp";
 const DummyFail = "http://localhost:5173/SignUp";
