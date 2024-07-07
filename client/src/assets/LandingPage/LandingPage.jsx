@@ -103,12 +103,9 @@ export const LandingPage = () => {
 
   return (
     <div>
-      <div
-        style={{ height: "500px" }}
-        className="flex flex-col items-start justify-end w-full pl-10 mb-16 max-md:h-64 bg-[url('../../../public/BackgroundImage.png')] bg-no-repeat bg-cover pb-10 max-md:pb-5 max-md:mb-8"
-      >
+      <div className="h-[600px] bg-[url('../../../public/BackgroundImage.png')] flex flex-col items-center justify-center w-full  mb-16 bg-cover bg-center bg-no-repeat max-md:pb-5 max-md:mb-8 rounded-bl-[75px] rounded-br-[75px] max-md:h-[500px] max-md:bg-right max-md:rounded-br-[30px] max-md:items-start max-md:pl-5 max-md:justify-end max-md:rounded-bl-[30px]">
         <div className="w-4/6 mb-8">
-          <h1 className="text-4xl max-md:text-xl">
+          <h1 className="text-3xl text-center max-md:text-xl max-md:text-left">
             "Welcome to a world where words dance off the page and ideas ignite
             your imagination."
           </h1>
