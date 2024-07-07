@@ -92,8 +92,10 @@ export const SignUpPersonalLayout = () => {
 export const ForgetPasswordLayout = () => {
   return (
     <div className="w-full h-[calc(100vh-57px)] flex flex-col items-center justify-center">
-      <p className="mt-5 mb-10 text-2xl">Join Inwellify</p>
-      <Outlet />
+      <div className="flex flex-col items-center justify-center p-10 shadow-xl rounded-xl max-md:p-5 max-md:shadow-2xl">
+        <p className="mt-5 mb-10 text-2xl max-md:text-xl">Join Inwellify</p>
+        <Outlet />
+      </div>
     </div>
   );
 };

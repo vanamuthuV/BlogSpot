@@ -103,28 +103,28 @@ export const LandingPage = () => {
 
   return (
     <div>
-      <div className="h-[600px] bg-[url('../../../public/BackgroundImage.png')] flex flex-col items-center justify-center w-full  mb-16 bg-cover bg-center bg-no-repeat max-md:pb-5 max-md:mb-8 rounded-bl-[75px] rounded-br-[75px] max-md:h-[500px] max-md:bg-right max-md:rounded-br-[30px] max-md:items-start max-md:pl-5 max-md:justify-end max-md:rounded-bl-[30px]">
+      <div className="h-[600px] bg-[url('../../../public/BackgroundImage.png')] flex flex-col items-center justify-center w-full  mb-16 bg-cover bg-center bg-no-repeat max-md:pb-5 max-md:mb-8 rounded-bl-[75px] rounded-br-[75px] max-md:h-[350px] max-md:bg-right max-md:rounded-br-[0px] max-md:items-start max-md:pl-5 max-md:justify-end max-md:rounded-bl-[0px]">
         <div className="w-4/6 mb-8">
-          <h1 className="text-3xl text-center max-md:text-xl max-md:text-left">
+          <h1 className="text-3xl text-center max-md:text-lg max-md:text-left">
             "Welcome to a world where words dance off the page and ideas ignite
             your imagination."
           </h1>
         </div>
         <div>
           <Link to={Object.keys(user).length === 0 ? "/SignUp" : "createpost"}>
-            <button className="pt-2 pb-2 max-md:pl-3 max-md:pr-3 pl-8 pr-8 font-bold bg-orange-500 rounded-lg text-gray-50 mr-2.5 max-md:text-sm">
+            <button className="pt-2 pb-2 max-md:pl-3 max-md:pr-3 pl-8 pr-8 font-bold bg-orange-500 rounded-lg text-gray-50 mr-2.5 max-md:text-xs">
               Create Post
             </button>
           </Link>
           <Link to={"/read"}>
-            <button className="pt-2  max-md:pl-3 max-md:pr-3 pb-2 pl-8 pr-8 ml-2.5 font-bold text-orange-500 border border-orange-500 rounded-lg bg-gray-50  max-md:text-sm">
+            <button className="pt-2  max-md:pl-3 max-md:pr-3 pb-2 pl-8 pr-8 ml-2.5 font-bold text-orange-500 border border-orange-500 rounded-lg bg-gray-50  max-md:text-xs">
               Start Reading
             </button>
           </Link>
         </div>
       </div>
       <div className="flex flex-col items-center justify-center w-full pb-5">
-        <h1 className="pt-10 pb-10 text-3xl font-bold text-center text-orange-500 max-md:pt-5 max-md:pb-5 max-md:text-xl">
+        <h1 className="pt-10 pb-10 text-3xl font-bold text-center text-orange-500 max-md:pt-5 max-md:pb-5 max-md:text-lg">
           Trending Blogs
         </h1>
         {loading ? (
@@ -347,7 +347,7 @@ export const LandingPage = () => {
       </div>
       <div className="flex flex-row items-center justify-center w-full">
         <div className="flex flex-row items-center justify-between w-11/12 mt-10 mb-20 max-md:flex-col">
-          <div className="w-2/4 pr-10 max-md:pr-2 max-md:w-full max-md:p-5 max-md:pb-0">
+          <div className="w-2/4 pr-10 max-md:w-full max-md:pr-0">
             <h1 className="text-6xl leading-snug text-center max-md:text-xl">
               Create and share your blog effortlessly.
             </h1>
@@ -385,7 +385,7 @@ export const LandingPage = () => {
       </div>
 
       <div className="flex flex-col items-center justify-center mt-10 mb-10">
-        <h1 className="mb-10 text-3xl font-bold text-orange-500 max-md:text-xl max-md:mb-3">
+        <h1 className="mb-10 text-3xl font-bold text-orange-500 max-md:text-lg max-md:mb-3">
           What We Have ?{" "}
         </h1>
         <div className="flex flex-row flex-wrap items-center justify-around w-11/12 gap-10 mt-10 mb-10">
@@ -396,43 +396,46 @@ export const LandingPage = () => {
                   <img className="w-20 h-20" src={card.src} />
                 </div>
                 <div>
-                  <p className="mt-5 mb-5 text-lg font-bold text-center text-orange-500">
+                  <p className="mt-5 mb-5 text-lg font-bold text-center text-orange-500 max-md:text-sm">
                     {card.title}
                   </p>
-                  <div>
-                    <p className="flex flex-row text-sm text-justify">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="2.5"
-                        stroke="rgb(249, 115, 22)"
-                        class="w-5 h-5 mr-1"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m4.5 12.75 6 6 9-13.5"
-                        />
-                      </svg>
+                  <div className="flex flex-row items-center justify-start h-full max-md:justify-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="2.5"
+                      stroke="rgb(249, 115, 22)"
+                      class="w-5 h-5 mr-1 max-md:w-4 max-md:h-4 max-md:mb-4"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m4.5 12.75 6 6 9-13.5"
+                      />
+                    </svg>
+
+                    <p className="flex flex-row text-sm text-justify max-md:text-xs">
                       {card.pt1}
                     </p>
-                    <p className="flex flex-row text-sm text-justify">
+                  </div>
+                  <div className="flex flex-row items-center justify-start h-full max-md:justify-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="2.5"
+                      stroke="rgb(249, 115, 22)"
+                      class="w-5 h-5 mr-1 max-md:w-4 max-md:h-4 max-md:mb-4"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m4.5 12.75 6 6 9-13.5"
+                      />
+                    </svg>
+                    <p className="flex flex-row text-sm text-justify max-md:text-xs">
                       {" "}
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="2.5"
-                        stroke="rgb(249, 115, 22)"
-                        class="w-5 h-5 mr-1"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m4.5 12.75 6 6 9-13.5"
-                        />
-                      </svg>
                       {card.pt2}
                     </p>
                   </div>

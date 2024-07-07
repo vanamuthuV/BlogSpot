@@ -361,7 +361,7 @@ export const ForgetPasscode = () => {
     });
     return (
       <div className="w-full ">
-        <p className="w-full text-left">Enter Your Gmail</p>
+        <p className="w-full text-left max-md:text-sm">Enter Your Gmail</p>
         <input
           name="SendMeCode"
           className="p-3 my-4 border border-gray-500 rounded-lg w-80"
@@ -440,7 +440,11 @@ export const ForgetPasscode = () => {
   return (
     <div className="h-40 w-80">
       <div>{Slides[count].val}</div>
-      {loader && (
+
+      {snackOn && (
+        <SnackBar message={SnackValue.message} variant={SnackValue.variant} />
+      )}
+      {loader ? (
         <div className="flex flex-row items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
             <circle
@@ -499,37 +503,35 @@ export const ForgetPasscode = () => {
             </circle>
           </svg>
         </div>
-      )}
-      {snackOn && (
-        <SnackBar message={SnackValue.message} variant={SnackValue.variant} />
-      )}
-      <div className="flex flex-row items-center justify-between w-full">
-        <button
-          className={`pt-1 pb-1 pl-4 pr-4 text-white bg-red-500 rounded-lg ${
-            count === 0 && "cursor-not-allowed"
-          }`}
-          onClick={() => setCount((prev) => prev - 1)}
-          disabled={count === 0 ? true : false}
-        >
-          Back
-        </button>
-        {count !== Slides.length - 1 && (
+      ) : (
+        <div className="flex flex-row items-center justify-between w-full">
           <button
-            className="pt-1 pb-1 pl-4 pr-4 text-white bg-green-500 rounded-lg"
-            onClick={NextStepTracker}
+            className={`pt-1 pb-1 pl-4 pr-4 text-white bg-red-500 rounded-lg ${
+              count === 0 && "cursor-not-allowed"
+            }`}
+            onClick={() => setCount((prev) => prev - 1)}
+            disabled={count === 0 ? true : false}
           >
-            Next
+            Back
           </button>
-        )}
-        {count === Slides.length - 1 && (
-          <button
-            className="pt-1 pb-1 pl-4 pr-4 text-white bg-green-500 rounded-lg"
-            onClick={UpdatePassword}
-          >
-            Change
-          </button>
-        )}
-      </div>
+          {count !== Slides.length - 1 && (
+            <button
+              className="pt-1 pb-1 pl-4 pr-4 text-white bg-green-500 rounded-lg"
+              onClick={NextStepTracker}
+            >
+              Next
+            </button>
+          )}
+          {count === Slides.length - 1 && (
+            <button
+              className="pt-1 pb-1 pl-4 pr-4 text-white bg-green-500 rounded-lg"
+              onClick={UpdatePassword}
+            >
+              Change
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };
