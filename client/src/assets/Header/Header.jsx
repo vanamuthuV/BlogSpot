@@ -250,7 +250,7 @@ export const Navbar = () => {
         elevation={0}
         sx={{
           backgroundColor: "#fffefd",
-          borderBottom: "0.5px solid #d1cfcd",
+          // borderBottom: "0.5px solid #d1cfcd",
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
@@ -277,15 +277,15 @@ export const Navbar = () => {
                 mr: 2,
                 display: { xs: "none", md: "flex" },
                 alignItems: "center",
-                fontSize: "20px",
-                fontWeight: 700,
-                letterSpacing: ".6rem",
+                fontSize: "16px",
+                fontWeight: 500,
+                letterSpacing: ".3rem",
                 color: "#303030",
                 textDecoration: "none",
               }}
             >
               <BookIcon
-                fontSize="medium"
+                fontSize="small"
                 sx={{
                   display: { xs: "none", md: "flex" },
                   mr: 1,
@@ -466,7 +466,7 @@ export const Navbar = () => {
                 display: { xs: "flex", md: "none" },
                 flexGrow: 1,
                 fontSize: "16px",
-                fontWeight: 700,
+                fontWeight: 500,
                 letterSpacing: ".2rem",
                 color: "#0e0a07",
                 textDecoration: "none",
