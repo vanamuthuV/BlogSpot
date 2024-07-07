@@ -38,7 +38,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import CircularProgress from "@mui/material/CircularProgress";
 const darkTheme = createTheme({ palette: { mode: "dark" } });
 const lightTheme = createTheme({ palette: { mode: "light" } });
-
 const userUpdater = createContext({});
 
 export const Navbar = () => {
@@ -58,6 +57,12 @@ export const Navbar = () => {
   const otp = useRef();
   const [validatory, setValidatory] = useState("content");
 
+  const [snackOn, setSnackOn] = useState(false);
+  const [snackMessage, setSnackMessage] = useState({
+    message: "",
+    variant: "",
+  });
+
   const getUser = async () => {
     try {
       const response = await axios.get(GOOGLE_USER);
@@ -65,6 +70,8 @@ export const Navbar = () => {
       const accessToken = response?.data?.data?.accessToken;
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("user_id", response?.data?.data?.user_id);
+      console.log(response?.data?.message);
+
       const {
         user_name,
         user_email,
@@ -86,10 +93,17 @@ export const Navbar = () => {
         platform: platform,
         verified: verified,
       });
+      setSnackMessage(response?.data?.message);
+      setSnackOn(true);
     } catch (error) {
       console.log(error);
     }
   };
+
+  snackOn &&
+    setTimeout(() => {
+      setSnackOn(false);
+    }, 3000);
 
   useEffect(() => {
     getUser();
@@ -105,7 +119,7 @@ export const Navbar = () => {
     backgroundColor: "inherit",
   }));
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     // console.log("Logout Success!!");
     localStorage.clear();
     await setAuth({});
@@ -226,6 +240,12 @@ export const Navbar = () => {
 
   return (
     <userUpdater.Provider value={setUserFunc}>
+      {snackOn && (
+        <SnackBar
+          message={snackMessage.message}
+          variant={snackMessage.variant}
+        />
+      )}
       <AppBar
         elevation={0}
         sx={{

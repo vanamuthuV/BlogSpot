@@ -91,23 +91,25 @@ app.use(bodyParser.json({ limit: "5mb" }));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(
-  session({
-    name: "connect.sid",
-    secret: process.env.EXPRESS_SESSION_SECREST_KEY,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: true, // Ensures the cookie is only used over HTTPS
-      httpOnly: true, // Ensures the cookie is not accessible via JavaScript
-      sameSite: "None", // Allows cross-site requests
-      Partitioned: "Lax",
-    },
-  })
-);
+// app.use(
+//   session({
+//     name: "connect.sid",
+//     secret: process.env.EXPRESS_SESSION_SECREST_KEY,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//       secure: , // Ensures the cookie is only used over HTTPS
+//       httpOnly: true, // Ensures the cookie is not accessible via JavaScript
+//       sameSite: "None", // Allows cross-site requests
+//       Partitioned: "Lax",
+//     },
+//   })
+// );
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+
 
 // passport.use(
 //   new GoogleStrategy(
@@ -170,12 +172,12 @@ passport.use(
           console.log("Heehee", user);
           const { accessToken, refreshToken } = await jwtToken(user.rows[0]);
           user.rows[0].accessToken = accessToken;
-
+          console.log("The access Token", accessToken);
           user.rows[0].refreshToken = refreshToken;
           console.log("This the user", user);
           return user;
         } catch (error) {
-          throw error;
+          console.log(error.message);
         }
       };
 
@@ -188,12 +190,32 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
+  console.log("YEYEY", user);
   done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
+  console.log("We from Des", user);
   done(null, user);
 });
+
+app.use(
+  session({
+    name: "connect.sid",
+    secret: process.env.EXPRESS_SESSION_SECREST_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === "production", // Ensures the cookie is only used over HTTPS
+      httpOnly: true, // Ensures the cookie is not accessible via JavaScript
+      sameSite: "None", // Allows cross-site requests
+      Partitioned: "Lax",
+    },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get(
   "/auth/google",
@@ -233,11 +255,15 @@ app.get("/auth/google/callback", (req, res, next) => {
 app.get("/login/success", (req, res) => {
   console.log("Yoo", req?.user);
   if (req.user) {
+    res.status(200).json({
+      message: "Authentication Success",
+      variant: "success",
+      data: req?.user?.rows[0],
+    });
+  } else {
     res
       .status(200)
-      .json({ message: "Authentication Success", data: req?.user?.rows[0] });
-  } else {
-    res.status(200).json({ message: "Authentication Failed", data: null });
+      .json({ message: "Authentication Failed", variant: "error", data: null });
   }
 });
 
