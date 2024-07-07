@@ -138,7 +138,7 @@ passport.use(
           console.log("The access Token", accessToken);
           user.rows[0].refreshToken = refreshToken;
           console.log("This the user", user);
-          return done(null, user);
+          return done(null, user.rows[0]);
         } catch (error) {
           console.log(error.message);
           return done(error, null);
@@ -207,18 +207,37 @@ app.get("/auth/google/callback", (req, res, next) => {
   })(req, res, next);
 });
 
+// app.get("/login/success", (req, res) => {
+//   if (req.user) {
+//     res.status(200).json({
+//       message: "Authentication Success",
+//       variant: "success",
+//       data: req?.user?.rows[0],
+//     });
+//   } else {
+//     res
+//       .status(200)
+//       .json({ message: "Authentication Failed", variant: "error", data: null });
+//   }
+// });
+
 app.get("/login/success", (req, res) => {
-  console.log("Yoo", req?.user);
+  console.log("Handling /login/success route");
+
   if (req.user) {
+    console.log("User authenticated successfully:", req.user);
     res.status(200).json({
       message: "Authentication Success",
       variant: "success",
-      data: req?.user?.rows[0],
+      data: req.user.rows[0],
     });
   } else {
-    res
-      .status(200)
-      .json({ message: "Authentication Failed", variant: "error", data: null });
+    console.log("Authentication failed: User not found in request");
+    res.status(200).json({
+      message: "Authentication Failed",
+      variant: "error",
+      data: null,
+    });
   }
 });
 
