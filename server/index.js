@@ -91,20 +91,20 @@ app.use(bodyParser.json({ limit: "5mb" }));
 app.use(express.json());
 app.use(cookieParser());
 
-// app.use(
-//   session({
-//     name: "connect.sid",
-//     secret: process.env.EXPRESS_SESSION_SECREST_KEY,
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: {
-//       secure: , // Ensures the cookie is only used over HTTPS
-//       httpOnly: true, // Ensures the cookie is not accessible via JavaScript
-//       sameSite: "None", // Allows cross-site requests
-//       Partitioned: "Lax",
-//     },
-//   })
-// );
+app.use(
+  session({
+    name: "connect.sid",
+    secret: process.env.EXPRESS_SESSION_SECREST_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === "production", // Ensures the cookie is only used over HTTPS
+      httpOnly: true, // Ensures the cookie is not accessible via JavaScript
+      sameSite: "None", // Allows cross-site requests
+      Partitioned: "Lax",
+    },
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
