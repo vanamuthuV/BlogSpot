@@ -36,6 +36,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { getFacebookUrl } from "@phntms/react-share";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import CircularProgress from "@mui/material/CircularProgress";
+import img from "../../../public/Profile.jpeg"
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -582,7 +583,7 @@ export const PostDetails = () => {
     <>
       <div className="relative">
         {loading ? (
-          <div className="absolute flex flex-row items-center justify-center w-full h-[calc(100vh-57px)]">
+          <div className="absolute flex flex-row items-center justify-center w-full h-screen">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
               <circle
                 fill="#F97316"
@@ -713,7 +714,7 @@ export const PostDetails = () => {
                           ) : (
                             <img
                               className="rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
-                              src={"../../../public/Profile.jpeg"}
+                              src={img}
                             />
                           )}
                         </div>
@@ -1054,7 +1055,7 @@ export const PostDetails = () => {
                         ) : (
                           <img
                             className="rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
-                            src={"../../../public/Profile.jpeg"}
+                            src={img}
                           />
                         )}
                       </div>
@@ -1367,7 +1368,7 @@ export const PostDetails = () => {
                               ) : (
                                 <img
                                   className="mr-2 rounded-full min-h-10 min-w-10 max-h-10 max-w-10 max-md:max-h-8 max-md:max-w-8 max-md:min-w-8 max-md:min-h-8"
-                                  src={"../../../public/Profile.jpeg"}
+                                  src={img}
                                 />
                               )}
                             </Link>
@@ -1528,7 +1529,7 @@ export const PostDetails = () => {
                                     ) : (
                                       <img
                                         className="rounded-full max-h-8 min-w-8 min-h-8 max-w-8"
-                                        src={"../../../public/Profile.jpeg"}
+                                        src={img}
                                       />
                                     )}
                                   </Link>

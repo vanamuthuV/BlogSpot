@@ -39,6 +39,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 const darkTheme = createTheme({ palette: { mode: "dark" } });
 const lightTheme = createTheme({ palette: { mode: "light" } });
 const userUpdater = createContext({});
+import img from "../../../public/Profile.jpeg"
 
 export const Navbar = () => {
   const { user, setAuth, setUser } = useAuth();
@@ -534,7 +535,7 @@ export const Navbar = () => {
                         className="w-full h-full text-gray-700 rounded-full"
                         color="#303030"
                         alt={user.user_name}
-                        src={"../../../public/Profile.jpeg"}
+                        src={img}
                       />
                     )}
                   </button>
@@ -705,7 +706,7 @@ export const Navbar = () => {
                         <img
                           className="w-full h-full text-gray-500 rounded-full"
                           alt={user.user_name}
-                          src={"../../../public/Profile.jpeg"}
+                          src={img}
                         />
                       )}
                     </button>

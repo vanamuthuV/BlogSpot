@@ -4,6 +4,7 @@ import axios from "../../../api/axios";
 import ImageComponent from "../../../utils/ImageComponent";
 import useSearch from "../../../hooks/useSearch";
 import SearchVideo from "../../../public/Search.mp4"
+import img from "../../../public/Profile.jpeg"
 
 const ACCOUNTSEARCH = "/accountsearch";
 const CATEGORYSEARCH = "/categorysearch";
@@ -231,7 +232,7 @@ export const FetchContinous = ({ keyword }) => {
                             {account.profileimage === null ? (
                               <img
                                 className="rounded-full min-w-10 max-w-10 min-h-10 max-h-10 max-md:min-w-8 max-md:max-w-8 max-md:min-h-8 max-md:max-h-8"
-                                src="../../../public/Profile.jpeg"
+                                src={img}
                               />
                             ) : (
                               // <img
