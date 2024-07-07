@@ -10,7 +10,7 @@ export const Layout = ({ children }) => {
   return (
     <>
       <Navbar />
-      <div style={{ position: "relative", minHeight: "100vh" }}>
+      <div className="relative h-[calc(100vh-57px)">
         <Outlet />
       </div>
       <Footer />
@@ -38,10 +38,8 @@ export const SignUpLayout = () => {
   };
 
   return (
-    <div
-      className="h-[calc(100vh-57px)] flex flex-col items-center justify-center"
-    >
-      <div className="flex flex-col items-center justify-center w-3/4 p-5 mt-10 shadow-2xl max-md:w-11/12">
+    <div className="flex flex-col items-center justify-center ">
+      <div className="flex flex-col items-center justify-center w-3/4 p-5 shadow-2xl rounded-2xl max-md:w-11/12">
         <div className="w-2/4 max-md:w-11/12">
           <h1 className="mt-10 mb-10 text-2xl font-bold text-center max-md:text-base">
             Join Inkwellify.
@@ -88,5 +86,14 @@ export const SignUpPersonalLayout = () => {
       <SignUp />
       <Outlet />
     </>
+  );
+};
+
+export const ForgetPasswordLayout = () => {
+  return (
+    <div className="w-full h-[calc(100vh-57px)] flex flex-col items-center justify-center">
+      <p className="mt-5 mb-10 text-2xl">Join Inwellify</p>
+      <Outlet />
+    </div>
   );
 };

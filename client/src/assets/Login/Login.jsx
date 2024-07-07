@@ -4,7 +4,6 @@ import "../SignUp/SignUp.css";
 import axios from "../../../api/axios.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 const Login_URL = "/login";
 import { SnackBar } from "./Alert.jsx";
@@ -141,7 +140,10 @@ export const Login = () => {
               <p className="forget max-md:text-xs">forget passcode</p>
             </Link>
           </div> */}
-          <div className="mt-5 mb-5">
+          <div className="flex flex-row items-center justify-between w-full mt-5 mb-5">
+            <Link to={"/forgetpassword"}>
+              <p className="text-blue-500 max-md:text-xs">forget password</p>
+            </Link>
             <Link to={"/SignUp"}>
               <p className="text-blue-500 max-md:text-xs">
                 New User ? Register
@@ -211,115 +213,323 @@ export const ForgetPasscode = () => {
   const [visiblereset, setVisibleReset] = useState(false);
   const [visiblemodel, setVisibleModel] = useState(false);
 
-  const Gmail = useRef(null);
-  const OTP = useRef(null);
-  const Passcode = useRef(null);
-  const ConfirmPasscode = useRef(null);
+  const [count, setCount] = useState(0);
+  const [loader, setLoader] = useState(false);
+  const [gmail, setGmail] = useState("");
+  const [snackOn, setSnackOn] = useState(false);
+  const [SnackValue, setSnackValue] = useState({
+    message: "",
+    variant: "",
+  });
 
-  const SubmitHandler1 = (event) => {
-    event.preventDefault();
+  const PASSWORDUPDATE = "/passwordupdate/bygmail";
+
+  const navigate = useNavigate();
+
+  const Gmail = useRef("");
+  const OTP = useRef("");
+  const Passcode = useRef("");
+  const ConfirmPasscode = useRef("");
+
+  const [otp, setOTP] = useState("");
+
+  const DispatchOTP = async () => {
+    if (Gmail.current.value) {
+      const data = {
+        email: Gmail.current.value,
+      };
+      setGmail(Gmail.current.value);
+      try {
+        setLoader(true);
+        // console.log(data);
+        const response = await axios.post("/emailverify/reset", data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(response?.data);
+
+        setSnackValue({
+          message: response?.data?.message,
+          variant: response?.data?.variant,
+        });
+        setSnackOn(true);
+        if (response?.data?.danger == 100) {
+          setTimeout(() => {
+            navigate("/SignUp");
+          }, 3000);
+        }
+        if (response?.data?.danger === 200) {
+          setTimeout(() => {
+            navigate("/forgetpassword");
+          }, 3000);
+        }
+        setOTP(response?.data?.OTPs);
+        setCount((prev) => prev + 1);
+        setLoader(false);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      setSnackValue({
+        message: 'Please Enter The Gmail',
+        variant : "error"
+      })
+      setSnackOn(true)
+    }
+    
   };
 
-  const SubmitHandler2 = (event) => {
-    event.preventDefault();
+  const Verify = () => {
+    setLoader(true);
+    if (OTP.current.value) {
+      console.log(
+        "Type of server",
+        typeof otp,
+        "Type Of Enter",
+        typeof OTP.current.value
+      );
+      if (Number(OTP.current.value) === otp) {
+        setSnackValue({
+          message: "OTP Validation Success",
+          variant: "success",
+        });
+        setSnackOn(true);
+        setCount((prev) => prev + 1);
+      } else {
+        setSnackValue({
+          message: "OTP Incorrect",
+          variant: "error",
+        });
+        setSnackOn(true);
+      }
+    } else {
+      setSnackValue({
+        message: "Please Enter the OTP",
+        variant: "error",
+      });
+      setSnackOn(true);
+    }
+    setLoader(false);
   };
 
-  const SubmitHandler3 = (event) => {
-    event.preventDefault();
+  const UpdatePassword = () => {
+    console.log("Hola");
+    if (Passcode.current.value && ConfirmPasscode.current.value) {
+      if (Passcode.current.value === ConfirmPasscode.current.value) {
+        (async () => {
+          const response = await axios.put(PASSWORDUPDATE, {
+            user_email: gmail,
+            new_password: Passcode.current.value,
+          });
+          console.log(response?.data);
+          setSnackValue({
+            message: response?.data?.message,
+            variant: response?.data?.variant,
+          });
+          setSnackOn(true);
+          if (response?.data?.variant === "success") {
+            setTimeout(() => {
+              navigate("/SignUp/login");
+            }, 3000);
+          }
+        })();
+      } else {
+        setSnackValue({
+          message: "The Entered Password Does Not Match The Current Password.",
+          variant: "error",
+        });
+        setSnackOn(true);
+      }
+    } else {
+      setSnackValue({
+        message: "Please Enter Your New Password",
+        variant: "error",
+      });
+      setSnackOn(true);
+    }
   };
 
-  const Caller = () => {
-    setVisible((prev) => !prev);
-  };
+  setSnackOn &&
+    setTimeout(() => {
+      setSnackOn(false);
+    }, 2000);
 
-  const CallerReset = () => {
-    setVisibleReset((prev) => !prev);
-  };
-
-  const CallerChange = () => {
-    setVisibleModel((prev) => !prev);
-  };
-
-  return (
-    <div className="Login">
-      <h1>Reseting Your Passcode</h1>
-      <form
-        className="FinalForm"
-        onSubmit={(event) => {
-          SubmitHandler1(event);
-        }}
-      >
+  const GetEmail = () => {
+    useEffect(() => {
+      Gmail.current.focus();
+    });
+    return (
+      <div className="w-full ">
+        <p className="w-full text-left">Enter Your Gmail</p>
         <input
-          placeholder="Enter Your Gmail"
           name="SendMeCode"
-          className="input"
+          className="p-3 my-4 border border-gray-500 rounded-lg w-80"
           form="CodeSender"
           type="eamil"
           ref={Gmail}
         ></input>
-        <button onClick={Caller} type="Submit" className="Submit">
-          Send
-        </button>
-      </form>
+      </div>
+    );
+  };
 
-      {visible && (
-        <form
-          onSubmit={(event) => {
-            SubmitHandler2(event);
-          }}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          className="CodeSender"
+  const VerifyOTP = () => {
+    useEffect(() => {
+      OTP.current.focus();
+    });
+    return (
+      <div className="flex flex-col items-center justify-center w-full">
+        <p className="w-full text-left">
+          Please Enter The OTP Received Via Email
+        </p>
+        <p className="text-xs text-red-500">
+          If Not Recieved Please Check Your Spam Section
+        </p>
+        <input
+          className="p-3 my-4 border border-gray-500 rounded-lg w-80"
+          form="FinalForm"
+          ref={OTP}
+        ></input>
+      </div>
+    );
+  };
+
+  const NewPassword = () => {
+    useEffect(() => {
+      Passcode.current.focus();
+    });
+    return (
+      <div className="w-full">
+        <p className="w-full text-left">Enter Your New Password</p>
+        <input
+          name="newpasscode"
+          className="p-3 my-4 border border-gray-500 rounded-lg w-80"
+          form="ResetForm"
+          ref={Passcode}
+        ></input>
+        <p className="w-full text-left">Please Confirm Your Password</p>
+        <input
+          name="repassword"
+          className="p-3 my-4 border border-gray-500 rounded-lg w-80"
+          form="ResetForm"
+          ref={ConfirmPasscode}
+        ></input>
+        {visiblemodel && (
+          <Link to={"/SignUp/login"}>
+            <p className="Return">Return To Login Page</p>
+          </Link>
+        )}
+      </div>
+    );
+  };
+
+  const Slides = [
+    { val: <GetEmail /> },
+    { val: <VerifyOTP /> },
+    { val: <NewPassword /> },
+  ];
+
+  const NextStepTracker = () => {
+    if (count === 0) {
+      DispatchOTP();
+    } else if (count === 1) {
+      Verify();
+    }
+  };
+
+  return (
+    <div className="h-40 w-80">
+      <div>{Slides[count].val}</div>
+      {loader && (
+        <div className="flex flex-row items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+            <circle
+              fill="#22C55E"
+              stroke="#22C55E"
+              stroke-width="15"
+              r="15"
+              cx="40"
+              cy="65"
+            >
+              <animate
+                attributeName="cy"
+                calcMode="spline"
+                dur="2"
+                values="65;135;65;"
+                keySplines=".5 0 .5 1;.5 0 .5 1"
+                repeatCount="indefinite"
+                begin="-.4"
+              ></animate>
+            </circle>
+            <circle
+              fill="#22C55E"
+              stroke="#22C55E"
+              stroke-width="15"
+              r="15"
+              cx="100"
+              cy="65"
+            >
+              <animate
+                attributeName="cy"
+                calcMode="spline"
+                dur="2"
+                values="65;135;65;"
+                keySplines=".5 0 .5 1;.5 0 .5 1"
+                repeatCount="indefinite"
+                begin="-.2"
+              ></animate>
+            </circle>
+            <circle
+              fill="#22C55E"
+              stroke="#22C55E"
+              stroke-width="15"
+              r="15"
+              cx="160"
+              cy="65"
+            >
+              <animate
+                attributeName="cy"
+                calcMode="spline"
+                dur="2"
+                values="65;135;65;"
+                keySplines=".5 0 .5 1;.5 0 .5 1"
+                repeatCount="indefinite"
+                begin="0"
+              ></animate>
+            </circle>
+          </svg>
+        </div>
+      )}
+      {snackOn && (
+        <SnackBar message={SnackValue.message} variant={SnackValue.variant} />
+      )}
+      <div className="flex flex-row items-center justify-between w-full">
+        <button
+          className={`pt-1 pb-1 pl-4 pr-4 text-white bg-red-500 rounded-lg ${
+            count === 0 && "cursor-not-allowed"
+          }`}
+          onClick={() => setCount((prev) => prev - 1)}
+          disabled={count === 0 ? true : false}
         >
-          <input
-            placeholder="Enter Your OTP You Recieved(Mail) "
-            className="input"
-            form="FinalForm"
-            ref={OTP}
-          ></input>
-          <button onClick={CallerReset} type="Submit" className="Submit">
-            Verify
-          </button>
-        </form>
-      )}
-
-      {visiblereset && (
-        <>
-          <form
-            className="ResetForm"
-            onSubmit={(event) => {
-              SubmitHandler3(event);
-            }}
+          Back
+        </button>
+        {count !== Slides.length - 1 && (
+          <button
+            className="pt-1 pb-1 pl-4 pr-4 text-white bg-green-500 rounded-lg"
+            onClick={NextStepTracker}
           >
-            <input
-              placeholder="Enter Your New Passcode"
-              name="newpasscode"
-              className="input"
-              form="ResetForm"
-              ref={Passcode}
-            ></input>
-            <input
-              placeholder="Confirm Your Passcode"
-              name="repassword"
-              className="input"
-              form="ResetForm"
-              ref={ConfirmPasscode}
-            ></input>
-            <button onClick={CallerChange} type="Submit" className="Submit">
-              Change
-            </button>
-          </form>
-          {visiblemodel && (
-            <Link to={"/SignUp/login"}>
-              <p className="Return">Return To Login Page</p>
-            </Link>
-          )}
-        </>
-      )}
+            Next
+          </button>
+        )}
+        {count === Slides.length - 1 && (
+          <button
+            className="pt-1 pb-1 pl-4 pr-4 text-white bg-green-500 rounded-lg"
+            onClick={UpdatePassword}
+          >
+            Change
+          </button>
+        )}
+      </div>
     </div>
   );
 };

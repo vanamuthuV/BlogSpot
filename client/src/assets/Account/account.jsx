@@ -18,7 +18,7 @@ const EMAILCHECK = "/emailcheck";
 const USERNAMEUPDATE = "/usernameupdate";
 const EMAILUPDATE = "/emailupdate";
 const PASSWORDVERIFY = "/passcodeverify";
-const PASSWORDUPDATE = "passwordupdate";
+const PASSWORDUPDATE = "/passwordupdate";
 const DELETEACCOUNT = "/deleteaccount";
 
 export const Accounts = () => {

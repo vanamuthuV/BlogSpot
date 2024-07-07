@@ -22,6 +22,7 @@ import { LeaderBoard } from "./assets/leaderboard/leaderboard";
 import { PageNotFound } from "./assets/pagenotfound/pagenotfound";
 import useSearch from "../hooks/useSearch";
 import { Notification } from "./assets/Notifications/notifications";
+import { ForgetPasswordLayout } from "./Layout";
 
 function App() {
   const { searchOpen, setSearchOpen } = useSearch();
@@ -36,8 +37,10 @@ function App() {
             <Route path="/SignUp" element={<SignUp />} />
             <Route path="/SignUp/login" element={<Login />} />
             <Route path="/SignUp/forgetusername" element={<ForgetUsername />} />
-            <Route path="/SignUp/forgetpasscode" element={<ForgetPasscode />} />
             <Route path="/SignUp/users" element={<GetUsers />} />
+          </Route>
+          <Route path="/forgetpassword" element={<ForgetPasswordLayout />}>
+            <Route path="/forgetpassword" element={<ForgetPasscode />} />
           </Route>
           <Route path="/read" element={<PostRequester />} />
           <Route path="/read/:id" element={<PostDetails />} />

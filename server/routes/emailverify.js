@@ -45,7 +45,8 @@ router.post("/", (req, res) => {
   transporter
     .sendMail({
       to: req.body?.email,
-      subject: "Account Verification With InkWellify.com",
+      subject:
+        "Account Verification With InkWellify.com",
       html: emailContent,
       from: "inkwellify@gmail.com",
     })
@@ -61,13 +62,85 @@ router.post("/", (req, res) => {
 
 router.post("/confirm", async (req, res) => {
   console.log(req.body?.user_id);
-    try {
-        await pool.query(query1, [req.body?.user_id]);
-        const users = await pool.query(query, [req?.body?.user_id]);
-        res.status(200).json({ data: users.rows[0], status: true });
-    } catch (error) {
-        res.status(200).json({ data: 'error', status: false });
+  try {
+    await pool.query(query1, [req.body?.user_id]);
+    const users = await pool.query(query, [req?.body?.user_id]);
+    res.status(200).json({ data: users.rows[0], status: true });
+  } catch (error) {
+    res.status(200).json({ data: "error", status: false });
+  }
+});
+
+const queryexists = `select * from users where user_email = $1 and platform = 'manual'`;
+
+router.post("/reset", async (req, res) => {
+  const randomNumber = Math.floor(Math.random() * 9000) + 1000;
+  console.log(req.body?.email);
+  //   const { email } = req?.body?.data;
+  //   console.log(email);
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // Use `true` for port 465, `false` for all other ports
+    auth: {
+      user: "inkwellify@gmail.com",
+      pass: process.env.APP_PASSWORD,
+    },
+    from: "inkwellify@gmail.com",
+  });
+
+  const emailContent = `
+    <html>
+    <body>
+        <div style="text-align: center;">
+            <h1 style="margin: 0; color: #f97316;">InkWellify</h1>
+        </div>
+        <p style="text-align: center;">This is the code to reset your password with Inkwellify.com - <span style="color: blue;">${randomNumber}</span></p>
+    </body>
+    </html>
+`;
+
+  try {
+    const users = await pool.query(queryexists, [req?.body?.email]);
+    console.log("I Want user", users);
+    if (users.rows.length !== 0) {
+      transporter
+        .sendMail({
+          to: req.body?.email,
+          subject: "Password Reset With InkWellify.com",
+          html: emailContent,
+          from: "inkwellify@gmail.com",
+        })
+        .then(() => {
+          console.log("Email Sent");
+          res.status(200).json({
+            status: true,
+            OTPs: randomNumber,
+            message: "OTP Dispatch Success",
+            variant: "success",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(200).json({
+            status: false,
+            message: "Unable To Dispatch OTP",
+            variant: "error",
+            danger: 200,
+          });
+        });
+    } else {
+      res.status(200).json({
+        statusbar: false,
+        message: "Unable to Dispatch OTP, User Unregistered Or Goolge Login User",
+        variant: "error",
+        danger : 100
+      });
     }
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 export default router;

@@ -188,7 +188,7 @@ export const SignUp = () => {
           htmlFor="un"
           className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center max-md:text-vs"
         >
-          Enter Your username <span className="pl-1 text-red-700">*</span>{" "}
+          Enter Your username{" "}
           <Tooltip
             title="usern name must be completely lowercase with no whitespace allowed"
             placement="top"
@@ -210,6 +210,7 @@ export const SignUp = () => {
               </svg>
             </span>
           </Tooltip>
+          <span className="pl-1 text-red-700">*</span>{" "}
         </label>
         <input
           type="text"
@@ -298,9 +299,7 @@ export const SignUp = () => {
         <button
           className="flex flex-row items-center justify-center w-full pt-2 pb-2 pr-10 mt-2 mb-2 text-lg bg-red-500 cursor-not-allowed text-gray-50"
           onClick={GoogleRequesterRegister}
-          disabled={true
-            
-          }
+          disabled={true}
         >
           <FaGoogle size={"20px"} />
           Google
