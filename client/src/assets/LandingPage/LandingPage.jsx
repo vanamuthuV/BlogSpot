@@ -21,6 +21,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ImageComponent from "../../../utils/ImageComponent";
+import img from "../../../public/Profile.jpeg"
 
 const LANDINGDATA = "/landingdata";
 
@@ -258,7 +259,7 @@ export const LandingPage = () => {
                         ) : (
                           <img
                             className="rounded-full min-w-6 max-w-6 min-h-6 max-h-6"
-                            src={"../../../public/Profile.jpeg"}
+                            src={img}
                           />
                         )}
 
