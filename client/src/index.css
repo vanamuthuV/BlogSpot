@@ -9,14 +9,14 @@ button > * {
 }
 
 .ql-editor {
-  padding: 0px;
+  padding: 5px;
   min-height: 30px;
   margin : 0px;
   overflow-x: hidden;
 }
 
 .ql-editor:active {
-  padding: 0px;
+  padding: 5px;
 }
 
 .ql-blank, .ql-blank:active{
