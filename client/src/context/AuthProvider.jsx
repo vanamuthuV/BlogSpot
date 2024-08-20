@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
       const ReloadUser = async () => {
         const data = {
           accessToken: localStorage.getItem("accessToken"),
-          user_id : localStorage.getItem("user_id")
         };
         try {
           const response = await axios.post(RELOAD_USER, data, {
