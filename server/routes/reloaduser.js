@@ -4,10 +4,10 @@ import pool from "../db.js";
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-  console.log(req.user);
+  console.log(req.body);
   try {
-    const { user_id } = req.body;
-    const { accessToken } = req?.user;
+    const { user_id } = req.body?.user_id;
+    const { accessToken } = req?.body?.accessToken;
     const query = `
         select * from users left join profilepicture on users.user_id = profilepicture.user_id where users.user_id = $1
     `;
