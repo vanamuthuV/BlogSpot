@@ -3,7 +3,7 @@ import Authentication from "../middleware/authorization.js";
 import pool from "../db.js";
 const router = express.Router();
 
-router.post("/", Authentication, async (req, res) => {
+router.post("/", async (req, res) => {
   console.log(req.user);
   const { user_id } = req.user;
   const { accessToken } = req?.user;
