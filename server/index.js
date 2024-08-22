@@ -94,7 +94,7 @@ app.use(cookieParser());
 app.use(
   session({
     name: "connect.sid",
-    secret: process.env.EXPRESS_SESSION_SECREST_KEY,
+    secret: process.env.EXPRESS_SESSION_SECRET_KEY,
     resave: false,
     saveUninitialized: true,
     cookie: {
