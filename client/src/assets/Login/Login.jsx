@@ -158,7 +158,7 @@ export const Login = () => {
           </button>
         </form>
 
-        <hr className="h-0.5 mx-auto my-4 bg-gray-100 border-0 md:my-10 dark:bg-gray-300" />
+        {/* <hr className="h-0.5 mx-auto my-4 bg-gray-100 border-0 md:my-10 dark:bg-gray-300" />
 
         <div className="flex flex-row items-center w-full mb-10 justify-evenly max-md:flex-col">
           <button
@@ -168,7 +168,7 @@ export const Login = () => {
             <FaGoogle size={"20px"} />
             Google
           </button>
-        </div>
+        </div> */}
       </div>
     </>
   );

@@ -186,7 +186,7 @@ export const SignUp = () => {
         </div>
         <label
           htmlFor="un"
-          className="flex flex-row items-start justify-start w-full mt-5 mb-2 text-center max-md:text-vs"
+          className="flex flex-row items-start justify-start w-full text-center max-md:text-vs"
         >
           Enter Your username{" "}
           <Tooltip
@@ -200,7 +200,7 @@ export const SignUp = () => {
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="size-5 ml-2 text-blue-500"
+                class="size-4 ml-2 text-blue-500"
               >
                 <path
                   stroke-linecap="round"
@@ -212,6 +212,9 @@ export const SignUp = () => {
           </Tooltip>
           <span className="pl-1 text-red-700">*</span>{" "}
         </label>
+        <p className="w-full text-vs max-md:text-[8px]">
+          (The username must be completely lowercase and contain no whitespace.)
+        </p>
         <input
           type="text"
           className="w-full mt-2 border-b-2 border-orange-500 un focus:outline-none max-md:text-xs"
@@ -293,7 +296,7 @@ export const SignUp = () => {
         </button>
       </form>
 
-      <hr className="h-0.5 mx-auto my-4 bg-gray-100 border-0 md:my-10 dark:bg-gray-300" />
+      {/* <hr className="h-0.5 mx-auto my-4 bg-gray-100 border-0 md:my-10 dark:bg-gray-300" />
 
       <div className="flex flex-row items-center w-full mb-10 justify-evenly max-md:flex-col">
         <button
@@ -304,7 +307,7 @@ export const SignUp = () => {
           <FaGoogle size={"20px"} />
           Google
         </button>
-      </div>
+      </div> */}
 
       {visiblemodel && (
         <Link to={"/SignUp/login"}>
