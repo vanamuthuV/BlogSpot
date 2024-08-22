@@ -98,8 +98,8 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      secure: false,
-      sameSite: "Lax",
+      secure: true,
+      sameSite: "None",
     },
   })
 );
