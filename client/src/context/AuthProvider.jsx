@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useRef } from "react";
 import axios from "../../api/axios";
 import apiInstance from "../../api/axios";
 
@@ -10,9 +10,11 @@ export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
   const [user, setUser] = useState({});
 
+  const isMount = useRef(false)
+
   useEffect(() => {
     if (Object.keys(user).length === 0) {
-      const ReloadUser = async () => {
+      (async () => {
         const data = {
           accessToken: localStorage.getItem("accessToken"),
         };
@@ -34,8 +36,7 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
           console.error(error);
         }
-      };
-      ReloadUser();
+      })()
     }
   }, [user]);
   // console.log(user);

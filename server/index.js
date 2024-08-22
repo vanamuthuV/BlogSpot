@@ -98,9 +98,8 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      secure: process.env.NODE_ENV === "production", // Ensures the cookie is only used over HTTPS
-      httpOnly: true, // Ensures the cookie is not accessible via JavaScript
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      secure: false,
+      sameSite: "Lax",
     },
   })
 );
@@ -118,14 +117,14 @@ passport.use(
     },
     (accessToken, refreshToken, profile, done) => {
       // Custom function to fetch user details
-      const fetchUserDetails = async () => {
+      (async () => {
         try {
           const users = await pool.query(queryuserexists, [profile.id]);
           console.log(profile);
           if (users.rows.length === 0) {
             await pool.query(querynewuser, [
               profile._json.given_name.toLowerCase() +
-                profile._json.family_name.toLowerCase(),
+              profile._json.family_name.toLowerCase(),
               profile._json.email,
               profile.id,
             ]);
@@ -143,12 +142,7 @@ passport.use(
           console.log(error.message);
           return done(error, null);
         }
-      };
-
-      // Call fetchUserDetails and pass the result to done callback
-      fetchUserDetails()
-        .then((user) => done(null, user))
-        .catch((error) => done(error, null));
+      })(); 
     }
   )
 );
@@ -163,23 +157,6 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-// app.use(
-//   session({
-//     name: "connect.sid",
-//     secret: process.env.EXPRESS_SESSION_SECREST_KEY,
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: {
-//       secure: process.env.NODE_ENV === "production", // Ensures the cookie is only used over HTTPS
-//       httpOnly: true, // Ensures the cookie is not accessible via JavaScript
-//       sameSite: "None", // Allows cross-site requests
-//     },
-//   })
-// );
-
-// app.use(passport.initialize());
-// app.use(passport.session());
-
 app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -190,54 +167,28 @@ const DummyFail = "http://localhost:5173/SignUp";
 const Success = "https://inkwellify.vercel.app/";
 const DummySuccess = "http://localhost:5173";
 
-app.get("/auth/google/callback", (req, res, next) => {
-  passport.authenticate("google", async (err, user) => {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      return res.redirect(Fail);
-    }
-    req.logIn(user, (err) => {
-      if (err) {
-        return next(err);
-      }
-      return res.redirect(Success);
-    });
-  })(req, res, next);
-});
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: Fail }),
+  function (req, res) {
+    res.redirect(Success);
+  }
+);
 
-// app.get("/login/success", (req, res) => {
-//   if (req.user) {
-//     res.status(200).json({
-//       message: "Authentication Success",
-//       variant: "success",
-//       data: req?.user?.rows[0],
-//     });
-//   } else {
-//     res
-//       .status(200)
-//       .json({ message: "Authentication Failed", variant: "error", data: null });
-//   }
-// });
 
 app.get("/login/success", (req, res) => {
-  console.log("Handling /login/success route");
-
   if (req.user) {
-    console.log("User authenticated successfully:", req.user);
     res.status(200).json({
-      message: "Authentication Success",
+      message: "Login Success",
       variant: "success",
-      data: req.user.rows[0],
-    });
+      data : req.user
+    })
   } else {
-    console.log("Authentication failed: User not found in request");
-    res.status(200).json({
-      message: "Authentication Failed",
-      variant: "error",
-      data: null,
-    });
+     res.status(401).json({
+       message: "Login Failed, Try Again",
+       variant: "error",
+       data: null,
+     });
   }
 });
 

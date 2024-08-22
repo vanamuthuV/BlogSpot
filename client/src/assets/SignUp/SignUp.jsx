@@ -297,9 +297,9 @@ export const SignUp = () => {
 
       <div className="flex flex-row items-center w-full mb-10 justify-evenly max-md:flex-col">
         <button
-          className="flex flex-row items-center justify-center w-full pt-2 pb-2 pr-10 mt-2 mb-2 text-lg bg-red-500 cursor-not-allowed text-gray-50"
+          className="flex flex-row items-center justify-center w-full pt-2 pb-2 pr-10 mt-2 mb-2 text-lg bg-red-500 text-gray-50"
           onClick={GoogleRequesterRegister}
-          disabled={true}
+
         >
           <FaGoogle size={"20px"} />
           Google

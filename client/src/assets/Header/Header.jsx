@@ -39,7 +39,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 const darkTheme = createTheme({ palette: { mode: "dark" } });
 const lightTheme = createTheme({ palette: { mode: "light" } });
 const userUpdater = createContext({});
-import img from "../../../public/Profile.jpeg"
+import img from "../../../public/Profile.jpeg";
 
 export const Navbar = () => {
   const { user, setAuth, setUser } = useAuth();
@@ -72,6 +72,7 @@ export const Navbar = () => {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("user_id", response?.data?.data?.user_id);
       console.log(response?.data?.message);
+      console.log(response?.data);
 
       const {
         user_name,
@@ -94,13 +95,17 @@ export const Navbar = () => {
         platform: platform,
         verified: verified,
       });
-      setSnackMessage(response?.data?.message);
-      setSnackOn(true);
+      setSnackMessage({
+        message: response?.data?.message,
+        variant: response?.data?.variant,
+      });
+        setSnackOn(true);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 
+  
   snackOn &&
     setTimeout(() => {
       setSnackOn(false);
@@ -122,6 +127,7 @@ export const Navbar = () => {
 
   const handleLogout = async () => {
     // console.log("Logout Success!!");
+    console.log("Success")
     localStorage.clear();
     await setAuth({});
     await setUser({});
