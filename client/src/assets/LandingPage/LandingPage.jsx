@@ -33,20 +33,20 @@ const Cards = [
   {
     src: img1,
     title: "No Premium Required",
-    pt1: "Enjoy all the features of our blog platform without any premium charges.",
-    pt2: "No hidden fees or subscription requirements. Your blog, your way, for free!",
+    pt1: "No fees or subscriptions.",
+    pt2: "Enjoy all features of our blog platform for free.",
   },
   {
     src: img2,
     title: "Unlimited Words",
-    pt1: "Express yourself freely with no restrictions on the length of your blog posts.",
-    pt2: "Write as much or as little as you want, without worrying about word limits.",
+    pt1: "Write freely, no word limits!",
+    pt2: "No restrictions on blog post length.",
   },
   {
     src: img3,
     title: "Access Blogs Without Login",
-    pt1: "Instantly read blogs from our diverse community without the need to log in.",
-    pt2: "Explore a variety of topics and perspectives hassle-free.",
+    pt1: "Explore diverse topics hassle-free!",
+    pt2: "Instantly read blogs without logging in.",
   },
 ];
 
@@ -392,53 +392,59 @@ export const LandingPage = () => {
         <div className="flex flex-row flex-wrap items-center justify-around w-11/12 gap-10 mt-10 mb-10">
           {Cards.map((card) => {
             return (
-              <div className="flex flex-col items-center justify-center p-5 border-2 border-opacity-25 border-zinc-700 hover:border-opacity-50 rounded-xl bg-gray-50 hover:border-2 hover:border-orange-500 max-md:m-5">
+              <div className="flex flex-col items-center justify-center h-48 p-5 transition-transform duration-300 transform bg-white shadow-xl rounded-2xl hover:scale-105 hover:rotate-2 max-md:m-5 w-96">
                 <div className="">
-                  <img className="w-20 h-20" src={card.src} />
+                  <img className="w-10 h-10" src={card.src} />
                 </div>
                 <div>
-                  <p className="mt-5 mb-5 text-lg font-bold text-center text-orange-500 max-md:text-sm">
+                  <p className="mt-2 font-bold text-center text-orange-500 text-md max-md:text-sm">
                     {card.title}
                   </p>
-                  <div className="flex flex-row items-center justify-start h-full max-md:justify-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="2.5"
-                      stroke="rgb(249, 115, 22)"
-                      class="w-5 h-5 mr-1 max-md:w-4 max-md:h-4 max-md:mb-4"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="m4.5 12.75 6 6 9-13.5"
-                      />
-                    </svg>
+                  <div className="flex flex-row items-center justify-center mt-5">
+                    <div className="flex flex-row items-center justify-center">
+                      {" "}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2.5"
+                        stroke="rgb(249, 115, 22)"
+                        class="w-5 h-5 mr-1 max-md:w-4"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="m4.5 12.75 6 6 9-13.5"
+                        />
+                      </svg>
+                    </div>
 
                     <p className="flex flex-row text-sm text-justify max-md:text-xs">
                       {card.pt1}
                     </p>
                   </div>
-                  <div className="flex flex-row items-center justify-start h-full max-md:justify-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="2.5"
-                      stroke="rgb(249, 115, 22)"
-                      class="w-5 h-5 mr-1 max-md:w-4 max-md:h-4 max-md:mb-4"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="m4.5 12.75 6 6 9-13.5"
-                      />
-                    </svg>
-                    <p className="flex flex-row text-sm text-justify max-md:text-xs">
+                  <div className="flex flex-row items-center justify-center">
+                    <div className="flex flex-row items-center justify-center">
                       {" "}
-                      {card.pt2}
-                    </p>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2.5"
+                        stroke="rgb(249, 115, 22)"
+                        class="w-5 h-5 mr-1 max-md:w-4"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="m4.5 12.75 6 6 9-13.5"
+                        />
+                      </svg>
+                      <p className="flex flex-row text-sm text-justify max-md:text-xs">
+                        {" "}
+                        {card.pt2}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
