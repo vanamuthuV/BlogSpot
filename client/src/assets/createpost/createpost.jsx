@@ -5,7 +5,7 @@ import axios from "../../../api/axios";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { CircularProgress } from "@mui/material";
+import ImageComponent from "../../../utils/ImageComponent";
 // import EditorJS from "@editorjs/editorjs";
 // import Header from "@editorjs/header";
 // import LinkTool from "@editorjs/link";
@@ -138,6 +138,8 @@ export const CreatePost = () => {
   const [alignment, setAlignment] = React.useState("public");
   const navigate = useNavigate();
 
+  const [currentMedia, setCurrentMedia] = useState(null);
+
   const handleChange = () => {
     setAlignment(type.current.value);
     // console.log(alignment);
@@ -163,6 +165,14 @@ export const CreatePost = () => {
   };
 
   const [loader, setLoader] = useState(false)
+
+  const UpdateThumbnail = async() => {
+    const file = media.current.files[0];
+    if (file) {
+      const base64String = await readFileAsDataURL(file);
+      setCurrentMedia(base64String)
+    }
+  }
 
   const SubmitHandler = async (ev) => {
     ev.preventDefault();
@@ -324,37 +334,29 @@ export const CreatePost = () => {
             type="file"
             id="images"
           /> */}
-            <div className="w-3/4 form-group file-area">
-              <label for="images">
-                Images <span>Try To Upload A Image With Resolution.</span>
+            <div className="flex flex-col items-center justify-center w-3/4">
+              {currentMedia && (
+                <ImageComponent
+                  features={"min-h-52 min-w-52 max-h-52 max-w-52"}
+                  base64String={currentMedia}
+                />
+              )}
+              <label
+                htmlFor="images"
+                className="flex items-center justify-center px-2 py-2 mt-2 text-xs text-white transition-colors bg-blue-500 rounded-md cursor-pointer hover:bg-blue-600"
+              >
+                {currentMedia ?  "Change Image" : "Upload Image"}
+                <input
+                    ref={media}
+                    onChange={UpdateThumbnail}
+                  type="file"
+                  name="images"
+                  id="images"
+                  required
+                  className="hidden"
+                />
               </label>
-              <input
-                ref={media}
-                type="file"
-                name="images"
-                id="images"
-                required="required"
-              />
-              <div class="file-dummy">
-                <div class="success">
-                  Great, your files are selected. Keep on.
-                </div>
-                <div class="default">Please select a files</div>
-              </div>
-              {/* <div> */}
-              <p className="pt-1 text-sm italic text-center text-red-400">
-                <span className="text-red-500">*</span>This image is shown in
-                your post thumbnail as well.
-                <span className="text-red-500">*</span>
-              </p>
-              {/* </div> */}
             </div>
-            {/* <ReactQuill
-            className=""
-            modules={modules}
-            formats={formats}
-            ref={content}
-          /> */}
             <ReactQuill
               className="w-3/4 max-md:w-11/12"
               modules={modules}
@@ -374,7 +376,7 @@ export const CreatePost = () => {
               type="text"
               placeholder="Tags"
             ></input>
-            <p className="flex flex-row items-center justify-start w-3/4 mt-5 mb-2 text-lg text-gray-500 max-md:w-11/12 animate-blinker">
+            <p className="flex flex-row items-center justify-start w-3/4 mt-5 mb-2 text-lg text-gray-500 max-md:w-11/12">
               Summarize Here{" "}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
