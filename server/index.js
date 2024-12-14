@@ -69,6 +69,8 @@ import RemoveBookMarkSingle from "./routes/removebookmarkforsinglepost.js";
 import pool from "./db.js";
 import jwtToken from "./utils/jwtToken.js";
 import EmailVerify from "./routes/emailverify.js";
+import Authentication from "./middleware/authorization.js";
+import { sendResponse } from "./utils/responder.js";
 
 const Base_URL = "https://inkwellify.vercel.app";
 // const Base_URL = "http://localhost:5173";
@@ -124,7 +126,7 @@ passport.use(
           if (users.rows.length === 0) {
             await pool.query(querynewuser, [
               profile._json.given_name.toLowerCase() +
-              profile._json.family_name.toLowerCase(),
+                profile._json.family_name.toLowerCase(),
               profile._json.email,
               profile.id,
             ]);
@@ -132,17 +134,12 @@ passport.use(
 
           const user = await pool.query(queryuserexists, [profile.id]);
           console.log("Heehee", user);
-          const { accessToken, refreshToken } = await jwtToken(user.rows[0]);
-          user.rows[0].accessToken = accessToken;
-          console.log("The access Token", accessToken);
-          user.rows[0].refreshToken = refreshToken;
-          console.log("This the user", user);
-          return done(null, user.rows[0]);
+          done(null, user.rows[0]);
         } catch (error) {
           console.log(error.message);
           return done(error, null);
         }
-      })(); 
+      })();
     }
   )
 );
@@ -162,34 +159,34 @@ app.get(
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-const Fail = "https://inkwellify.vercel.app/SignUp";
-const DummyFail = "http://localhost:5173/SignUp";
-const Success = "https://inkwellify.vercel.app/";
-const DummySuccess = "http://localhost:5173";
+const Success = "https://inkwellify.vercel.app";
+// const Success = "http://localhost:5173";
 
 app.get(
   "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: Fail }),
-  function (req, res) {
-    res.redirect(Success);
+  passport.authenticate("google", { session: false }),
+  async (req, res) => {
+    try {
+      const user = req.user;
+      const { accessToken } = await jwtToken({ user });
+
+      // Redirect to your frontend with the token
+      res.redirect(`${Success}/auth/google/callback?token=${accessToken}`);
+    } catch (error) {
+      console.error("Error in Google callback:", error.message);
+      res.redirect(
+        `${Success}/login?error=${encodeURIComponent(error.message)}`
+      );
+    }
   }
 );
 
-
-app.get("/login/success", (req, res) => {
-  if (req.user) {
-    res.status(200).json({
-      message: "Login Success",
-      variant: "success",
-      data : req.user
-    })
-  } else {
-     res.status(401).json({
-       message: "Login Failed, Try Again",
-       variant: "error",
-       data: null,
-     });
-  }
+app.get("/login/success", Authentication, (req, res) => {
+  res.status(200).json({
+    message: "Login Success",
+    variant: "success",
+    data: req.user,
+  });
 });
 
 app.get("/logouts", (req, res, next) => {

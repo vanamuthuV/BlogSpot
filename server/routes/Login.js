@@ -2,7 +2,6 @@ import pool from "../db.js";
 import bcrypt from "bcrypt";
 import express from "express";
 import jwtToken from "../utils/jwtToken.js";
-import cookieParser from "cookie-parser";
 
 const router = express.Router();
 
@@ -31,12 +30,7 @@ router.post("/", async (req, res) => {
 
     const valid = await bcrypt.compare(passcode, User.rows[0].user_password);
     if (valid) {
-      const Token = await jwtToken(User.rows[0]);
-      // res.cookie("refresh_token", Token.refreshToken, {
-      //   httpOnly: true,
-      //   sameSite: "none",
-      //   secure: true,
-      // });
+      const Token = await jwtToken({ user: User.rows[0] });
       console.log(Token);
       res.status(200).json({
         accessToken: Token.accessToken,
@@ -58,10 +52,5 @@ router.post("/", async (req, res) => {
   }
 });
 
-// config = {
-//   Headers: {
-//     'Authorization': 'Bearer' + token
-//   }
-// }
 
 export default router;

@@ -66,11 +66,12 @@ export const Navbar = () => {
 
   const getUser = async () => {
     try {
-      const response = await axios.get(GOOGLE_USER);
-      // console.log(response);
-      const accessToken = response?.data?.data?.accessToken;
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("user_id", response?.data?.data?.user_id);
+      const response = await axios.get(GOOGLE_USER, {
+        headers: {
+          Authorization : `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      });
+      console.log(response);
       console.log(response?.data?.message);
       console.log(response?.data);
 

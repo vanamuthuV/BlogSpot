@@ -23,6 +23,7 @@ import { PageNotFound } from "./assets/pagenotfound/pagenotfound";
 import useSearch from "../hooks/useSearch";
 import { Notification } from "./assets/Notifications/notifications";
 import { ForgetPasswordLayout } from "./Layout";
+import GoogleAuthHandler from "../utils/authHandler";
 
 function App() {
   const { searchOpen, setSearchOpen } = useSearch();
@@ -32,6 +33,7 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/auth/google/callback" element={<GoogleAuthHandler />} />
           <Route path="/createpost" element={<CreatePost />} />
           <Route path="/SignUp" element={<SignUpLayout />}>
             <Route path="/SignUp" element={<SignUp />} />
@@ -46,12 +48,6 @@ function App() {
           <Route path="/read/:id" element={<PostDetails />} />
           <Route path="/edit/:post_ids" element={<EditCaller />} />
           <Route path="/:user_name" element={<ProfileCaller />}></Route>
-          {/* <Route path="/Search" element={<SearchLayout />}>
-            <Route path="/Search" element={<Account />} />
-            <Route path="/Search/Tags" element={<Tags />} />
-            <Route path="/Search/Category" element={<Category />} />
-            <Route path="/Search/Posts" element={<Posts />} />
-          </Route> */}
           <Route
             path="/:user_name/followers"
             element={<FollowersAndFollowingLayout />}

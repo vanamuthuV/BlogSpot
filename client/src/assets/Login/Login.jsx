@@ -19,13 +19,6 @@ export const Login = () => {
 
   const navigate = useNavigate();
 
-  const GoogleRequesterRegister = async () => {
-    // window.open("http://localhost:5000/auth/google/callback", "_self");
-    window.open(
-      "https://inkwellifyserver-git-main-vanamuthu-vs-projects.vercel.app/auth/google/callback",
-      "_self"
-    );
-  };
 
   useEffect(() => {
     Gmail.current.focus();
@@ -132,14 +125,7 @@ export const Login = () => {
             required
           ></input>
 
-          {/* <div className="flex flex-row items-center justify-around w-full mt-5 mb-2 ">
-            <Link to={"/SignUp/forgetusername"}>
-              <p className="forget max-md:text-xs">forget username</p>
-            </Link>
-            <Link to={"/SignUp/forgetpasscode"}>
-              <p className="forget max-md:text-xs">forget passcode</p>
-            </Link>
-          </div> */}
+          
           <div className="flex flex-row items-center justify-between w-full mt-5 mb-5">
             <Link to={"/forgetpassword"}>
               <p className="text-blue-500 max-md:text-xs">forget password</p>
@@ -158,17 +144,7 @@ export const Login = () => {
           </button>
         </form>
 
-        {/* <hr className="h-0.5 mx-auto my-4 bg-gray-100 border-0 md:my-10 dark:bg-gray-300" />
-
-        <div className="flex flex-row items-center w-full mb-10 justify-evenly max-md:flex-col">
-          <button
-            className="flex flex-row items-center justify-center w-full pt-2 pb-2 pr-10 mt-2 mb-2 text-lg bg-red-500 text-gray-50"
-            onClick={GoogleRequesterRegister}
-          >
-            <FaGoogle size={"20px"} />
-            Google
-          </button>
-        </div> */}
+        
       </div>
     </>
   );

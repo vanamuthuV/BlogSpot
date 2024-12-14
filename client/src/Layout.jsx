@@ -5,12 +5,13 @@ import { Navbar } from "./assets/Header/Header";
 import "./assets/SignUp/SignUp.css";
 import { SignUp } from "./assets/SignUp/SignUp";
 import { Footer } from "./assets/Footer/footer";
+import { FaGoogle } from "react-icons/fa";
 
 export const Layout = ({ children }) => {
   return (
     <>
       <Navbar />
-      <div className="relative h-[calc(100vh-57px)">
+      <div className="relative h-screen">
         <Outlet />
       </div>
       <Footer />
@@ -35,6 +36,14 @@ export const SignUpLayout = () => {
     border: "1px solid #ff6500",
     backgroundColor: "#ff6500",
     color: "#fffefd",
+  };
+
+  const GoogleRequesterRegister = async () => {
+    // window.open("http://localhost:5000/auth/google", "_self");
+    window.open(
+      "https://inkwellifyserver-git-main-vanamuthu-vs-projects.vercel.app/auth/google",
+      "_self"
+    );
   };
 
   return (
@@ -75,6 +84,17 @@ export const SignUpLayout = () => {
           </div>
         </div>
         <Outlet />
+        <hr className="h-0.5 mx-auto my-4 bg-gray-100 border-0 md:my-10 dark:bg-gray-300" />
+
+        <div className="flex flex-row items-center w-2/4 mb-10 justify-evenly max-md:flex-col">
+          <button
+            className="flex flex-row items-center justify-center w-full pt-2 pb-2 pr-10 mt-2 mb-2 text-lg bg-red-500 text-gray-50"
+            onClick={GoogleRequesterRegister}
+          >
+            <FaGoogle size={"20px"} />
+            Google
+          </button>
+        </div>
       </div>
     </div>
   );
