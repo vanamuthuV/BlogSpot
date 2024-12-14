@@ -11,7 +11,7 @@ export const Layout = ({ children }) => {
   return (
     <>
       <Navbar />
-      <div className="relative h-screen">
+      <div className="relative min-h-screen">
         <Outlet />
       </div>
       <Footer />
