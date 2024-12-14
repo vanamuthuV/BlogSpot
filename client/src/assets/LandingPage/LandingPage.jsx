@@ -22,6 +22,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ImageComponent from "../../../utils/ImageComponent";
 import img from "../../../public/Profile.jpeg"
+import { motion } from "framer-motion";
 
 const LANDINGDATA = "/landingdata";
 
@@ -106,10 +107,16 @@ export const LandingPage = () => {
     <div>
       <div className="h-[600px] bg-[url('../../../public/BackgroundImage.png')] flex flex-col items-center justify-center w-full  mb-16 bg-cover bg-center bg-no-repeat max-md:pb-5 max-md:mb-8 rounded-bl-[75px] rounded-br-[75px] max-md:h-[350px] max-md:bg-right max-md:rounded-br-[0px] max-md:items-start max-md:pl-5 max-md:justify-end max-md:rounded-bl-[0px]">
         <div className="w-4/6 mb-8">
-          <h1 className="text-3xl text-center max-md:text-lg max-md:text-left">
-            "Welcome to a world where words dance off the page and ideas ignite
-            your imagination."
-          </h1>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-3xl text-center max-md:text-lg max-md:text-left">
+              "Welcome to a world where words dance off the page and ideas
+              ignite your imagination."
+            </h1>
+          </motion.div>
         </div>
         <div>
           <Link to={Object.keys(user).length === 0 ? "/SignUp" : "createpost"}>
@@ -485,115 +492,6 @@ export const LandingPage = () => {
                 </Accordion>
               );
             })}
-            {/* </Container> */}
-
-            {/* <Accordion
-              expanded={expanded === "panel1"}
-              onChange={handleChange("panel1")}
-              sx={{
-                borderRadius: "10px",
-                marginBottom: "20px",
-              }}
-            >
-              <AccordionSummary
-                aria-controls="panel1d-content"
-                id="panel1d-header"
-                sx={{}}
-              >
-                <Typography sx={{ fontWeight: "500", fontSize: "18px" }}>
-                  How do I upload a blog post?
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography sx={{ fontSize: "16px" }}>
-                  {" "}
-                  To upload a blog post, simply log in to your account and
-                  navigate to the "Create Blog" section. Fill in the required
-                  details such as the title, content, and any relevant tags,
-                  then click "Create" to upload your post.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-
-            <Accordion
-              expanded={expanded === "panel2"}
-              onChange={handleChange("panel2")}
-              sx={{
-                borderRadius: "10px",
-                marginBottom: "20px",
-              }}
-            >
-              <AccordionSummary
-                aria-controls="panel1d-content"
-                id="panel1d-header"
-                sx={{}}
-              >
-                <Typography sx={{ fontWeight: "500", fontSize: "18px" }}>
-                  Can I edit my blog posts after uploading?
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography sx={{ fontSize: "16px" }}>
-                  Yes, you can edit your blog posts after uploading them. Simply
-                  go to the "Profile" section in your account, find the blog
-                  post you want to edit, make your changes, and click "Update"
-                  to update the post.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-
-            <Accordion
-              expanded={expanded === "panel3"}
-              onChange={handleChange("panel3")}
-              sx={{
-                borderRadius: "10px",
-                marginBottom: "20px",
-              }}
-            >
-              <AccordionSummary
-                aria-controls="panel1d-content"
-                id="panel1d-header"
-                sx={{}}
-              >
-                <Typography sx={{ fontWeight: "500", fontSize: "18px" }}>
-                  Is there a limit to the number of words in a blog post?
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography sx={{ fontSize: "16px" }}>
-                  No, there is no limit to the number of words in a blog post.
-                  You can write as much as you want to fully express your ideas
-                  and thoughts.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-
-            <Accordion
-              expanded={expanded === "panel4"}
-              onChange={handleChange("panel4")}
-              sx={{
-                borderRadius: "10px",
-                marginBottom: "20px",
-              }}
-            >
-              <AccordionSummary
-                aria-controls="panel1d-content"
-                id="panel1d-header"
-                sx={{}}
-              >
-                <Typography sx={{ fontWeight: "500", fontSize: "18px" }}>
-                  How do I delete my account?
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography sx={{ fontSize: "16px" }}>
-                  To delete your account, go to the "Account Settings" section
-                  of your account and select the option to delete your account.
-                  Please note that this action is irreversible and will
-                  permanently delete all your data.
-                </Typography>
-              </AccordionDetails>
-            </Accordion> */}
           </div>
         </div>
       </div>

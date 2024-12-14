@@ -126,7 +126,12 @@ passport.use(
           if (users.rows.length === 0) {
             await pool.query(querynewuser, [
               profile._json.given_name.toLowerCase() +
-                profile._json?.family_name?.toLowerCase(),
+                (() => {
+                  if (!profile._json?.family_name) {
+                    return ""; // Return an empty string if family_name is undefined or null
+                  }
+                  return profile._json.family_name.toLowerCase();
+                })(),
               profile._json.email,
               profile.id,
             ]);
