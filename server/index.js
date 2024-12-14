@@ -122,11 +122,11 @@ passport.use(
       (async () => {
         try {
           const users = await pool.query(queryuserexists, [profile.id]);
-          console.log(profile);
+          console.log("This is new profile", profile);
           if (users.rows.length === 0) {
             await pool.query(querynewuser, [
               profile._json.given_name.toLowerCase() +
-                profile._json.family_name.toLowerCase(),
+                profile._json?.family_name?.toLowerCase(),
               profile._json.email,
               profile.id,
             ]);
