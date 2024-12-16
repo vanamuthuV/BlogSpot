@@ -7,7 +7,7 @@ import { SignUpLayout } from "./Layout";
 import { ForgetPasscode } from "./assets/Login/Login";
 import { ForgetUsername } from "./assets/Login/Login";
 import { GetUsers } from "./assets/Login/Login";
-import { CreatePost } from "./assets/createpost/createpost";
+import CreatePost from "./assets/createpost/createpost";
 import { PostRequester } from "./assets/PostRequester/PostRequester";
 import { PostDetails } from "./assets/postdetails/postdetails";
 import { EditCaller } from "./assets/Edit/Edit";
