@@ -72,8 +72,8 @@ import EmailVerify from "./routes/emailverify.js";
 import Authentication from "./middleware/authorization.js";
 import { sendResponse } from "./utils/responder.js";
 
-// const Base_URL = "https://inkwellify.vercel.app";
-const Base_URL = "http://localhost:5173";
+const Base_URL = "https://inkwellify.vercel.app";
+// const Base_URL = "http://localhost:5173";
 dotenv.config();
 
 const queryuserexists = `select * from users left join profilepicture on users.user_id = profilepicture.user_id where strategic_id = $1`;
@@ -164,8 +164,8 @@ app.get(
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-// const Success = "https://inkwellify.vercel.app";
-const Success = "http://localhost:5173";
+const Success = "https://inkwellify.vercel.app";
+// const Success = "http://localhost:5173";
 
 app.get(
   "/auth/google/callback",
