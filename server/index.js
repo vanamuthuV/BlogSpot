@@ -76,7 +76,7 @@ const Base_URL = "https://inkwellify.vercel.app";
 // const Base_URL = "http://localhost:5173";
 dotenv.config();
 
-const queryuserexists = `select * from users left join profilepicture on users.user_id = profilepicture.user_id where strategic_id = $1`;
+const queryuserexists = `select * from users left join profilepicture on users.user_id = profilepicture.user_id where user_email = $1`;
 const querynewuser = `insert into users values ($1, $2, CURRENT_TIMESTAMP, 'google_user', $3, 'google', true)`;
 
 const app = express();
@@ -121,7 +121,7 @@ passport.use(
       // Custom function to fetch user details
       (async () => {
         try {
-          const users = await pool.query(queryuserexists, [profile.id]);
+          const users = await pool.query(queryuserexists, [profile._json.email]);
           console.log("This is new profile", profile);
           if (users.rows.length === 0) {
             await pool.query(querynewuser, [
@@ -137,7 +137,7 @@ passport.use(
             ]);
           }
 
-          const user = await pool.query(queryuserexists, [profile.id]);
+          const user = await pool.query(queryuserexists, [profile._json.email]);
           console.log("Heehee", user);
           done(null, user.rows[0]);
         } catch (error) {
