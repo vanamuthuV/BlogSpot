@@ -267,7 +267,7 @@ export const Accounts = () => {
     if (Object.keys(user).length === 0) return navigate("/SignUp");
 
     const details = {
-      user_name: username.current.value,
+      user_name: username.current?.value.trim(),
       user_id: user.user_id,
     };
 
