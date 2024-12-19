@@ -62,6 +62,37 @@ button > * {
 }
 
 
+/* Prevent padding from changing on hover or focus */
+.ql-editor, .ql-blank {
+  padding: 0px !important;  /* Ensure padding is set to 0 consistently */
+}
+
+/* Mobile focus and touch handling */
+@media (hover: none) and (pointer: coarse) {
+  .ql-editor, .ql-blank {
+    padding: 0px !important;  /* Consistent padding for touch devices */
+  }
+
+  /* Optional: Adjust focus styles for touch interaction */
+  .ql-editor:focus, .ql-blank:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+/* Desktop hover states */
+.ql-editor:hover, .ql-blank:hover {
+  outline: none;
+  padding: 0px;  /* Ensure no padding is added during hover */
+}
+
+/* Optional: Add focus styles without causing layout shifts */
+.ql-editor:focus, .ql-blank:focus {
+  outline: none;  /* No outline to avoid layout shift */
+  padding: 0px;   /* Ensure consistent padding */
+}
+
+
 ::selection {
   background-color: #f97316;
   color : white;
