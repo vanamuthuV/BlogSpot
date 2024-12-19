@@ -271,25 +271,28 @@ export const Profile = () => {
   };
 
   const CoverPictureUpdater = async () => {
-    const data = new FormData();
-    data.set("user_id", user.user_id);
-
-    if (coverShow) {
-      const base64String = await readFileAsDataURL(coverShow);
-      data.set("media", base64String);
-    } else {
-      console.error("No file selected");
+    console.log(coverShow)
+    if (!coverShow) {
+       console.error("No file selected");
+       return
     }
 
     if (CoverImage === "NO") {
       try {
-        // console.log(data);
-        const response = await axios.post(SETCOVER, data, {
-          headers: {
-            "Content-Type": "multipart/form-data", // Adjust the content type as needed
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
+        console.log(data);
+        const response = await axios.post(
+          SETCOVER,
+          {
+            user_id: user.user_id,
+            media: await readFileAsDataURL(coverShow),
           },
-        });
+          {
+            headers: {
+              "Content-Type": "application/json", // Adjust the content type as needed
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
+            },
+          }
+        );
         // console.log(response?.data?.data);
         setCoverImage(response?.data?.data[0].coverimage);
       } catch (error) {
@@ -297,13 +300,21 @@ export const Profile = () => {
       }
     } else {
       try {
-        const response = await axios.put(SETCOVER, data, {
-          headers: {
-            "Content-Type": "multipart/form-data", // Adjust the content type as needed
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
+        console.log("This",data)
+        const response = await axios.put(
+          SETCOVER,
+          {
+            user_id: user.user_id,
+            media: await readFileAsDataURL(coverShow),
           },
-        });
-        // console.log(response?.data?.data);
+          {
+            headers: {
+              "Content-Type": "application/json", // Adjust the content type as needed
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
+            },
+          }
+        );
+        console.log(response?.data);
         setCoverImage(response?.data?.data[0].coverimage);
       } catch (error) {
         console.error(error);
@@ -312,6 +323,7 @@ export const Profile = () => {
   };
 
   const PrintName = () => {
+    console.log(CoverFiles.current.files[0])
     setCoverShow(CoverFiles.current.files[0]);
     setFilename(CoverFiles.current.files[0].name);
   };
