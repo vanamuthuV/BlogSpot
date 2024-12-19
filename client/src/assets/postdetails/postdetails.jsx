@@ -764,7 +764,6 @@ export const PostDetails = () => {
                       </div>
                     </div>
                     <div className="flex flex-row items-center justify-center">
-                     
                       <Tooltip
                         className="flex flex-row items-center justify-center"
                         title="Bookmark"
@@ -939,23 +938,19 @@ export const PostDetails = () => {
                     }
                     base64String={data.post_images}
                   />
-                  {/* <img
-                  src={`http://localhost:5000/${data.post_images}`}
-                  className="mt-5 mb-10 rounded-xl"
-                /> */}
+                 
                 </div>
 
-                <div className="max-md:w-full">
-                  <div
-                    className="p-0 text-lg font-light text-justify ql-editor max-md:text-xs"
-                    dangerouslySetInnerHTML={{ __html: data.post_content }}
-                  ></div>
+                <div className="ql-snow">
+                  <div className="content-container">
+                    <div
+                      className="ql-editor"
+                      dangerouslySetInnerHTML={{ __html: data.post_content }}
+                    ></div>
+                  </div>
                 </div>
 
-                {/* <div
-                dangerouslySetInnerHTML={{ __html: data.post_content }}
-                className="text-lg font-light text-justify max-md:text-xs"
-              ></div> */}
+               
                 <div>
                   <h1 className="mt-5 mb-5 text-2xl font-bold text-orange-500 max-md:font-normal max-md:text-lg max-md:mt-3 max-md:mb-3">
                     Summary
@@ -1005,14 +1000,7 @@ export const PostDetails = () => {
                   <div className="flex flex-row flex-wrap items-center justify-between w-full mt-5 mb-10 max-md:justify-center">
                     <div className="flex flex-row items-center justify-center">
                       <div className="mr-2.5">
-                        {/* <img
-                        className="rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
-                        src={
-                          data.profileimage
-                            ? `http://localhost:5000/${data.profileimage}`
-                            : "../../../public/Profile.jpeg"
-                        }
-                      /> */}
+                       
                         {data.profileimage ? (
                           <ImageComponent
                             features={

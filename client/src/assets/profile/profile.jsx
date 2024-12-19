@@ -271,10 +271,10 @@ export const Profile = () => {
   };
 
   const CoverPictureUpdater = async () => {
-    console.log(coverShow)
+    console.log(coverShow);
     if (!coverShow) {
-       console.error("No file selected");
-       return
+      console.error("No file selected");
+      return;
     }
 
     if (CoverImage === "NO") {
@@ -300,7 +300,7 @@ export const Profile = () => {
       }
     } else {
       try {
-        console.log("This",data)
+        console.log("This", data);
         const response = await axios.put(
           SETCOVER,
           {
@@ -323,7 +323,7 @@ export const Profile = () => {
   };
 
   const PrintName = () => {
-    console.log(CoverFiles.current.files[0])
+    console.log(CoverFiles.current.files[0]);
     setCoverShow(CoverFiles.current.files[0]);
     setFilename(CoverFiles.current.files[0].name);
   };
@@ -1108,24 +1108,6 @@ export const Profile = () => {
                           <h1 className="text-2xl font-black max-md:text-lg">
                             {ProfileInfo.userfullname}
                           </h1>
-                          {/* {user.user_name === userDetails.user_name && (
-                      <button className="pl-3">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          class="w-6 h-6"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                          />
-                        </svg>
-                      </button>
-                    )} */}
                         </div>
                       )}
 
@@ -1171,19 +1153,15 @@ export const Profile = () => {
                         {ProfileInfo.role}
                       </h1>
                       {ProfileInfo.bio && (
-                        // <div
-                        //   className="mt-3 mb-1 max-md:text-xs max-md:mt-1"
-                        //   dangerouslySetInnerHTML={{ __html: ProfileInfo.bio }}
-                        // >
-                        //   {/* {ProfileInfo.bio} */}
-                        //   </div>
-                        <div className="ql-snow">
-                          <div
-                            className="mt-3 mb-1 ql-editor max-md:text-xs max-md:mt-1"
-                            dangerouslySetInnerHTML={{
-                              __html: ProfileInfo.bio,
-                            }}
-                          ></div>
+                        <div className=" ql-snow">
+                          <div className="content-container">
+                            <div
+                              className="ql-editor"
+                              dangerouslySetInnerHTML={{
+                                __html: ProfileInfo.bio,
+                              }}
+                            ></div>
+                          </div>
                         </div>
                       )}
                       <div className="flex flex-row items-center mt-2 text-gray-600">

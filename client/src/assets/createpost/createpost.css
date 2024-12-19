@@ -75,6 +75,7 @@ input:checked + .slider:before {
   /* border: 1px solid #6b7280; */
   border-top-left-radius: 0.6em;
   border-top-right-radius: 0.6em;
+   transition: none !important;
   outline: none;
   min-height: 100px;
 }
@@ -89,6 +90,7 @@ input:checked + .slider:before {
   border-top-left-radius: 0em;
   border-top-right-radius: 0em;
   border-bottom-left-radius: 0.6em;
+   transition: none !important;
   border-bottom-right-radius: 0.6em;
   width: 100%;
 }
