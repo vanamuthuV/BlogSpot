@@ -744,40 +744,78 @@ export const Navbar = () => {
                   }}
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
+                  PaperProps={{
+                    sx: {
+                      boxShadow: 3, // Adds shadow to the menu
+                      borderRadius: 1, // Adds border radius to the menu
+                    },
+                  }}
                 >
                   <MenuItem
-                    sx={{ display: "flex", flexDirection: "column" }}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      padding: "8px 16px",
+                      "&:hover": { backgroundColor: "rgba(0, 0, 0, 0.08)" }, // Optional hover effect
+                      "&:focus": {
+                        outline: "none",
+                        backgroundColor: "transparent",
+                      }, // Removes focus outline
+                      "&:active": { backgroundColor: "transparent" }, // Ensures background doesn't change on click
+                    }}
                     onClick={handleCloseUserMenu}
                   >
-                    <Link to={`/${user.user_name}`}>
+                    <Link
+                      to={`/${user.user_name}`}
+                      style={{ textDecoration: "none", outline: "none" }}
+                    >
                       <Typography
                         variant="body1"
-                        sx={{ mt: "6px", mb: "6px" }}
-                        textAlign="center"
+                        sx={{
+                          mt: "6px",
+                          mb: "6px",
+                          textAlign: "center",
+                          "&:focus": { outline: "none" }, // Removes focus outline for the link
+                          "&:active": { backgroundColor: "transparent" }, // Ensures no background on click
+                        }}
                       >
                         Profile
                       </Typography>
                     </Link>
 
                     {settings.map((setting) => (
-                      <Link to={`/${setting}`}>
+                      <Link
+                        key={setting}
+                        to={`/${setting}`}
+                        style={{ textDecoration: "none", outline: "none" }}
+                      >
                         <Typography
                           sx={{
                             mt: "6px",
                             mb: "6px",
+                            textAlign: "center",
+                            "&:focus": { outline: "none" }, // Removes focus outline for the link
+                            "&:active": { backgroundColor: "transparent" }, // Ensures no background on click
                           }}
-                          textAlign="center"
                         >
                           {setting}
                         </Typography>
                       </Link>
                     ))}
+
                     <Typography
                       onClick={handleLogout}
                       variant="body1"
-                      sx={{ mt: "6px", mb: "6px" }}
-                      textAlign="center"
+                      sx={{
+                        mt: "6px",
+                        mb: "6px",
+                        textAlign: "center",
+                        "&:focus": { outline: "none" }, // Removes focus outline for the logout option
+                        "&:active": { backgroundColor: "transparent" }, // Ensures no background on click
+                        display : "flex"
+                      }}
                     >
+                     
                       Logout
                     </Typography>
                   </MenuItem>

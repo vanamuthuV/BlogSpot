@@ -23,6 +23,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ImageComponent from "../../../utils/ImageComponent";
 import img from "../../../public/Profile.jpeg"
 import { motion } from "framer-motion";
+import ImprovedHero from "../../components/Hero";
 
 const LANDINGDATA = "/landingdata";
 
@@ -105,32 +106,7 @@ export const LandingPage = () => {
 
   return (
     <div>
-      <div className="h-[600px] bg-[url('../../../public/BackgroundImage.png')] flex flex-col items-center justify-center w-full  mb-16 bg-cover bg-center bg-no-repeat max-md:pb-5 max-md:mb-8 rounded-bl-[75px] rounded-br-[75px] max-md:h-[350px] max-md:bg-right max-md:rounded-br-[0px] max-md:items-start max-md:pl-5 max-md:justify-end max-md:rounded-bl-[0px]">
-        <div className="w-4/6 mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-3xl text-center max-md:text-lg max-md:text-left">
-              "Welcome to a world where words dance off the page and ideas
-              ignite your imagination."
-            </h1>
-          </motion.div>
-        </div>
-        <div>
-          <Link to={Object.keys(user).length === 0 ? "/SignUp" : "createpost"}>
-            <button className="pt-2 pb-2 max-md:pl-3 max-md:pr-3 pl-8 pr-8 font-bold bg-orange-500 rounded-lg text-gray-50 mr-2.5 max-md:text-xs">
-              Create Post
-            </button>
-          </Link>
-          <Link to={"/read"}>
-            <button className="pt-2  max-md:pl-3 max-md:pr-3 pb-2 pl-8 pr-8 ml-2.5 font-bold text-orange-500 border border-orange-500 rounded-lg bg-gray-50  max-md:text-xs">
-              Start Reading
-            </button>
-          </Link>
-        </div>
-      </div>
+      <ImprovedHero />
       <div className="flex flex-col items-center justify-center w-full pb-5">
         <h1 className="pt-10 pb-10 text-3xl font-bold text-center text-orange-500 max-md:pt-5 max-md:pb-5 max-md:text-lg">
           Trending Blogs

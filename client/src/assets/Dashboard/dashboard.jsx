@@ -195,7 +195,7 @@ export const Dashboard = () => {
             </svg>
           </div>
         ) : (
-          <div className="flex flex-col items-start justify-center w-11/12 max-md:w-full">
+          <div className="flex flex-col items-start justify-center w-full">
             <div className="flex flex-col items-start w-full mt-10">
               <h1 className="flex flex-row items-center w-full pb-3 mb-10 text-2xl border border-b-gray-700 border-t-white border-l-white border-r-white">
                 {preferences}
@@ -208,8 +208,8 @@ export const Dashboard = () => {
                 ) : (
                   data.map((favs) => {
                     return (
-                      <div className="flex flex-row w-10/12 mt-2 mb-2 min-h-20 max-h-20 max-md:w-full">
-                        <div className="pl-2 pr-2 min-h-20 min-w-20 max-w-20 max-h-20">
+                      <div className="flex flex-row w-full py-2 mt-2 mb-2 min-h-24 max-h-24 max-md:w-full">
+                        <div className="pl-2 pr-2 min-h-24 min-w-24 max-w-24 max-h-24">
                           {favs.post_images && (
                             <ImageComponent
                               base64String={favs.post_images}
