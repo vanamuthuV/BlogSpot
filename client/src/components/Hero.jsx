@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const EnhancedHero = () => {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-white">
+    <div className="relative overflow-hidden bg-white md:min-h-screen">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full transform opacity-20 rotate-12"></div>
@@ -36,20 +36,23 @@ const EnhancedHero = () => {
               your creativity."
             </motion.p>
             <motion.div
-              className="flex flex-col justify-center space-y-4 sm:flex-row md:justify-start sm:space-y-0 sm:space-x-4"
+              className="flex flex-row items-center justify-center space-x-4 md:justify-start "
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
             >
+              {/* Create Post Button */}
               <a
                 href="/createpost"
-                className="px-6 py-2 font-bold text-white transition duration-300 ease-in-out transform bg-orange-500 rounded-full shadow-lg md:px-8 md:py-3 hover:bg-orange-600 hover:scale-105"
+                className="px-4 py-2 font-semibold text-white transition duration-300 bg-orange-500 rounded-full shadow-md cursor-pointer hover:bg-orange-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
               >
                 Create Post
               </a>
+
+              {/* Start Reading Button */}
               <a
                 href="/read"
-                className="px-6 py-2 font-bold text-orange-500 transition duration-300 ease-in-out transform bg-white border-2 border-orange-500 rounded-full shadow-lg md:px-8 md:py-3 hover:bg-orange-50 hover:scale-105"
+                className="px-4 py-2 font-semibold text-orange-500 transition duration-300 bg-white border border-orange-500 rounded-full shadow-md cursor-pointer hover:bg-orange-50 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
               >
                 Start Reading
               </a>
@@ -57,7 +60,7 @@ const EnhancedHero = () => {
           </motion.div>
 
           <motion.div
-            className="w-full md:w-1/2"
+            className="hidden w-full md:w-1/2 md:block"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.8, duration: 0.8 }}
@@ -134,7 +137,7 @@ const EnhancedHero = () => {
       {[...Array(5)].map((_, index) => (
         <motion.div
           key={index}
-          className="absolute bg-orange-300 rounded-full"
+          className="absolute hidden bg-orange-300 rounded-full md:block"
           style={{
             width: `${Math.random() * 20 + 10}px`,
             height: `${Math.random() * 20 + 10}px`,
