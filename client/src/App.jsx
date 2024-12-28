@@ -12,7 +12,7 @@ import { PostRequester } from "./assets/PostRequester/PostRequester";
 import { PostDetails } from "./assets/postdetails/postdetails";
 import { EditCaller } from "./assets/Edit/Edit";
 import { ProfileCaller } from "./assets/profile/profile";
-import { FollowersAndFollowingLayout } from "./assets/FollowerandFollowing/ff";
+import { Follows } from "./assets/FollowerandFollowing/ff";
 import { Followers } from "./assets/FollowerandFollowing/ff";
 import { Followings } from "./assets/FollowerandFollowing/ff";
 import { Accounts } from "./assets/Account/account";
@@ -48,18 +48,7 @@ function App() {
           <Route path="/read/:id" element={<PostDetails />} />
           <Route path="/edit/:post_ids" element={<EditCaller />} />
           <Route path="/:user_name" element={<ProfileCaller />}></Route>
-          <Route
-            path="/:user_name/followers"
-            element={<FollowersAndFollowingLayout />}
-          >
-            <Route path="/:user_name/followers" element={<Followers />} />
-          </Route>
-          <Route
-            path="/:user_name/followings"
-            element={<FollowersAndFollowingLayout />}
-          >
-            <Route path="/:user_name/followings" element={<Followings />} />
-          </Route>
+          <Route path="/:user_name/follows" element={<Follows />} />
 
           <Route path="/Account" element={<Accounts />} />
           <Route path="/Dashboard" element={<Dashboard />} />

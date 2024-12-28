@@ -40,6 +40,8 @@ const darkTheme = createTheme({ palette: { mode: "dark" } });
 const lightTheme = createTheme({ palette: { mode: "light" } });
 const userUpdater = createContext({});
 import img from "../../../public/Profile.jpeg";
+import { useSnackbarContext } from "../../context/snackProvider";
+import { Loader } from "lucide-react";
 
 export const Navbar = () => {
   const { user, setAuth, setUser } = useAuth();
@@ -56,8 +58,8 @@ export const Navbar = () => {
   const [open, setOpen] = React.useState(false);
   const [OTP, SetOTP] = useState(0);
   const otp = useRef();
-  const [validatory, setValidatory] = useState("content");
-
+  const [validatory, setValidatory] = useState();
+  const { showSnackbar } = useSnackbarContext();
   const [snackOn, setSnackOn] = useState(false);
   const [snackMessage, setSnackMessage] = useState({
     message: "",
@@ -68,8 +70,8 @@ export const Navbar = () => {
     try {
       const response = await axios.get(GOOGLE_USER, {
         headers: {
-          Authorization : `Bearer ${localStorage.getItem("accessToken")}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       });
       console.log(response);
       console.log(response?.data?.message);
@@ -88,25 +90,17 @@ export const Navbar = () => {
         user_id: user_id,
         accessToken,
       });
-      setUser({
-        Gmail: user_email,
-        user_name: user_name,
-        user_id: user_id,
-        profileimage: profileimage,
-        platform: platform,
-        verified: verified,
-      });
+      setUser(response?.data?.data);
       setSnackMessage({
         message: response?.data?.message,
         variant: response?.data?.variant,
       });
-        setSnackOn(true);
+      setSnackOn(true);
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  
   snackOn &&
     setTimeout(() => {
       setSnackOn(false);
@@ -128,7 +122,7 @@ export const Navbar = () => {
 
   const handleLogout = async () => {
     // console.log("Logout Success!!");
-    console.log("Success")
+    console.log("Success");
     localStorage.clear();
     await setAuth({});
     await setUser({});
@@ -178,28 +172,21 @@ export const Navbar = () => {
   };
 
   const HandleEmailVerifier = async () => {
+    setValidatory("content");
     const data = {
       email: user.Gmail ? user.Gmail : user.user_email,
     };
     try {
-      // console.log(data);
-      const response = await axios.post("/emailverify", data, {
+      const response = await axios.post("/account/emailotp", data, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      // console.log(response.data?.status, response?.data?.OTPs);
-      SetOTP(response?.data?.OTPs);
-      setSnackBar(
-        response?.data?.status ? (
-          <SnackBar message={"OTP sent successfully !!"} variant={"success"} />
-        ) : (
-          <SnackBar message={"OTP unsuccessfull !!"} />
-        )
-      );
-      setSnack(true);
+      showSnackbar(response?.data?.message, response?.data?.success);
+      SetOTP(response?.data?.data);
     } catch (error) {
       console.log(error);
+      showSnackbar(error?.response?.data?.message, false);
     }
   };
 
@@ -210,40 +197,40 @@ export const Navbar = () => {
   const HandleVerification = async () => {
     setLoading(true);
     if (Number(otp.current.value) === OTP) {
-      // console.log(OTP);
-      // console.log("Verification Success");
       const data = {
         user_id: localStorage.getItem("user_id"),
       };
       try {
-        const response = await axios.post("/emailverify/confirm", data, {
+        const response = await axios.patch("/account/verify", data, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        // console.log(response?.data);
-        setUser(response?.data?.data);
-        if (response?.data?.status) {
+        if (response?.data?.success) {
+          setUser((prev) => ({
+            ...prev,
+            verified: true,
+          }));
           setValidatory("success");
-        } else setValidatory("failure");
-        setLoading(false);
-        setTimeout(() => {
+          setLoading(false);
           localStorage.clear();
           setAuth({});
           setUser({});
-          // window.open("http://localhost:5000/logouts", "_self");
-          window.open(
-            "https://inkwellifyserver-git-main-vanamuthu-vs-projects.vercel.app/logouts",
-            "_self"
-          );
-          navigate("/SignUp");
-        }, 4000);
+          showSnackbar(response?.data?.message, response?.data?.success);
+          navigate("/SignUp/login");
+          
+        } else {
+          setValidatory("failure");
+          showSnackbar(response?.data?.message, false);
+        }
       } catch (error) {
         console.log(error);
+        showSnackbar(error?.response?.data?.message, false);
       }
     } else {
-      setValidatory("failure");
+      showSnackbar("OTP mismatch", false);
     }
+    setLoading(false)
   };
 
   return (
@@ -812,10 +799,9 @@ export const Navbar = () => {
                         textAlign: "center",
                         "&:focus": { outline: "none" }, // Removes focus outline for the logout option
                         "&:active": { backgroundColor: "transparent" }, // Ensures no background on click
-                        display : "flex"
+                        display: "flex",
                       }}
                     >
-                     
                       Logout
                     </Typography>
                   </MenuItem>
@@ -887,8 +873,8 @@ export const Navbar = () => {
           </p>
           <button
             className="h-full pl-2 pr-2 text-gray-50 hover:bg-red-300 max-md:text-vs"
-            onClick={() => {
-              HandleEmailVerifier();
+            onClick={async () => {
+              await HandleEmailVerifier();
               setOpen(true);
             }}
           >
@@ -902,102 +888,7 @@ export const Navbar = () => {
           >
             {loading ? (
               <div className="flex flex-row items-center justify-center w-full h-full">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-                  <circle
-                    fill="#F97316"
-                    stroke="#F97316"
-                    stroke-width="28"
-                    r="15"
-                    cx="35"
-                    cy="100"
-                  >
-                    <animate
-                      attributeName="cx"
-                      calcMode="spline"
-                      dur="1.5"
-                      values="35;165;165;35;35"
-                      keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                      repeatCount="indefinite"
-                      begin="0"
-                    ></animate>
-                  </circle>
-                  <circle
-                    fill="#F97316"
-                    stroke="#F97316"
-                    stroke-width="28"
-                    opacity=".8"
-                    r="15"
-                    cx="35"
-                    cy="100"
-                  >
-                    <animate
-                      attributeName="cx"
-                      calcMode="spline"
-                      dur="1.5"
-                      values="35;165;165;35;35"
-                      keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                      repeatCount="indefinite"
-                      begin="0.05"
-                    ></animate>
-                  </circle>
-                  <circle
-                    fill="#F97316"
-                    stroke="#F97316"
-                    stroke-width="28"
-                    opacity=".6"
-                    r="15"
-                    cx="35"
-                    cy="100"
-                  >
-                    <animate
-                      attributeName="cx"
-                      calcMode="spline"
-                      dur="1.5"
-                      values="35;165;165;35;35"
-                      keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                      repeatCount="indefinite"
-                      begin=".1"
-                    ></animate>
-                  </circle>
-                  <circle
-                    fill="#F97316"
-                    stroke="#F97316"
-                    stroke-width="28"
-                    opacity=".4"
-                    r="15"
-                    cx="35"
-                    cy="100"
-                  >
-                    <animate
-                      attributeName="cx"
-                      calcMode="spline"
-                      dur="1.5"
-                      values="35;165;165;35;35"
-                      keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                      repeatCount="indefinite"
-                      begin=".15"
-                    ></animate>
-                  </circle>
-                  <circle
-                    fill="#F97316"
-                    stroke="#F97316"
-                    stroke-width="28"
-                    opacity=".2"
-                    r="15"
-                    cx="35"
-                    cy="100"
-                  >
-                    <animate
-                      attributeName="cx"
-                      calcMode="spline"
-                      dur="1.5"
-                      values="35;165;165;35;35"
-                      keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                      repeatCount="indefinite"
-                      begin=".2"
-                    ></animate>
-                  </circle>
-                </svg>
+                <Loader className="animate-spin" />
               </div>
             ) : (
               <>
@@ -1010,8 +901,8 @@ export const Navbar = () => {
                 {validatory === "content" && (
                   <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                      Please enter the 4-digit OTP sent to your registered
-                      email.
+                      Please enter the 4-digit OTP sent to your registered email
+                      - {user.user_email}.
                       <div className="flex flex-row items-center justify-center w-full">
                         <input
                           className="pt-1 pb-1 pl-3 pr-3 mt-4 border-2 border-black rounded-md"

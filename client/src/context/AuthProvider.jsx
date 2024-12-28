@@ -4,7 +4,7 @@ import apiInstance from "../../api/axios";
 
 const AuthContext = createContext({});
 
-const RELOAD_USER = "/reloaduser";
+const RELOAD_USER = "/auth/reloaduser";
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
@@ -19,13 +19,13 @@ export const AuthProvider = ({ children }) => {
           accessToken: localStorage.getItem("accessToken"),
         };
         try {
-          const response = await axios.post(RELOAD_USER, data, {
+          const response = await axios.get(RELOAD_USER, {
             headers: {
               "Content-Type": "application/json", // Adjust the content type as needed
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
           });
-          // console.log(response?.data?.data);
+          console.log(response?.data);
           localStorage.setItem(
             "accessToken",
             response?.data?.data?.accessToken

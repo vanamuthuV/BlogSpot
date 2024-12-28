@@ -5,10 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { SnackBar } from "../Login/Alert.jsx";
 import { Tooltip } from "@mui/material";
 
-const SignUp_URL = "/SignUp";
+const SignUp_URL = "/auth/signup";
 
-const USERNAMECHECK = "/uncheck";
-const EMAILCHECK = "/uecheck";
+const  USERNAME ="/account/username" 
+const EMAIL = "/account/email";
 
 export const SignUp = () => {
   const UserName = useRef(null);
@@ -22,38 +22,40 @@ export const SignUp = () => {
   const SubmitHandler = async (event) => {
     event.preventDefault();
 
-    if ((Pos && PosE) === true) {
-      const response = await axios.post(SignUp_URL, {
-        username: UserName.current.value,
-        email: Gmail.current.value,
-        passcode: Passcode.current.value,
-      });
-      setVisibleModel(response?.data?.Status);
-      setSnack(
-        response?.data?.Status ? (
+    try {
+      if ((Pos && PosE) === true) {
+        const response = await axios.post(SignUp_URL, {
+          username: UserName.current.value,
+          email: Gmail.current.value,
+          passcode: Passcode.current.value,
+        });
+        console.log(response?.data);
+        setVisibleModel(response?.data?.success);
+        setSnack(
           <SnackBar
-            message={response?.data?.statusMessage + " , Now Login."}
-            variant={"success"}
+            message={response?.data?.message}
+            variant={response?.data?.success}
           />
-        ) : (
-          <SnackBar message={response?.data?.statusMessage} variant={"error"} />
-        )
-      );
-      // console.log(response);
-      response?.data?.Status &&
-        (() => {
-          UserName.current.value = "";
-          Gmail.current.value = "";
-          Passcode.current.value = "";
-          setPos(false);
-          setPosE(false);
-        })();
-    } else {
+        );
+        response?.data?.success &&
+          (() => {
+            UserName.current.value = "";
+            Gmail.current.value = "";
+            Passcode.current.value = "";
+            setPos(false);
+            setPosE(false);
+          })();
+      } else {
+        setSnack(
+          <SnackBar message={"username or email is in use."} variant={false} />
+        );
+      }
+    } catch (error) {
+      console.log(error?.response?.data);
       setSnack(
-        <SnackBar message={"username or email is in use."} variant={"error"} />
+        <SnackBar message={error?.response?.data?.message} variant={false} />
       );
     }
-
     setAlert(true);
   };
 
@@ -67,65 +69,136 @@ export const SignUp = () => {
   const [PosE, setPosE] = useState(false);
   const [NegE, setNegE] = useState(false);
 
-  const CheckUserName = async () => {
-    const data = {
-      username: UserName.current.value,
-    };
+  const [names, setNames] = useState([]);
+  let cachedFirstLetter = ""; // To track the first letter already fetched
 
-    if (!UserName.current.value) {
-      // console.log("Hello Null");
+  const CheckUserName = async () => {
+    const usernameValue = UserName.current.value.trim();
+
+    if (usernameValue.length === 1) {
+      // Send a request only when the length is exactly 1 and a new first letter is typed
+      if (cachedFirstLetter !== usernameValue) {
+        cachedFirstLetter = usernameValue;
+
+        try {
+          const response = await axios.get(`${USERNAME}/${usernameValue}`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          });
+          setNames(response?.data?.data);
+          const isMatch = response?.data?.data?.some(
+            (user) => user?.user_name === usernameValue
+          );
+
+          if (isMatch) {
+            setPos(false);
+            setNeg(true);
+          } else {
+            // If no exact match is found (username is available), set 'P' to true and 'N' to false
+            setPos(true);
+            setNeg(false);
+          }
+          return;
+        } catch (error) {
+          console.log(error);
+          return;
+        }
+      }
+    } else if (usernameValue.length > 1) {
+      // Filter the cached usernames for further checks
+      const isMatch = names.some((user) => user?.user_name === usernameValue);
+
+      if (isMatch) {
+       setPos(false);
+       setNeg(true);
+      } else {
+        // If no exact match is found (username is available), set 'P' to true and 'N' to false
+        setPos(true);
+        setNeg(false);
+      }
+      return;
+    } else if (usernameValue.length === 0) {
+      // Reset if the user clears the input
+      cachedFirstLetter = "";
+      setNames([]);
+      // If no exact match is found (username is available), set 'P' to true and 'N' to false
       setPos(false);
       setNeg(false);
       return;
     }
-
-    try {
-      const response = await axios.post(USERNAMECHECK, data);
-      console.log(response?.data?.data);
-      if (response?.data?.data) {
-        setPos(true);
-        setNeg(false);
-      } else {
-        setPos(false);
-        setNeg(true);
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
-  const CheckEmail = async () => {
-    const data = {
-      email: Gmail.current.value,
-    };
-    // console.log(Gmail.current.value);
-    if (!Gmail.current.value) {
-      // console.log("Hello Null");
-      setPosE(false);
-      setNegE(false);
-      return;
-    }
+    const [emails, setEmails] = useState([]);
+    let cachedFirstEmailLetter = ""; // To track the first letter already fetched
+  
+    console.log(emails);
+  
 
-    try {
-      const response = await axios.post(EMAILCHECK, data);
-      // console.log(response?.data?.data);
-      if (response?.data?.data) {
-        setPosE(true);
-        setNegE(false);
-      } else {
-        setPosE(false);
-        setNegE(true);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const CheckEmail = async () => {
+
+      const emailValue = Gmail.current.value.trim();
+    
+        if (emailValue.length === 1) {
+          // Send a request only when the length is exactly 1 and a new first letter is typed
+          if (cachedFirstEmailLetter !== emailValue) {
+            cachedFirstEmailLetter = emailValue;
+    
+            try {
+              const response = await axios.get(`${EMAIL}/${emailValue}`, {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                },
+              });
+              setEmails(response?.data?.data);
+              const isMatch = response?.data?.data?.some(
+                (user) => user?.user_email === emailValue
+              );
+    
+              if (isMatch) {
+                // If an exact match is found (username already exists in the array), set 'P' to false and 'N' to true
+                 setPosE(false);
+                 setNegE(true);
+              } else {
+                 setPosE(true);
+                 setNegE(false);
+              }
+              return;
+            } catch (error) {
+              console.log(error);
+              return;
+            }
+          }
+        } else if (emailValue.length > 1) {
+          // Filter the cached usernames for further checks
+          const isMatch = emails.some((user) => user?.user_email === emailValue);
+    
+          if (isMatch) {
+            // If an exact match is found (username already exists in the array), set 'P' to false and 'N' to true
+             setPosE(false);
+             setNegE(true);
+          } else {
+            // If no exact match is found (username is available), set 'P' to true and 'N' to false
+             setPosE(true);
+             setNegE(false);
+          }
+          return;
+        } else if (emailValue.length === 0) {
+          // Reset if the user clears the input
+          cachedFirstEmailLetter = "";
+          setEmails([]);
+           setPosE(false);
+           setNegE(false);
+          return;
+        }
+
   };
 
   useEffect(() => {
     UserName.current.focus();
   }, []);
-
-
 
   return (
     <React.Fragment>
@@ -290,8 +363,6 @@ export const SignUp = () => {
             Register
           </button>
         </form>
-
-      
 
         {visiblemodel && (
           <Link to={"/SignUp/login"}>

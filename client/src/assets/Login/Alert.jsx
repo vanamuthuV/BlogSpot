@@ -15,7 +15,6 @@ export const SnackBar = ({ message, variant }) => {
     setOpen(false);
   };
 
-
   setTimeout(() => {
     setOpen(false);
   }, 3000);
@@ -25,7 +24,7 @@ export const SnackBar = ({ message, variant }) => {
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert
           onClose={handleClose}
-          severity={variant}
+          severity={variant ? "success" : "error"}
           variant="filled"
           sx={{ width: "100%" }}
         >

@@ -31,95 +31,210 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { getFacebookUrl } from "@phntms/react-share";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import { useNavigate } from "react-router-dom";
+import { useSnackbarContext } from "../../context/snackProvider";
 
-const READ_URL = "/readblog";
-const ADDBOOKMARK = "/addbookmark";
-const REMOVEBOOKMARK = "/removebookmark";
+const READ_URL = "/read/read/s";
+const READ_URL_NO_LOGIN = "/read/read";
+const ADDBOOKMARK = "/bookmark/bookmark";
+const REMOVEBOOKMARK = "/bookmark/bookmark";
 
 export const PostRequester = () => {
   const [data, setData] = useState([]);
+  const [trending, setTrending] = useState([]);
+  const [news, setNew] = useState([]);
+  const [foryou, setForyou] = useState([]);
+  const [network, setNetwork] = useState([]);
   const [loading, setLoading] = useState(true);
   const [ClickAnalyzer, setClickAnalyzser] = useState("trending");
+
+  const { showSnackbar } = useSnackbarContext();
+
   const { user } = useAuth();
   const navigate = useNavigate();
-  // console.log(user);
+  console.log(user);
   useEffect(() => {
     const ReadBlog = async () => {
       try {
         setLoading(true);
-        // console.log(user.user_id);
-        // console.log(localStorage.getItem("user_id"))
-        const response = await axios.post(READ_URL, {
-          type: ClickAnalyzer,
-          id: localStorage.getItem("user_id")
-            ? localStorage.getItem("user_id")
-            : "123e4567-e89b-12d3-a456-426614174000",
-        });
-        // console.log(response?.data);
-        setData(response?.data?.posts);
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        };
+        const response = await axios.get(
+          `${user.user_id ? READ_URL : READ_URL_NO_LOGIN}`,
+          {
+            headers,
+          }
+        );
+        console.log(response?.data);
+        setData(response?.data?.data?.trend);
+        setTrending(response?.data?.data?.trend);
+        setNew(response?.data?.data?.new);
+        setNetwork(response?.data?.data?.network);
+        setForyou(response?.data?.data?.foryou);
         setLoading(false);
       } catch (error) {
-        console.error(error.message);
+        console.log(error.message);
       }
     };
 
     ReadBlog();
-  }, [ClickAnalyzer]);
+  }, []);
 
   const PostType = (value) => {
+    if (value === "trending") {
+      setData(trending);
+    } else if (value === "new") {
+      setData(news);
+    } else if (value === "network") {
+      setData(network);
+    } else if (value === "foryou") {
+      setData(foryou);
+    } else {
+      setData([]);
+    }
     setClickAnalyzser(value);
   };
 
-  // const [bookMark, setbookMark] = useState(is_bookmarked);
   const [social, setSocial] = useState(false);
 
   const AddBookMark = async (post_id) => {
     if (Object.keys(user).length == 0) navigate("/SignUp");
     else {
       try {
-        const data = {
-          user_id: user.user_id,
-          post_id: post_id,
-          type: ClickAnalyzer,
-        };
         const headers = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         };
-        const response = await axios.post(ADDBOOKMARK, data, { headers });
-        // console.log(response);
-        // ClickAnalyzer === "trending" && setTrendingData(response?.data?.posts);
-        // ClickAnalyzer === "new" && setNewData(response?.data?.posts);
-        // ClickAnalyzer === "network" && setNetworkData(response?.data?.posts);
-        setData(response?.data?.posts);
+        const response = await axios.post(`${ADDBOOKMARK}/${post_id}`, {
+          headers,
+        });
+
+        showSnackbar(response?.data?.message, response?.data?.success);
+        setData((prevData) => {
+          const newData = prevData.map((blog) => {
+            if (blog.post_id === post_id) {
+              return {
+                ...blog,
+                is_bookmarked: true,
+                bookmarkid: response?.data?.data,
+              }; // Update the specific blog
+            }
+            return blog; // Keep other blogs unchanged
+          });
+          return newData; // Return the updated array
+        });
+
+        setTrending((prevData) => {
+          const newData = prevData.map((blog) => {
+            if (blog.post_id === post_id) {
+              return {
+                ...blog,
+                is_bookmarked: true,
+                bookmarkid: response?.data?.data,
+              }; // Update the specific blog
+            }
+            return blog; // Keep other blogs unchanged
+          });
+          return newData; // Return the updated array
+        });
+
+        setNetwork((prevData) => {
+          const newData = prevData.map((blog) => {
+            if (blog.post_id === post_id) {
+              return {
+                ...blog,
+                is_bookmarked: true,
+                bookmarkid: response?.data?.data,
+              }; // Update the specific blog
+            }
+            return blog; // Keep other blogs unchanged
+          });
+          return newData; // Return the updated array
+        });
+
+        setNew((prevData) => {
+          const newData = prevData.map((blog) => {
+            if (blog.post_id === post_id) {
+              return {
+                ...blog,
+                is_bookmarked: true,
+                bookmarkid: response?.data?.data,
+              }; // Update the specific blog
+            }
+            return blog; // Keep other blogs unchanged
+          });
+          return newData; // Return the updated array
+        });
       } catch (error) {
         console.log(error);
+        showSnackbar(
+          error?.response?.data?.message,
+          error?.response?.data?.success
+        );
       }
     }
   };
 
-  const RemoveBookMark = async (ev) => {
-    // console.log("Hello");
-    // console.log(ev.target.value);
+  console.log(data);
 
-    const data = {
-      bookmarkid: ev.target.value,
-      user_id: user.user_id,
-      type: ClickAnalyzer,
-    };
+  const RemoveBookMark = async (ev, post_id) => {
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     };
 
     try {
-      const response = await axios.post(REMOVEBOOKMARK, data, { headers });
-      // ClickAnalyzer === "trending" && setTrendingData(response?.data?.posts);
-      // ClickAnalyzer === "new" && setNewData(response?.data?.posts);
-      // ClickAnalyzer === "network" && setNetworkData(response?.data?.posts);
-      setData(response?.data?.posts);
+      const response = await axios.delete(
+        `${REMOVEBOOKMARK}/${ev.target.value}`,
+        { headers }
+      );
+      showSnackbar(response?.data?.message, response?.data?.success);
+      setData((prevData) => {
+        const newData = prevData.map((blog) => {
+          if (blog.post_id === post_id) {
+            return { ...blog, is_bookmarked: false, bookmarkid: undefined }; // Update the specific blog
+          }
+          return blog; // Keep other blogs unchanged
+        });
+        return newData; // Return the updated array
+      });
+
+      setTrending((prevData) => {
+        const newData = prevData.map((blog) => {
+          if (blog.post_id === post_id) {
+            return { ...blog, is_bookmarked: false, bookmarkid: undefined }; // Update the specific blog
+          }
+          return blog; // Keep other blogs unchanged
+        });
+        return newData; // Return the updated array
+      });
+
+      setNetwork((prevData) => {
+        const newData = prevData.map((blog) => {
+          if (blog.post_id === post_id) {
+            return { ...blog, is_bookmarked: false, bookmarkid: undefined }; // Update the specific blog
+          }
+          return blog; // Keep other blogs unchanged
+        });
+        return newData; // Return the updated array
+      });
+
+      setNew((prevData) => {
+        const newData = prevData.map((blog) => {
+          if (blog.post_id === post_id) {
+            return { ...blog, is_bookmarked: false, bookmarkid: undefined }; // Update the specific blog
+          }
+          return blog; // Keep other blogs unchanged
+        });
+        return newData; // Return the updated array
+      });
     } catch (error) {
       console.log(error);
+      showSnackbar(
+        error?.response?.data?.message,
+        error?.response?.data?.success
+      );
     }
   };
 
@@ -417,7 +532,7 @@ export const PostRequester = () => {
                               {is_bookmarked ? (
                                 <button
                                   value={bookmarkid}
-                                  onClick={RemoveBookMark}
+                                  onClick={(ev) => RemoveBookMark(ev, post_id)}
                                   className="text-orange-500"
                                 >
                                   <svg

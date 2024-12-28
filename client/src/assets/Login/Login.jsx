@@ -5,9 +5,11 @@ import axios from "../../../api/axios.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
-const Login_URL = "/login";
+const Login_URL = "/auth/login";
 import { SnackBar } from "./Alert.jsx";
 import { FaGoogle } from "react-icons/fa";
+import { useSnackbarContext } from "../../context/snackProvider.jsx";
+import { Loader } from "lucide-react";
 
 export const Login = () => {
   const { auth, setAuth, setUser } = useAuth();
@@ -15,10 +17,8 @@ export const Login = () => {
   const Gmail = useRef(null);
   const Passcode = useRef(null);
   const [Snack, setSnack] = useState(null);
-  // const [errMsg, seterrMsg] = useState('');
-
+  const { showSnackbar } = useSnackbarContext();
   const navigate = useNavigate();
-
 
   useEffect(() => {
     Gmail.current.focus();
@@ -26,64 +26,44 @@ export const Login = () => {
 
   const SubmitHandler = async (e) => {
     e.preventDefault();
+
+    const data = {
+      email: Gmail.current.value,
+      passcode: Passcode.current.value,
+    };
+
     try {
-      const data = {
-        email: Gmail.current.value,
-        passcode: Passcode.current.value,
-      };
       const response = await axios.post(Login_URL, data, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      // console.log(response?.data);
-      const accessToken = response?.data?.accessToken;
-      const user_name = response?.data?.user_name;
-      if (response?.data?.user_details[0].verified) {
+
+      console.log(response?.data);
+
+      const accessToken = response?.data?.data?.accessToken;
+      if (response?.data?.data?.user[0].verified) {
         localStorage.setItem("accessToken", accessToken);
       }
-      console.log(accessToken);
-      console.log(response?.data?.accessToken);
-      console.log(response?.data?.user_details[0].verified);
-      localStorage.setItem("user_id", response?.data?.user_details[0].user_id);
-      // localStorage.setItem("user_id", response?.data?.user_details[0].user_id);
+
+      localStorage.setItem("user_id", response?.data?.data?.user[0].user_id);
+
       setAuth({
         Gmail: Gmail.current.value,
         Passcode: Passcode.current.value,
-        user_id: response?.data?.user_details[0].user_id,
+        user_id: response?.data?.data?.user[0].user_id,
         accessToken,
       });
-      setUser({
-        Gmail: Gmail.current.value,
-        Passcode: Passcode.current.value,
-        user_name: response?.data?.user_details[0].user_name,
-        user_id: response?.data?.user_details[0].user_id,
-        profileimage: response?.data?.user_details[0].profileimage,
-        verified: response?.data?.user_details[0].verified,
-      });
+      setUser(response?.data?.data?.user[0]);
       setTimeout(() => {
         navigate("/");
       }, 1000);
-      setSnack(
-        <SnackBar message={response?.data?.login_status} variant={"success"} />
-      );
-      setAlert(true);
+      showSnackbar(response?.data?.message, response?.data?.success);
     } catch (error) {
-      console.log(error?.response?.data?.login_status);
-      setSnack(
-        <SnackBar
-          message={error?.response?.data?.login_status}
-          variant={"error"}
-        />
-      );
-      setAlert(true);
+      console.log(error.message);
+      showSnackbar(error?.response?.data?.message, false);
     }
   };
-  alert &&
-    setTimeout(() => {
-      setAlert(false);
-      // console.log(Snack);
-    }, 3000);
 
   return (
     <>
@@ -92,9 +72,6 @@ export const Login = () => {
         <h1 className="mt-5 mb-5 text-xl font-semibold text-center text-orange-500 max-md:text-sm">
           Login Page
         </h1>
-        {/* <p ref={errMsg} aria-live="assertive">
-        {errMsg}
-      </p> */}
         <form
           onSubmit={SubmitHandler}
           className="flex flex-col items-center justify-center w-full"
@@ -125,7 +102,6 @@ export const Login = () => {
             required
           ></input>
 
-          
           <div className="flex flex-row items-center justify-between w-full mt-5 mb-5">
             <Link to={"/forgetpassword"}>
               <p className="text-blue-500 max-md:text-xs">forget password</p>
@@ -143,8 +119,6 @@ export const Login = () => {
             Login
           </button>
         </form>
-
-        
       </div>
     </>
   );
@@ -184,20 +158,19 @@ export const ForgetUsername = () => {
 };
 
 export const ForgetPasscode = () => {
-  const [visible, setVisible] = useState(false);
-  const [visiblereset, setVisibleReset] = useState(false);
   const [visiblemodel, setVisibleModel] = useState(false);
 
   const [count, setCount] = useState(0);
   const [loader, setLoader] = useState(false);
   const [gmail, setGmail] = useState("");
   const [snackOn, setSnackOn] = useState(false);
+  const { showSnackbar } = useSnackbarContext();
   const [SnackValue, setSnackValue] = useState({
     message: "",
     variant: "",
   });
 
-  const PASSWORDUPDATE = "/passwordupdate/bygmail";
+  const PASSWORDUPDATE = "/account/password/email";
 
   const navigate = useNavigate();
 
@@ -211,124 +184,76 @@ export const ForgetPasscode = () => {
   const DispatchOTP = async () => {
     if (Gmail.current.value) {
       const data = {
-        email: Gmail.current.value,
+        email: Gmail.current.value.trim(),
+        type: "pass",
       };
-      setGmail(Gmail.current.value);
+      setGmail(Gmail.current.value.trim());
       try {
         setLoader(true);
         // console.log(data);
-        const response = await axios.post("/emailverify/reset", data, {
+        const response = await axios.post("/account/emailotp", data, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        console.log(response?.data);
 
-        setSnackValue({
-          message: response?.data?.message,
-          variant: response?.data?.variant,
-        });
-        setSnackOn(true);
-        if (response?.data?.danger == 100) {
-          setTimeout(() => {
-            navigate("/SignUp");
-          }, 3000);
-        }
-        if (response?.data?.danger === 200) {
-          setTimeout(() => {
-            navigate("/forgetpassword");
-          }, 3000);
-        }
-        setOTP(response?.data?.OTPs);
+        showSnackbar(response?.data?.message, response?.data?.success);
+
+        setOTP(response?.data?.data);
         setCount((prev) => prev + 1);
         setLoader(false);
       } catch (error) {
         console.log(error);
+        showSnackbar(error?.response?.data?.message, false);
       }
     } else {
-      setSnackValue({
-        message: 'Please Enter The Gmail',
-        variant : "error"
-      })
-      setSnackOn(true)
+      showSnackbar("Please Enter The Gmail", false);
     }
-    
   };
 
   const Verify = () => {
     setLoader(true);
-    if (OTP.current.value) {
-      console.log(
-        "Type of server",
-        typeof otp,
-        "Type Of Enter",
-        typeof OTP.current.value
-      );
-      if (Number(OTP.current.value) === otp) {
-        setSnackValue({
-          message: "OTP Validation Success",
-          variant: "success",
-        });
-        setSnackOn(true);
+    if (OTP.current?.value) {
+      if (Number(OTP.current?.value) === otp) {
+        showSnackbar("OTP Validation Success", true);
         setCount((prev) => prev + 1);
       } else {
-        setSnackValue({
-          message: "OTP Incorrect",
-          variant: "error",
-        });
-        setSnackOn(true);
+        showSnackbar("OTP incorrect", false);
       }
     } else {
-      setSnackValue({
-        message: "Please Enter the OTP",
-        variant: "error",
-      });
-      setSnackOn(true);
+      showSnackbar("Please Enter the OTP", false);
     }
     setLoader(false);
   };
 
   const UpdatePassword = () => {
-    console.log("Hola");
+    console.log(gmail)
     if (Passcode.current.value && ConfirmPasscode.current.value) {
       if (Passcode.current.value === ConfirmPasscode.current.value) {
         (async () => {
-          const response = await axios.put(PASSWORDUPDATE, {
-            user_email: gmail,
-            new_password: Passcode.current.value,
-          });
-          console.log(response?.data);
-          setSnackValue({
-            message: response?.data?.message,
-            variant: response?.data?.variant,
-          });
-          setSnackOn(true);
-          if (response?.data?.variant === "success") {
-            setTimeout(() => {
+          try {
+            const response = await axios.patch(PASSWORDUPDATE, {
+              user_email: gmail,
+              new_password: Passcode.current.value,
+            });
+            if (response?.data?.success) {
+              showSnackbar(response?.data?.message, response?.data?.success);
               navigate("/SignUp/login");
-            }, 3000);
+            }
+          } catch (error) {
+            showSnackbar(error?.response?.data?.message, false);
           }
         })();
       } else {
-        setSnackValue({
-          message: "The Entered Password Does Not Match The Current Password.",
-          variant: "error",
-        });
-        setSnackOn(true);
+        showSnackbar(
+          "The Entered Password Does Not Match The Current Password.",
+          false
+        );
       }
     } else {
-      setSnackValue({
-        message: "Please Enter Your New Password",
-        variant: "error",
-      });
-      setSnackOn(true);
+      showSnackbar("Please Enter Your New Password", false);
     }
   };
-
-  setSnackOn &&
-    setTimeout(() => {
-      setSnackOn(false);
-    }, 2000);
 
   const GetEmail = () => {
     useEffect(() => {
@@ -421,62 +346,7 @@ export const ForgetPasscode = () => {
       )}
       {loader ? (
         <div className="flex flex-row items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-            <circle
-              fill="#22C55E"
-              stroke="#22C55E"
-              stroke-width="15"
-              r="15"
-              cx="40"
-              cy="65"
-            >
-              <animate
-                attributeName="cy"
-                calcMode="spline"
-                dur="2"
-                values="65;135;65;"
-                keySplines=".5 0 .5 1;.5 0 .5 1"
-                repeatCount="indefinite"
-                begin="-.4"
-              ></animate>
-            </circle>
-            <circle
-              fill="#22C55E"
-              stroke="#22C55E"
-              stroke-width="15"
-              r="15"
-              cx="100"
-              cy="65"
-            >
-              <animate
-                attributeName="cy"
-                calcMode="spline"
-                dur="2"
-                values="65;135;65;"
-                keySplines=".5 0 .5 1;.5 0 .5 1"
-                repeatCount="indefinite"
-                begin="-.2"
-              ></animate>
-            </circle>
-            <circle
-              fill="#22C55E"
-              stroke="#22C55E"
-              stroke-width="15"
-              r="15"
-              cx="160"
-              cy="65"
-            >
-              <animate
-                attributeName="cy"
-                calcMode="spline"
-                dur="2"
-                values="65;135;65;"
-                keySplines=".5 0 .5 1;.5 0 .5 1"
-                repeatCount="indefinite"
-                begin="0"
-              ></animate>
-            </circle>
-          </svg>
+          <Loader className="animate-spin" />
         </div>
       ) : (
         <div className="flex flex-row items-center justify-between w-full">

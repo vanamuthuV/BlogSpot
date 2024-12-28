@@ -25,7 +25,7 @@ import img from "../../../public/Profile.jpeg"
 import { motion } from "framer-motion";
 import ImprovedHero from "../../components/Hero";
 
-const LANDINGDATA = "/landingdata";
+const LANDINGDATA = "/post/landpost";
 
 import img1 from "../../../public/svgs/No caash.svg";
 import img2 from "../../../public/svgs/No Login.svg";
@@ -85,15 +85,11 @@ export const LandingPage = () => {
     setExpanded(newExpanded ? panel : false);
   };
 
-  const value = {
-    user_id: Object.keys(user).length !== 0 ? user.user_id : null,
-  };
-
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const response = await axios.post(LANDINGDATA, value);
+        const response = await axios.get(LANDINGDATA);
         // console.log(response?.data?.data);
         setData(response?.data?.data);
         console.log(response?.data?.data);

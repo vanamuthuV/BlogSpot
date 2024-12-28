@@ -36,455 +36,64 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { getFacebookUrl } from "@phntms/react-share";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import CircularProgress from "@mui/material/CircularProgress";
-import img from "../../../public/Profile.jpeg"
+import img from "../../../public/Profile.jpeg";
+import { useSnackbarContext } from "../../context/snackProvider";
+import { Loader } from "lucide-react";
+import { ThumbsUp, ThumbsDown } from "lucide-react";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
 
-const POSTDETAIL_URL = "/postdetails";
-const COMMENT = "/comment";
-const GETCOMMENT = "/getcomment";
+const POSTDETAIL_URL = "/post/post";
+const COMMENT = "/comment/comment";
+const GETCOMMENT = "/comment/comment";
 const DELETEPOST = "/deletesinglepost";
 const EDITCOMMENT = "/editcomment";
 const DELETECOMMENT = "/deletecomment";
-const CHECKFOLLOW = "/checkfollow";
+const CHECKFOLLOW = "/follow/follow/check";
+const ADDBOOKMARK = "/bookmark/bookmark";
+const REMOVEBOOKMARK = "/bookmark/bookmark";
+const FOLLOW = "/follow/follow";
+const UNFOLLOW = "/follow/follow";
+const GETFAVORITE = "/favorite/favorite";
+const FAVORITE = "/favorite/favorite";
+const LIKE = "/likes/likes";
+const DISLIKE = "/likes/dislikes";
+const GETLIKES = "/likes/likes";
 
 export const PostDetails = () => {
   const { id } = useParams();
-  const [ids, setIds] = useState(id);
 
   const [commentLoading, setcommentLoading] = useState(true);
+  const [followloading, setFollowLoading] = useState(true);
   const [comments, setComments] = useState([]);
   const { user } = useAuth();
   const [option, setOption] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState();
+  const [data, setData] = useState({});
   const navigate = useNavigate();
   const comment = useRef(null);
-  const GETFAVORITE = "/getfavorite";
+
   const [favorite, setFavorite] = useState();
   const [favoriteDeatails, setFavoriteDetails] = useState({});
   const [follows, setFollows] = useState([]);
-  const [followLoad, setFollowLoad] = useState(true);
-
-  const ADDBOOKMARK = "/addbookmarksingle";
-  const REMOVEBOOKMARK = "/removebookmarksingle";
-  const AddBookMark = async (post_id) => {
-    if (Object.keys(user).length === 0) navigate("/SignUp");
-    else {
-      try {
-        const data = {
-          user_id: user.user_id,
-          post_id: post_id,
-        };
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        };
-        const response = await axios.post(ADDBOOKMARK, data, { headers });
-        // console.log(response);
-        setData(response?.data?.posts);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
-  const RemoveBookMark = async (ev) => {
-    // console.log("Hello");
-    // console.log(ev.target.value);
-
-    const data = {
-      bookmarkid: ev.target.value,
-      user_id: user.user_id,
-      post_id: id,
-    };
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    };
-    try {
-      const response = await axios.post(REMOVEBOOKMARK, data, { headers });
-      setData(response?.data?.posts);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    if (Object.keys(user).length > 0) {
-      (async () => {
-        const response = await axios.post(
-          CHECKFOLLOW,
-          {
-            follower_id: localStorage.getItem("user_id"),
-            id: id,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json", // Adjust the content type as needed
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
-            },
-          }
-        );
-        // console.log(response?.data);
-        setFollows(response?.data?.data);
-      })();
-    }
-  }, [id]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.post(GETFAVORITE, {
-          data: {
-            user_id: localStorage.getItem("user_id"),
-            post_id: id,
-          },
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-        // console.log(response?.data?.data);
-        setFavoriteDetails(response?.data?.data);
-        Object.keys(response?.data?.data).length === 0
-          ? setFavorite(false)
-          : setFavorite(true);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [id]);
-
-  const UploadComment = async () => {
-    // console.log(comment.current.value);
-
-    if (Object.keys(user).length === 0) {
-      return navigate("/SignUp");
-    }
-
-    const data = {
-      comment: comment.current.value,
-      user_id: user.user_id,
-      post_id: id,
-    };
-
-    comment.current.value = "";
-
-    try {
-      const response = await axios.post(COMMENT, {
-        data,
-        headers: {
-          "Content-Type": "multipart/form-data", // Adjust the content type as needed
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
-        },
-      });
-      // console.log(response?.data?.data);
-      setComments(response?.data?.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleDeleteComment = async (ev) => {
-    // console.log(ev.target.value);
-    const commentid = ev.target.value;
-
-    try {
-      const response = await axios.delete(
-        DELETECOMMENT + "/" + commentid + "-." + id,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data", // Adjust the content type as needed
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
-          },
-        }
-      );
-      // console.log(response?.data?.data);
-      setComments(response?.data?.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleReportComment = (ev) => {
-    // console.log(ev.target);
-  };
-
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleDelete = async () => {
-    // console.log("Hello");
-
-    try {
-      const response = await axios.delete(DELETEPOST + `/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      // console.log(response?.data?.data);
-    } catch (error) {
-      console.error(error);
-    }
-
-    setOpen(false);
-    navigate("/");
-  };
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.post(GETCOMMENT, { id });
-        // console.log(response?.data?.data);
-        setComments(response?.data?.data);
-        setcommentLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, [id]);
-  const [tags, setTags] = useState([]);
-  // console.log(data);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.post(POSTDETAIL_URL, {
-          id: id,
-          user_id: localStorage.getItem("user_id")
-        });
-        console.log("Yo bRo" , response?.data);
-        setData(response?.data?.post);
-
-        // console.log(
-        //   response?.data?.post?.post_tags
-        //     .split("#")
-        //     .splice(1, response?.data?.post?.post_tags.split("#").length)
-        // );
-        setTags(
-          response?.data?.post?.post_tags
-            .split("#")
-            .splice(1, response?.data?.post?.post_tags.split("#").length)
-        );
-        setLoading(false);
-      } catch (error) {
-        console.error(error.message);
-      }
-    })();
-  }, [id]);
-
-  const [commentID, setCommentID] = useState("");
-
-  const [openEdit, setOpenEdit] = React.useState(false);
-
-  const handleClickOpenEdit = (ev) => {
-    setCommentID(ev.target.value);
-    // console.log(ev.target.value);
-    setOpenEdit(true);
-  };
-
-  const handleCloseEdit = () => {
-    setOpenEdit(false);
-  };
-
-  const FAVORITE = "/addfavorite";
-  const UNFAVORITE = "/deletefavorite";
-
-  const handleFavorite = async () => {
-    if (Object.keys(user).length === 0) {
-      return navigate("/SignUp");
-    }
-    if (favorite === true) {
-      try {
-        const response = await axios.delete(
-          UNFAVORITE + `/${favoriteDeatails.favorite_id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        );
-        // console.log(response?.data?.data);
-        setFavoriteDetails(response?.data?.data);
-        setFavorite(false);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
-        const response = await axios.post(FAVORITE, {
-          data: {
-            user_id: user.user_id,
-            post_id: id,
-          },
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-        // console.log(response?.data?.data);
-        setFavoriteDetails(response?.data?.data);
-      } catch (error) {
-        console.log(error);
-      }
-      setFavorite(true);
-    }
-  };
-
-  const GETLIKES = "/getlikes";
-
+  const { showSnackbar } = useSnackbarContext();
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
+  const [likeStatus, setLikeStatus] = useState(null);
+  const [likevalue, setLikevalue] = useState({});
+  const [favloading, setFavLoading] = useState(true);
   const [likeinfo, setLikeInfo] = useState({});
   const [like, setLike] = useState([]);
   const [dislike, setDisLike] = useState([]);
-  const [likeStatus, setLikestatus] = useState();
+  const [likestatus, setLikestatus] = useState();
   const [dislikeStatus, setDislikeStatus] = useState();
   const [likeloading, setlikeloading] = useState(true);
-
+  const [open, setOpen] = React.useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [social, setSocial] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      const data = {
-        post_id: id,
-        user_id: user.user_id,
-      };
-
-      try {
-        const response = await axios.post(GETLIKES, data);
-        // console.log(response?.data?.data);
-        setDislikeStatus(response?.data?.data?.Like?.dislikes);
-        setLikestatus(response?.data?.data?.Like?.likes);
-        setLikeInfo(response?.data?.data?.Like);
-        setLike(response?.data?.data?.TotalLike);
-        setDisLike(response?.data?.data?.TotalDisLike);
-        setlikeloading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [id]);
-
-  const LIKE = "/like";
-  const DISLIKE = "/dislike";
-  const DELETELIKE = "/deletelike";
-  const DELETEDISLIKE = "/deletedislike";
-
-  const LikeUpdater = async () => {
-    // console.log("Like Updater!!");
-
-    if (Object.keys(user).length === 0) {
-      return navigate("/SignUp");
-    }
-
-    const data = {
-      post_id: id,
-      user_id: user.user_id,
-    };
-
-    if (likeStatus === true) {
-      try {
-        const response = await axios.delete(
-          DELETELIKE + `/${likeinfo.like_id}..${id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        );
-        // console.log(response?.data?.data);
-        setLikestatus(false);
-        setDislikeStatus(false);
-        setLikeInfo({});
-        setLike(response?.data?.data?.TotalLike);
-        setDisLike(response?.data?.data?.TotalDisLike);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
-        const response = await axios.post(LIKE, data, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-        // console.log(response?.data?.data);
-        setLikestatus(response?.data?.data?.Like?.likes);
-        setDislikeStatus(response?.data?.data?.Like?.dislikes);
-        setLikeInfo(response?.data?.data?.Like);
-        setLike(response?.data?.data?.TotalLike);
-        setDisLike(response?.data?.data?.TotalDisLike);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
-  const DisLikeUpdater = async () => {
-    // console.log("Like Updater!!");
-
-    if (Object.keys(user).length === 0) {
-      return navigate("/SignUp");
-    }
-
-    const data = {
-      post_id: id,
-      user_id: user.user_id,
-    };
-
-    if (dislikeStatus === true) {
-      try {
-        const response = await axios.delete(
-          DELETEDISLIKE + `/${likeinfo.like_id}..${id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        );
-        // console.log(response?.data?.data);
-        setLikestatus(false);
-        setDislikeStatus(false);
-        setLikeInfo({});
-        setLike(response?.data?.data?.TotalLike);
-        setDisLike(response?.data?.data?.TotalDisLike);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
-        const response = await axios.post(DISLIKE, data, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-        // console.log(response?.data?.data);
-        setLikestatus(response?.data?.data?.Like?.likes);
-        setDislikeStatus(response?.data?.data?.Like?.dislikes);
-        setLikeInfo(response?.data?.data?.Like);
-        setLike(response?.data?.data?.TotalLike);
-        setDisLike(response?.data?.data?.TotalDisLike);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
-  const ADDFOLLOWINPOST = "/addfollowinpost";
+  const [commentID, setCommentID] = useState("");
+  const [openEdit, setOpenEdit] = React.useState(false);
 
   const LikeStyles = {
     color: "green",
@@ -501,22 +110,433 @@ export const PostDetails = () => {
     border: "none",
   };
 
-  const [openModal, setOpenModal] = useState(false);
-  const FOLLOW = "/follow";
-  const UNFOLLOW = "/unfollow";
-  const UnfollowHandler = async (ev) => {
-    // console.log(ev.target.id);
+  console.log(data);
+
+  const AddBookMark = async (post_id) => {
+    if (Object.keys(user).length === 0) navigate("/SignUp");
+    else {
+      try {
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        };
+        const response = await axios.post(`${ADDBOOKMARK}/${post_id}`, {
+          headers,
+        });
+        console.log(response?.data?.data);
+
+        setData({
+          ...data,
+          is_bookmarked: true,
+          bookmarkid: response?.data?.data,
+        });
+        showSnackbar(response?.data?.message, response?.data?.success);
+      } catch (error) {
+        console.log(error);
+        showSnackbar(
+          error?.response?.data?.message,
+          error?.response?.data?.success
+        );
+      }
+    }
+  };
+
+  const RemoveBookMark = async (ev) => {
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    };
+    try {
+      const response = await axios.delete(
+        `${REMOVEBOOKMARK}/${ev.target.value}`,
+        { headers }
+      );
+      console.log(response?.data?.data);
+      // setData(response?.data?.posts);
+      showSnackbar(response?.data?.message, response?.data?.success);
+      setData({ ...data, is_bookmarked: false, bookmarkid: undefined });
+    } catch (error) {
+      console.log(error);
+      showSnackbar(
+        error?.response?.data?.message,
+        error?.response?.data?.success
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (Object.keys(user).length > 0) {
+      setFollowLoading(true);
+      (async () => {
+        const response = await axios.get(`${CHECKFOLLOW}/${data?.user_id}`, {
+          headers: {
+            "Content-Type": "application/json", // Adjust the content type as needed
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
+          },
+        });
+        console.log(response?.data);
+        setFollows(response?.data?.data);
+        setFollowLoading(false);
+      })();
+    }
+  }, [id, user.user_id, data.user_id]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setFavLoading(true);
+        const response = await axios.get(
+          `${GETFAVORITE}/${id}/${user.user_id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        console.log(response?.data?.data);
+        setFavoriteDetails(response?.data?.data);
+        Object.keys(response?.data?.data).length === 0
+          ? setFavorite(false)
+          : setFavorite(true);
+        setFavLoading(false);
+      } catch (error) {
+        console.log(error);
+        setFavLoading(false);
+      }
+    })();
+  }, [id, user.user_id]);
+
+  const UploadComment = async () => {
+    if (Object.keys(user).length === 0) {
+      return navigate("/SignUp");
+    }
+
+    const data = {
+      comment: comment.current.value,
+    };
+
+    comment.current.value = "";
 
     try {
-      const response = await axios.delete(UNFOLLOW + `/${ev.target.id}`, {
+      const response = await axios.post(`${COMMENT}/${id}`, data, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json", // Adjust the content type as needed
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
         },
       });
-      setFollows(response?.data?.data);
+      setComments((prev) => {
+        const newarray = [...prev]; // Spread to avoid direct mutation
+        newarray.unshift({
+          ...response?.data?.data,
+          user_name: user.user_name,
+          profileimage: user.profileimage,
+        });
+        return newarray;
+      });
+
+      showSnackbar(response?.data?.message, response?.data?.success);
+    } catch (error) {
+      console.error(error);
+      showSnackbar(error?.response?.data?.message, false);
+    }
+  };
+
+  const handleDeleteComment = async (ev) => {
+    const commentid = ev.target.value;
+    try {
+      const response = await axios.delete(`${COMMENT}/${commentid}`, {
+        headers: {
+          "Content-Type": "application/json", // Adjust the content type as needed
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
+        },
+      });
+      setComments((prev) => {
+        const newarray = prev.filter((com) => com.comment_id !== commentid);
+        return newarray;
+      });
+
+      showSnackbar(response?.data?.message, response?.data?.success);
     } catch (error) {
       console.log(error);
+      showSnackbar(error?.response?.data?.message, false);
+    }
+  };
+
+  const handleReportComment = (ev) => {
+    // console.log(ev.target);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `/post/post/${post_id}/${user.user_id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      if (response?.data?.success) {
+        showSnackbar(response?.data?.message, response?.data?.success);
+        navigate("/");
+      } else {
+        showSnackbar(response?.data?.message, false);
+      }
+    } catch (error) {
+      console.error(error);
+      showSnackbar(error.response?.data?.message, false);
+    }
+
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setcommentLoading(true);
+        const response = await axios.get(`${GETCOMMENT}/${id}`);
+        console.log(response?.data?.data);
+        setComments(response?.data?.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setcommentLoading(false);
+      }
+    })();
+  }, [id]);
+  const [tags, setTags] = useState([]);
+  // console.log(data);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.post(
+          `${POSTDETAIL_URL}/${id}`,
+          {
+            user_id: localStorage.getItem("user_id"),
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        console.log("Yo bRo", response?.data?.data[0]);
+        setData(response?.data?.data[0]);
+        setTags(
+          response?.data?.data[0]?.post_tags
+            .split(",")
+            .splice(1, response?.data?.post?.post_tags.split("#").length)
+        );
+        setLoading(false);
+      } catch (error) {
+        console.log(error.message);
+        console.log(error.response);
+        showSnackbar(
+          error?.response?.data?.message,
+          error?.response?.data?.success
+        );
+      }
+    })();
+  }, [id]);
+
+  const handleClickOpenEdit = (ev) => {
+    setCommentID(ev.target.value);
+    setOpenEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
+
+  const handleFavorite = async () => {
+    if (Object.keys(user).length === 0) {
+      return navigate("/SignUp");
+    }
+    console.log(favoriteDeatails);
+    if (favorite === true) {
+      try {
+        const response = await axios.delete(
+          FAVORITE + `/${favoriteDeatails.favorite_id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        // console.log(response?.data?.data);
+        setFavoriteDetails({});
+        setFavorite(false);
+        showSnackbar(response?.data?.message, response?.data.success);
+      } catch (error) {
+        console.log(error);
+        showSnackbar(error?.response?.data?.message, false);
+      }
+    } else {
+      try {
+        const response = await axios.post(`${FAVORITE}/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        console.log(response?.data?.data);
+        setFavoriteDetails(response?.data?.data);
+        setFavorite(true);
+        showSnackbar(response?.data?.message, response?.data.success);
+      } catch (error) {
+        console.log(error);
+        showSnackbar(error?.response?.data?.message, false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setlikeloading(true);
+        const response = await axios.get(`${GETLIKES}/${id}`);
+        const newArray = response?.data?.data;
+        const foundLike = newArray.find((lik) => lik.user_id === user.user_id);
+        if (foundLike) {
+          console.log("Yeah We Found You", foundLike);
+          setLikevalue(foundLike);
+          console.log(!!foundLike.likes);
+          setLikeStatus(!!foundLike.likes);
+        } else {
+          setLikeStatus(null);
+        }
+        const likesCount = newArray.filter((lik) => lik.likes === true).length;
+        const dislikesCount = newArray.filter(
+          (lik) => lik.likes === false
+        ).length;
+        setLikes(likesCount);
+        setDislikes(dislikesCount);
+        setlikeloading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [id, user.user_id]);
+
+  const LikeUpdater = async (ev) => {
+    if (Object.keys(user).length === 0) {
+      return navigate("/SignUp");
+    }
+
+    const data = {
+      post_id: id,
+      like_id: ev.target.value,
+      is_update: likeStatus === false,
+    };
+
+    try {
+      const response = await axios.post(LIKE, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      console.log(response?.data);
+      if (response?.data?.success) {
+        if (response?.data?.data) {
+          if (data.is_update) {
+            setLikes((prev) => prev + 1);
+            setLikevalue(response?.data?.data[0]);
+            setLikeStatus(true);
+            setDislikes((prev) => prev - 1);
+          } else {
+            console.log("I will");
+            setLikes((prev) => prev + 1);
+            setLikevalue(response?.data?.data[0]);
+            setLikeStatus(true);
+          }
+        } else {
+          setLikes((prev) => prev - 1);
+          setLikevalue({});
+          setLikeStatus(null);
+        }
+      }
+      showSnackbar(response?.data?.message, response?.data?.success);
+    } catch (error) {
+      console.log(error);
+      showSnackbar(error?.response?.data?.message, false);
+    }
+  };
+
+  const DisLikeUpdater = async (ev) => {
+    // console.log("Like Updater!!");
+
+    if (Object.keys(user).length === 0) {
+      return navigate("/SignUp");
+    }
+
+    const data = {
+      post_id: id,
+      like_id: ev.target.value,
+      is_update: likeStatus === true,
+    };
+
+    try {
+      const response = await axios.post(DISLIKE, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      console.log(response?.data);
+      if (response?.data?.success) {
+        if (response?.data?.data) {
+          if (data.is_update) {
+            setDislikes((prev) => prev + 1);
+            setLikevalue(response?.data?.data[0]);
+            setLikeStatus(false);
+            setLikes((prev) => prev - 1);
+          } else {
+            setDislikes((prev) => prev + 1);
+            setLikevalue(response?.data?.data[0]);
+            setLikeStatus(false);
+          }
+        } else {
+          setDislikes((prev) => prev - 1);
+          setLikevalue({});
+          setLikeStatus(null);
+        }
+      }
+      showSnackbar(response?.data?.message, response?.data?.success);
+    } catch (error) {
+      console.log(error);
+      showSnackbar(error?.response?.data?.message, false);
+    }
+  };
+
+  const UnfollowHandler = async (ev) => {
+    try {
+      const response = await axios.delete(UNFOLLOW + `/${ev.target.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
+        },
+      });
+      if (response?.data?.success) {
+        setFollows([]);
+        showSnackbar(response?.data?.message, response?.data?.success);
+      }
+    } catch (error) {
+      console.log(error);
+      showSnackbar(error?.response?.data?.message, false);
     }
 
     setOpenModal((prev) => !prev);
@@ -525,23 +545,20 @@ export const PostDetails = () => {
   const FollowHandler = async () => {
     if (Object.keys(user).length === 0) return navigate("/SignUp");
     try {
-      const response = await axios.post(
-        ADDFOLLOWINPOST,
-        {
-          follower_id: user.user_id,
-          following_id: data.user_id,
+      const response = await axios.post(`${FOLLOW}/${data.user_id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
-          },
-        }
-      );
+      });
       // console.log(response?.data?.data);
-      setFollows(response?.data?.data);
+      if (response?.data?.success) {
+        setFollows(response?.data?.data);
+        showSnackbar(response?.data?.message, response?.data?.success);
+      }
     } catch (error) {
       console.log(error);
+      showSnackbar(error?.response?.data?.message, false);
     }
   };
 
@@ -696,14 +713,6 @@ export const PostDetails = () => {
                     <div className="flex flex-row items-center justify-evenly">
                       <div className="flex flex-row items-center justify-center">
                         <div className="mr-2.5">
-                          {/* <img
-                        className="rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
-                        src={
-                          data.profileimage
-                            ? `http://localhost:5000/${data.profileimage}`
-                            : "../../../public/Profile.jpeg"
-                        }
-                        /> */}
                           {data.profileimage ? (
                             <ImageComponent
                               base64String={data.profileimage}
@@ -727,12 +736,11 @@ export const PostDetails = () => {
                                   : data.user_name}
                               </p>
                             </Link>
-                            {data.user_name !== user.user_name && (
-                              <p>&middot;</p>
-                            )}
-                            {data.user_name !== user.user_name &&
-                              setFollowLoad &&
-                              (follows.length !== 0 ? (
+                            {data.user_id !== user.user_id && <p>&middot;</p>}
+                            {data.user_id !== user.user_id ? (
+                              followloading ? (
+                                <Loader className="w-4 h-4 ml-2 animate-spin" />
+                              ) : follows.length !== 0 ? (
                                 <button
                                   onClick={() => setOpenModal((prev) => !prev)}
                                   className="pl-2 text-base text-green-600 max-md:text-sm"
@@ -746,7 +754,8 @@ export const PostDetails = () => {
                                 >
                                   Follow
                                 </button>
-                              ))}
+                              )
+                            ) : null}
                           </div>
                           <div className="flex flex-row items-center justify-start w-full ">
                             <p className="pr-2 text-sm text-neutral-500 ">
@@ -938,7 +947,6 @@ export const PostDetails = () => {
                     }
                     base64String={data.post_images}
                   />
-                 
                 </div>
 
                 <div className="ql-snow">
@@ -950,17 +958,11 @@ export const PostDetails = () => {
                   </div>
                 </div>
 
-               
                 <div>
                   <h1 className="mt-5 mb-5 text-2xl font-bold text-orange-500 max-md:font-normal max-md:text-lg max-md:mt-3 max-md:mb-3">
                     Summary
                   </h1>
-                  <div className="ql-snow">
-                    <div
-                      className="p-0 text-lg font-light text-justify ql-editor max-md:text-xs"
-                      dangerouslySetInnerHTML={{ __html: data.post_summary }}
-                    ></div>
-                  </div>
+                  <p>{data.post_summary}</p>
                 </div>
                 <div className="flex flex-row flex-wrap items-center justify-start w-full gap-2 pt-5">
                   <p className="flex flex-row items-center justify-start text-orange-500 max-md:text-xs">
@@ -1000,7 +1002,6 @@ export const PostDetails = () => {
                   <div className="flex flex-row flex-wrap items-center justify-between w-full mt-5 mb-10 max-md:justify-center">
                     <div className="flex flex-row items-center justify-center">
                       <div className="mr-2.5">
-                       
                         {data.profileimage ? (
                           <ImageComponent
                             features={
@@ -1024,138 +1025,46 @@ export const PostDetails = () => {
                                 : data.user_name}
                             </p>
                           </Link>
-                          {data.user_name !== user.user_name && <p>&middot;</p>}
-                          {data.user_name !== user.user_name &&
-                            setFollowLoad &&
-                            (follows.length !== 0 ? (
+                          {data.user_id !== user.user_id && <p>&middot;</p>}
+                          {data.user_id !== user.user_id ? (
+                            followloading ? (
+                              <Loader className="w-4 h-4 ml-2 animate-spin" />
+                            ) : follows.length !== 0 ? (
                               <button
                                 onClick={() => setOpenModal((prev) => !prev)}
-                                className="pl-2 text-base text-green-600"
+                                className="pl-2 text-base text-green-600 max-md:text-sm"
                               >
                                 Following
                               </button>
                             ) : (
                               <button
                                 onClick={FollowHandler}
-                                className="pl-2 text-base text-green-600"
+                                className="pl-2 text-base text-green-600 max-md:text-sm"
                               >
                                 Follow
                               </button>
-                            ))}
+                            )
+                          ) : null}
                         </div>
                       </div>
                     </div>
 
                     <Tooltip title="Favorites">
-                      <TwitterLikeButton
-                        isLiked={favorite}
-                        onClick={handleFavorite}
-                        width={"40px"}
-                        height={"40px"}
-                      />
+                      {favloading ? (
+                        <Loader className="w-4 h-4 ml-2 animate-spin" />
+                      ) : (
+                        <TwitterLikeButton
+                          isLiked={favorite}
+                          onClick={handleFavorite}
+                          width={"40px"}
+                          height={"40px"}
+                        />
+                      )}
                     </Tooltip>
 
                     {likeloading ? (
                       <div className="flex flex-row items-center justify-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 200 200"
-                        >
-                          <circle
-                            fill="#F97316"
-                            stroke="#F97316"
-                            stroke-width="28"
-                            r="15"
-                            cx="35"
-                            cy="100"
-                          >
-                            <animate
-                              attributeName="cx"
-                              calcMode="spline"
-                              dur="1.5"
-                              values="35;165;165;35;35"
-                              keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                              repeatCount="indefinite"
-                              begin="0"
-                            ></animate>
-                          </circle>
-                          <circle
-                            fill="#F97316"
-                            stroke="#F97316"
-                            stroke-width="28"
-                            opacity=".8"
-                            r="15"
-                            cx="35"
-                            cy="100"
-                          >
-                            <animate
-                              attributeName="cx"
-                              calcMode="spline"
-                              dur="1.5"
-                              values="35;165;165;35;35"
-                              keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                              repeatCount="indefinite"
-                              begin="0.05"
-                            ></animate>
-                          </circle>
-                          <circle
-                            fill="#F97316"
-                            stroke="#F97316"
-                            stroke-width="28"
-                            opacity=".6"
-                            r="15"
-                            cx="35"
-                            cy="100"
-                          >
-                            <animate
-                              attributeName="cx"
-                              calcMode="spline"
-                              dur="1.5"
-                              values="35;165;165;35;35"
-                              keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                              repeatCount="indefinite"
-                              begin=".1"
-                            ></animate>
-                          </circle>
-                          <circle
-                            fill="#F97316"
-                            stroke="#F97316"
-                            stroke-width="28"
-                            opacity=".4"
-                            r="15"
-                            cx="35"
-                            cy="100"
-                          >
-                            <animate
-                              attributeName="cx"
-                              calcMode="spline"
-                              dur="1.5"
-                              values="35;165;165;35;35"
-                              keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                              repeatCount="indefinite"
-                              begin=".15"
-                            ></animate>
-                          </circle>
-                          <circle
-                            fill="#F97316"
-                            stroke="#F97316"
-                            stroke-width="28"
-                            opacity=".2"
-                            r="15"
-                            cx="35"
-                            cy="100"
-                          >
-                            <animate
-                              attributeName="cx"
-                              calcMode="spline"
-                              dur="1.5"
-                              values="35;165;165;35;35"
-                              keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                              repeatCount="indefinite"
-                              begin=".2"
-                            ></animate>
-                          </circle>
-                        </svg>
+                        <Loader className="animate-spin" />
                       </div>
                     ) : (
                       <div className="flex flex-row items-center justify-center">
@@ -1163,70 +1072,38 @@ export const PostDetails = () => {
                           <button
                             className="flex flex-row items-center justify-center mr-2"
                             onClick={LikeUpdater}
-                            style={likeStatus ? LikeStyles : DefaultStyles}
+                            value={likevalue.like_id}
                           >
-                            {likeStatus ? (
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                class="w-7 h-7 pr-1"
-                              >
-                                <path d="M7.493 18.5c-.425 0-.82-.236-.975-.632A7.48 7.48 0 0 1 6 15.125c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75A.75.75 0 0 1 15 2a2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23h-.777ZM2.331 10.727a11.969 11.969 0 0 0-.831 4.398 12 12 0 0 0 .52 3.507C2.28 19.482 3.105 20 3.994 20H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 0 1-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227Z" />
-                              </svg>
-                            ) : (
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                class="w-7 h-7 pr-1"
-                              >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z"
-                                />
-                              </svg>
-                            )}
-                            {like.length}
+                            <ThumbsUp
+                              absoluteStrokeWidth={false}
+                              className={
+                                likeStatus === true
+                                  ? "fill-green-500 stroke-none w-6 h-6" // Green fill, no border
+                                  : "fill-none stroke-black w-5 h-5" // No fill, gray border
+                              }
+                            />
+                            <span className="ml-1 text-lg text-green-500">
+                              {likes}
+                            </span>
                           </button>
                         </Tooltip>
                         <Tooltip title="Dislike">
                           <button
                             className="flex flex-row items-center justify-center ml-2"
                             onClick={DisLikeUpdater}
-                            style={
-                              dislikeStatus ? DisLikeStyles : DefaultStyles
-                            }
+                            value={likevalue.like_id}
                           >
-                            {dislikeStatus ? (
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                class="w-7 h-7 pr-1"
-                              >
-                                <path d="M15.73 5.5h1.035A7.465 7.465 0 0 1 18 9.625a7.465 7.465 0 0 1-1.235 4.125h-.148c-.806 0-1.534.446-2.031 1.08a9.04 9.04 0 0 1-2.861 2.4c-.723.384-1.35.956-1.653 1.715a4.499 4.499 0 0 0-.322 1.672v.633A.75.75 0 0 1 9 22a2.25 2.25 0 0 1-2.25-2.25c0-1.152.26-2.243.723-3.218.266-.558-.107-1.282-.725-1.282H3.622c-1.026 0-1.945-.694-2.054-1.715A12.137 12.137 0 0 1 1.5 12.25c0-2.848.992-5.464 2.649-7.521C4.537 4.247 5.136 4 5.754 4H9.77a4.5 4.5 0 0 1 1.423.23l3.114 1.04a4.5 4.5 0 0 0 1.423.23ZM21.669 14.023c.536-1.362.831-2.845.831-4.398 0-1.22-.182-2.398-.52-3.507-.26-.85-1.084-1.368-1.973-1.368H19.1c-.445 0-.72.498-.523.898.591 1.2.924 2.55.924 3.977a8.958 8.958 0 0 1-1.302 4.666c-.245.403.028.959.5.959h1.053c.832 0 1.612-.453 1.918-1.227Z" />
-                              </svg>
-                            ) : (
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                class="w-7 h-7 pr-1"
-                              >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  d="M7.498 15.25H4.372c-1.026 0-1.945-.694-2.054-1.715a12.137 12.137 0 0 1-.068-1.285c0-2.848.992-5.464 2.649-7.521C5.287 4.247 5.886 4 6.504 4h4.016a4.5 4.5 0 0 1 1.423.23l3.114 1.04a4.5 4.5 0 0 0 1.423.23h1.294M7.498 15.25c.618 0 .991.724.725 1.282A7.471 7.471 0 0 0 7.5 19.75 2.25 2.25 0 0 0 9.75 22a.75.75 0 0 0 .75-.75v-.633c0-.573.11-1.14.322-1.672.304-.76.93-1.33 1.653-1.715a9.04 9.04 0 0 0 2.86-2.4c.498-.634 1.226-1.08 2.032-1.08h.384m-10.253 1.5H9.7m8.075-9.75c.01.05.027.1.05.148.593 1.2.925 2.55.925 3.977 0 1.487-.36 2.89-.999 4.125m.023-8.25c-.076-.365.183-.75.575-.75h.908c.889 0 1.713.518 1.972 1.368.339 1.11.521 2.287.521 3.507 0 1.553-.295 3.036-.831 4.398-.306.774-1.086 1.227-1.918 1.227h-1.053c-.472 0-.745-.556-.5-.96a8.95 8.95 0 0 0 .303-.54"
-                                />
-                              </svg>
-                            )}
-                            {dislike.length}
+                            <ThumbsDown
+                              absoluteStrokeWidth={false}
+                              className={
+                                likeStatus === false
+                                  ? "fill-red-500 stroke-none w-6 h-6" // Green fill, no border
+                                  : "fill-none stroke-black w-5 h-5" // No fill, gray border
+                              }
+                            />
+                            <span className="ml-1 text-lg text-red-500">
+                              {dislikes}
+                            </span>
                           </button>
                         </Tooltip>
                       </div>
@@ -1282,9 +1159,6 @@ export const PostDetails = () => {
                               fontFamily: "Space Mono",
                               color: "red",
                             }}
-                            // onClick={() => {
-                            //   handleDeletePost(deleteID);
-                            // }}
                             onClick={handleDelete}
                             autoFocus
                           >
@@ -1330,15 +1204,6 @@ export const PostDetails = () => {
                             </Link>
                           )}
 
-                          {/* <AccountCircle
-                          fontSize="large"
-                          sx={{ color: "action.active", mr: "10px" }}
-                        /> }
-                        {/* <input
-                            ref={comment}
-                          className="flex w-full pt-3 pb-3 pl-2 pr-2 "
-                            placeholder="Add a comment..."
-                        /> */}
                           <TextField
                             id="standard-textarea"
                             inputRef={comment}
@@ -1359,105 +1224,7 @@ export const PostDetails = () => {
                       <div className="flex flex-col items-center justify-center w-full mt-3 mb-10">
                         {commentLoading ? (
                           <div className="flex flex-row items-center justify-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 200 200"
-                            >
-                              <circle
-                                fill="#F97316"
-                                stroke="#F97316"
-                                stroke-width="28"
-                                r="15"
-                                cx="35"
-                                cy="100"
-                              >
-                                <animate
-                                  attributeName="cx"
-                                  calcMode="spline"
-                                  dur="1.5"
-                                  values="35;165;165;35;35"
-                                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                                  repeatCount="indefinite"
-                                  begin="0"
-                                ></animate>
-                              </circle>
-                              <circle
-                                fill="#F97316"
-                                stroke="#F97316"
-                                stroke-width="28"
-                                opacity=".8"
-                                r="15"
-                                cx="35"
-                                cy="100"
-                              >
-                                <animate
-                                  attributeName="cx"
-                                  calcMode="spline"
-                                  dur="1.5"
-                                  values="35;165;165;35;35"
-                                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                                  repeatCount="indefinite"
-                                  begin="0.05"
-                                ></animate>
-                              </circle>
-                              <circle
-                                fill="#F97316"
-                                stroke="#F97316"
-                                stroke-width="28"
-                                opacity=".6"
-                                r="15"
-                                cx="35"
-                                cy="100"
-                              >
-                                <animate
-                                  attributeName="cx"
-                                  calcMode="spline"
-                                  dur="1.5"
-                                  values="35;165;165;35;35"
-                                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                                  repeatCount="indefinite"
-                                  begin=".1"
-                                ></animate>
-                              </circle>
-                              <circle
-                                fill="#F97316"
-                                stroke="#F97316"
-                                stroke-width="28"
-                                opacity=".4"
-                                r="15"
-                                cx="35"
-                                cy="100"
-                              >
-                                <animate
-                                  attributeName="cx"
-                                  calcMode="spline"
-                                  dur="1.5"
-                                  values="35;165;165;35;35"
-                                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                                  repeatCount="indefinite"
-                                  begin=".15"
-                                ></animate>
-                              </circle>
-                              <circle
-                                fill="#F97316"
-                                stroke="#F97316"
-                                stroke-width="28"
-                                opacity=".2"
-                                r="15"
-                                cx="35"
-                                cy="100"
-                              >
-                                <animate
-                                  attributeName="cx"
-                                  calcMode="spline"
-                                  dur="1.5"
-                                  values="35;165;165;35;35"
-                                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                                  repeatCount="indefinite"
-                                  begin=".2"
-                                ></animate>
-                              </circle>
-                            </svg>
+                            <Loader className="animate-spin" />
                           </div>
                         ) : comments.length === 0 ? (
                           <p className="max-md:text-sm">No Comments Yet</p>
@@ -1574,18 +1341,15 @@ export const PostDetails = () => {
                                                   formData.entries()
                                                 );
                                               const newComment = formJson.email;
-                                              // console.log(newComment);
 
                                               const data = {
                                                 newComment: newComment,
-                                                commentID: commentID,
-                                                postID: id,
                                               };
 
                                               try {
                                                 const response =
-                                                  await axios.put(
-                                                    EDITCOMMENT,
+                                                  await axios.patch(
+                                                    `${COMMENT}/${commentID}`,
                                                     data,
                                                     {
                                                       headers: {
@@ -1597,16 +1361,32 @@ export const PostDetails = () => {
                                                       },
                                                     }
                                                   );
-                                                // console.log(
-                                                //   response?.data?.data
-                                                // );
-                                                setComments(
-                                                  response?.data?.data
+                                                setComments((prev) => {
+                                                  const newarray = prev.filter(
+                                                    (com) =>
+                                                      com.comment_id !==
+                                                      commentID
+                                                  );
+                                                  newarray.unshift({
+                                                    ...response?.data?.data,
+                                                    user_name: user.user_name,
+                                                    profileimage:
+                                                      user.profileimage,
+                                                  });
+                                                  return newarray;
+                                                });
+                                                showSnackbar(
+                                                  response?.data?.message,
+                                                  response?.data?.success
                                                 );
                                               } catch (error) {
                                                 console.log(error);
+                                                showSnackbar(
+                                                  error?.response?.data
+                                                    ?.message,
+                                                  false
+                                                );
                                               }
-
                                               handleCloseEdit();
                                             },
                                           }}

@@ -23,8 +23,10 @@ import axios from "../../../api/axios";
 import { useNavigate } from "react-router-dom";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ImageComponent from "../../../utils/ImageComponent";
+import { useSnackbarContext } from "../../context/snackProvider";
+import { Loader } from "lucide-react";
 
-const CREATE_POST = "/post";
+const CREATE_POST = "/post/post";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -106,6 +108,8 @@ const EnhancedCreatePost = () => {
   const [currentTag, setCurrentTag] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const { showSnackbar } = useSnackbarContext();
+
   const navigate = useNavigate();
   const quillRef = useRef(null);
   const mediaRef = useRef(null);
@@ -153,23 +157,27 @@ const EnhancedCreatePost = () => {
     if (currentMedia) {
       data.set("media", currentMedia);
     } else {
-      console.error("No file selected");
+      showSnackbar("No file selected. Please upload a file.", false);
+      setIsLoading(false);
+      return;
     }
 
     try {
       const response = await axios.post(CREATE_POST, data, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(response?.data?.success);
-      console.log(response?.data?.base);
-      console.log(response?.data?.Base);
       setIsLoading(false);
+      showSnackbar(response?.data?.message, response?.data?.success);
       navigate("/");
     } catch (error) {
       console.error("Error creating post:", error);
+      showSnackbar(
+        error?.response?.data?.message,
+        error?.response?.data?.success
+      );
       setIsLoading(false);
     }
   };
@@ -324,7 +332,14 @@ const EnhancedCreatePost = () => {
                     },
                   }}
                 >
-                  {isLoading ? <CircularProgress size={24} /> : "Create Post"}
+                  {isLoading ? (
+                    <React.Fragment className="flex items-center justify-center">
+                      <Loader className="mr-2 animate-spin" />
+                      Creating
+                    </React.Fragment>
+                  ) : (
+                    "Create Post"
+                  )}
                 </Button>
               </Grid>
             </Grid>

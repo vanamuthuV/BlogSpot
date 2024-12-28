@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import axios from "../../../api/axios";
-import { Link, useSearchParams } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
 import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
@@ -11,34 +10,26 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useSnackbarContext } from "../../context/snackProvider";
 
-const ACCOUNT = "/account";
-const USERNAMECHECK = "/usernamecheck";
-const EMAILCHECK = "/emailcheck";
-const USERNAMEUPDATE = "/usernameupdate";
-const EMAILUPDATE = "/emailupdate";
-const PASSWORDVERIFY = "/passcodeverify";
-const PASSWORDUPDATE = "/passwordupdate";
-const DELETEACCOUNT = "/deleteaccount";
+const USERNAME = "/account/username";
+const EMAIL = "/account/email";
+const PASSWORD = "/account/verify/oldpass";
+const PASSWORDUPDATE = "/account/password";
+const DELETEACCOUNT = "/account/account";
 
 export const Accounts = () => {
   const { user, setUser, setAuth } = useAuth();
 
   const navigate = useNavigate();
 
-  // console.log(user);
+  const { showSnackbar } = useSnackbarContext();
 
   const username = useRef("");
   const email = useRef("");
   const oldPassword = useRef("");
   const newPassword = useRef("");
 
-  const [messageP, setMessageP] = useState(null);
-  const [messageN, setMessageN] = useState(null);
-
-  const data = {
-    user_id: user.user_id,
-  };
 
   const [usernameEdit, setUsernameEdit] = useState(false);
   const [emailEdit, setemailEdit] = useState(false);
@@ -65,24 +56,6 @@ export const Accounts = () => {
   const [emailDialogueSetterP, setemailDialogueSetterP] = useState(false);
   const [emailDialogueSetterN, setemailDialogueSetterN] = useState(false);
 
-  const [open, setOpen] = React.useState(false);
-  const [openN, setOpenN] = useState(false);
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  const handleCloseN = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpenN(false);
-  };
 
   const [openDelete, setOpenDelete] = React.useState(false);
 
@@ -96,27 +69,25 @@ export const Accounts = () => {
 
   const DeleteAccount = async () => {
     try {
-      const response = await axios.delete(DELETEACCOUNT + `/${user.user_id}`, {
+      const response = await axios.delete(DELETEACCOUNT, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      // console.log(response?.data?.data);
 
-      if (response?.data?.data === true) {
-        setMessageP("Account Deletion Complete. Redirecting Please wait...");
-        setTimeout(() => {
-          setUser({});
-          setAuth({});
-          localStorage.clear();
-          navigate("/");
-        }, 4000);
+      if (response?.data?.success) {
+        showSnackbar(response?.data?.message, response?.data?.success);
+        setUser({});
+        setAuth({});
+        localStorage.clear();
+        navigate("/");
       } else {
-        setMessageN("Cannot Delete Account!!");
+        showSnackbar(response?.data?.message, false);
       }
     } catch (error) {
       console.log(error);
+      showSnackbar(error?.response?.data?.message, false);
     }
 
     setOpenDelete(false);
@@ -124,114 +95,161 @@ export const Accounts = () => {
 
   const OldPasswordHandle = async (ev) => {
     ev.preventDefault();
-    // console.log(oldPassword.current.value);
 
     const Credentials = {
       user_passcode: oldPassword.current.value,
-      user_id: user.user_id,
     };
 
     try {
-      const response = await axios.post(PASSWORDVERIFY, Credentials, {
+      const response = await axios.post(PASSWORD, Credentials, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      // console.log(response?.data?.data);
-      if (response?.data?.data === true) {
+      if (response?.data?.success) {
         setIsPass(true);
         setShowOldPassword(false);
-        setMessageP("Password Verification Success!!");
+        showSnackbar(response?.data?.message, response?.data?.success);
       } else {
-        setMessageN("Password Doesn't Match!!");
-        setOpenN(true);
-        setOpen(false);
+        showSnackbar("Wrong password", false);
       }
     } catch (error) {
       console.log(error);
+      showSnackbar(error?.response?.data?.message, false);
     }
   };
 
-  useEffect(() => {
-    if (messageP) {
-      setOpen(true);
-      setOpenN(false);
-    }
-  }, [messageP]);
 
-  useEffect(() => {
-    if (messageN) {
-      setOpenN(true);
-      setOpen(false);
-    }
-  }, []);
+
+  const [emails, setEmails] = useState([]);
+  let cachedFirstEmailLetter = ""; // To track the first letter already fetched
+
+  console.log(emails);
 
   const EmailChecker = async () => {
-    if (email.current.value === "") {
+    const emailValue = email.current.value.trim();
+
+    if (emailValue.length === 1) {
+      // Send a request only when the length is exactly 1 and a new first letter is typed
+      if (cachedFirstEmailLetter !== emailValue) {
+        cachedFirstEmailLetter = emailValue;
+
+        try {
+          const response = await axios.get(`${EMAIL}/${emailValue}`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          });
+          setEmails(response?.data?.data);
+          const isMatch = response?.data?.data?.some(
+            (user) => user?.user_email === emailValue
+          );
+
+          if (isMatch) {
+            // If an exact match is found (username already exists in the array), set 'P' to false and 'N' to true
+            setemailDialogueSetterP(false);
+            setemailDialogueSetterN(true);
+          } else {
+            // If no exact match is found (username is available), set 'P' to true and 'N' to false
+            setemailDialogueSetterP(true);
+            setemailDialogueSetterN(false);
+          }
+          return;
+        } catch (error) {
+          console.log(error);
+          return;
+        }
+      }
+    } else if (emailValue.length > 1) {
+      // Filter the cached usernames for further checks
+      const isMatch = emails.some((user) => user?.user_email === emailValue);
+
+      if (isMatch) {
+        // If an exact match is found (username already exists in the array), set 'P' to false and 'N' to true
+        setemailDialogueSetterP(false);
+        setemailDialogueSetterN(true);
+      } else {
+        // If no exact match is found (username is available), set 'P' to true and 'N' to false
+        setemailDialogueSetterP(true);
+        setemailDialogueSetterN(false);
+      }
+      return;
+    } else if (emailValue.length === 0) {
+      // Reset if the user clears the input
+      cachedFirstEmailLetter = "";
+      setEmails([]);
       setemailDialogueSetterN(false);
       setemailDialogueSetterP(false);
       return;
     }
-
-    const userdata = {
-      user_email: email.current.value,
-    };
-
-    try {
-      const response = await axios.post(EMAILCHECK, userdata, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      // console.log(response?.data?.data);
-
-      if (response?.data?.data === true) {
-        setemailDialogueSetterP(true);
-        setemailDialogueSetterN(false);
-      } else {
-        // console.log("Hola");
-        setemailDialogueSetterP(false);
-        setemailDialogueSetterN(true);
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
-  const UserNameChecker = async () => {
-    // console.log(username.current.value);
+  const [names, setNames] = useState([]);
+  let cachedFirstLetter = ""; // To track the first letter already fetched
 
-    if (username.current.value === "") {
-      setUserNameDialogueSetterN(false);
-      setUserNameDialogueSetterP(false);
+  const UserNameChecker = async () => {
+    const usernameValue = username.current.value.trim();
+
+    // Check for empty spaces or special characters
+    if (!/^[a-zA-Z0-9]*$/.test(usernameValue)) {
       return;
     }
 
-    const userdata = {
-      user_name: username.current.value,
-    };
+    if (usernameValue.length === 1) {
+      // Send a request only when the length is exactly 1 and a new first letter is typed
+      if (cachedFirstLetter !== usernameValue) {
+        cachedFirstLetter = usernameValue;
 
-    try {
-      const response = await axios.post(USERNAMECHECK, userdata, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      // console.log(response?.data?.data);
+        try {
+          const response = await axios.get(`${USERNAME}/${usernameValue}`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          });
+          setNames(response?.data?.data);
+          const isMatch = response?.data?.data?.some(
+            (user) => user?.user_name === usernameValue
+          );
 
-      if (response?.data?.data === true) {
-        setUserNameDialogueSetterP(true);
-        setUserNameDialogueSetterN(false);
-      } else {
-        // console.log("Hola");
+          if (isMatch) {
+            // If an exact match is found (username already exists in the array), set 'P' to false and 'N' to true
+            setUserNameDialogueSetterP(false);
+            setUserNameDialogueSetterN(true);
+          } else {
+            // If no exact match is found (username is available), set 'P' to true and 'N' to false
+            setUserNameDialogueSetterP(true);
+            setUserNameDialogueSetterN(false);
+          }
+          return;
+        } catch (error) {
+          console.log(error);
+          return;
+        }
+      }
+    } else if (usernameValue.length > 1) {
+      // Filter the cached usernames for further checks
+      const isMatch = names.some((user) => user?.user_name === usernameValue);
+
+      if (isMatch) {
+        // If an exact match is found (username already exists in the array), set 'P' to false and 'N' to true
         setUserNameDialogueSetterP(false);
         setUserNameDialogueSetterN(true);
+      } else {
+        // If no exact match is found (username is available), set 'P' to true and 'N' to false
+        setUserNameDialogueSetterP(true);
+        setUserNameDialogueSetterN(false);
       }
-    } catch (error) {
-      console.log(error);
+      return;
+    } else if (usernameValue.length === 0) {
+      // Reset if the user clears the input
+      cachedFirstLetter = "";
+      setNames([]);
+      setUserNameDialogueSetterN(false);
+      setUserNameDialogueSetterP(false);
+      return;
     }
   };
 
@@ -239,26 +257,33 @@ export const Accounts = () => {
     if (Object.keys(user).length === 0) return navigate("/SignUp");
 
     const details = {
-      user_email: email.current.value,
-      user_id: user.user_id,
+      user_email: email.current.value.trim(),
+      user_id : user.user_id
     };
 
     if (emailDialogueSetterP) {
       try {
-        const response = await axios.put(EMAILUPDATE, details, {
+        const response = await axios.patch(EMAIL, details, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        // console.log(response?.data?.data);
-        // console.log(user);
-        setUser(response?.data?.data);
+        if (response?.data?.success) {
+          setUser((prev) => ({
+            ...prev,
+            user_email: email.current?.value.trim(),
+            verified: false,
+          }));
+        }
+        localStorage.setItem("accessToken", response?.data?.data);
         setemailEdit(false);
         setemailDialogueSetterN(false);
         setemailDialogueSetterP(false);
+        showSnackbar(response?.data?.message, response?.data?.success);
       } catch (error) {
         console.log(error);
+        showSnackbar(error?.response?.data?.message, false);
       }
     }
   };
@@ -268,122 +293,70 @@ export const Accounts = () => {
 
     const details = {
       user_name: username.current?.value.trim(),
-      user_id: user.user_id,
     };
 
     if (usernameDialogueSetterP) {
       try {
-        const response = await axios.put(USERNAMEUPDATE, details, {
+        const response = await axios.patch(USERNAME, details, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        // console.log(response?.data?.data);
-        // console.log(user);
-        setUser(response?.data?.data);
-        setUsernameEdit(false);
-        setUserNameDialogueSetterN(false);
-        setUserNameDialogueSetterP(false);
+        if (response?.data?.success) {
+          setUser((prev) => ({
+            ...prev,
+            user_name: username.current?.value.trim(),
+          }));
+
+          localStorage.setItem("accessToken", response?.data?.data);
+          setUsernameEdit(false);
+          setUserNameDialogueSetterN(false);
+          setUserNameDialogueSetterP(false);
+          showSnackbar(response?.data?.message, response?.data?.success);
+        }
       } catch (error) {
         console.log(error);
+        showSnackbar(error?.response?.data?.message, false);
       }
     }
   };
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.post(ACCOUNT, data, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-        // console.log(response?.data?.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
 
   const PasswordUpdation = async (ev) => {
     ev.preventDefault();
     console.log(newPassword.current.value);
 
     const Credential = {
-      user_id: user.user_id,
       new_password: newPassword.current.value,
     };
 
     try {
-      const response = await axios.put(PASSWORDUPDATE, Credential, {
+      const response = await axios.patch(PASSWORDUPDATE, Credential, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      // console.log(response?.data?.data);
-      if (response?.data?.data) {
-        setMessageP("Password Changed Successfully!!");
+      if (response?.data?.success) {
         setIsPass(false);
-
-        setTimeout(() => {
-          setUser({});
-          setAuth({});
-          localStorage.clear();
-          navigate("/SignUp");
-        }, 4000);
+        showSnackbar(response?.data?.message, response?.data?.success);
+        setUser({});
+        setAuth({});
+        localStorage.clear();
+        navigate("/SignUp/login");
       } else {
-        setMessageN("Password Change Request Unsuccess!!");
+        showSnackbar(response?.data?.message, false);
       }
     } catch (error) {
       console.log(error);
+      showSnackbar(error?.response?.data?.message, false);
     }
   };
 
   return (
     <div className="flex flex-row items-center justify-center mb-16">
       <div className="flex flex-col items-center justify-center w-10/12">
-        {/* <div className="flex flex-col items-end justify-center w-full">
-          <div className="flex flex-col items-start justify-center">
-            <div className="flex flex-row items-center justify-end mt-10">
-              <img
-                className="mr-3 rounded-full min-h-10 min-w-10 max-h-10 max-w-10"
-                src={
-                  user.profileimage
-                    ? `http://localhost:5000/${user.profileimage}`
-                    : "../../../public/Profile.jpeg"
-                }
-              />
-              <Link className="hover:underline" to={`/${user.user_name}`}>
-                {user.user_name}
-              </Link>
-            </div>
-            <p>{user.user_email || user.Gmail}</p>
-          </div>
-        </div> */}
-        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
-          <Alert
-            onClose={handleClose}
-            severity="success"
-            variant="filled"
-            sx={{ width: "100%" }}
-          >
-            {messageP}
-          </Alert>
-        </Snackbar>
-
-        <Snackbar open={openN} autoHideDuration={5000} onClose={handleCloseN}>
-          <Alert
-            onClose={handleCloseN}
-            severity="error"
-            variant="filled"
-            sx={{ width: "100%" }}
-          >
-            {messageN}
-          </Alert>
-        </Snackbar>
+       
 
         <h1 className="w-full mt-10 text-4xl text-orange-500 align-start">
           Accounts

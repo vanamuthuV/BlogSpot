@@ -45,13 +45,14 @@ import { getLinkedinUrl } from "@phntms/react-share";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { getFacebookUrl } from "@phntms/react-share";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import { useSnackbarContext } from "../../context/snackProvider";
 
-const SETPERSONALDETAILS = "/addpersonaldetails";
-const SETPROFILE = "/setprofileimage";
-const SETCOVER = "/setcoverimage";
-const GETPROFILEIMAGE = "/getprofileimage";
-const FOLLOW = "/follow";
-const UNFOLLOW = "/unfollow";
+const SETPERSONALDETAILS = "/profile/profile/personal";
+const SETPROFILE = "/profile/profile/profile";
+const SETCOVER = "/profile/profile/cover";
+const GETPROFILE = "/profile/profile";
+const FOLLOW = "/follow/follow";
+const UNFOLLOW = "/follow/follow";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -84,6 +85,10 @@ export const Profile = () => {
   const [CoverImage, setCoverImage] = useState();
   const [userDetails, setUserDetails] = useState({});
   const [ProfileInfo, setProfileInfo] = useState({});
+
+  console.log(userDetails);
+
+  const { showSnackbar } = useSnackbarContext();
 
   const Name = useRef(null);
   const DOF = useRef(null);
@@ -126,19 +131,25 @@ export const Profile = () => {
   };
 
   const handleUnfollow = async (ev) => {
-    // console.log(ev.target.value);
+    console.log(ev.target.value);
 
     try {
       const response = await axios.delete(UNFOLLOW + `/${ev.target.value}`, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
         },
       });
-      // console.log(response?.data?.data);
-      setFollow(response?.data?.data);
+      if (response?.data?.success) {
+        showSnackbar(response?.data?.message, response?.data?.success);
+        setFollow([]);
+      }
     } catch (error) {
       console.log(error);
+      showSnackbar(
+        error?.response?.data?.message,
+        error?.response?.data?.success
+      );
     }
 
     setOpenUnfollow(false);
@@ -159,31 +170,25 @@ export const Profile = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.post(
-          GETPROFILEIMAGE,
-          {
-            user_name: user_name,
-            user_id: user.user_id,
-          },
+        const response = await axios.get(
+          `${GETPROFILE}/${user_name}/${user.user_id}`,
+
           {
             headers: {
               "Content-Type": "application/json",
             },
           }
         );
-        // console.log(response?.data?.data);
+        console.log(response?.data?.data);
         setProfileImage(
           response?.data?.data?.profilestatus[0].profileimage ||
             response?.data?.data?.profilestatus
         );
-        // console.log(response?.data?.data?.profilestatus[0].profileimage);
         setCoverImage(
           response?.data?.data?.coverstatus[0].coverimage ||
             response?.data?.data?.coverstatus
         );
         setUserDetails(response?.data?.data?.userDetails[0]);
-        // console.log(response);
-        // console.log(response?.data?.data?.userDetails[0]);
         setProfileInfo(response?.data?.data?.ProfileInfo[0]);
         setName(response?.data?.data?.ProfileInfo[0].userfullname || "");
         setBio(response?.data?.data?.ProfileInfo[0].bio || "");
@@ -191,11 +196,10 @@ export const Profile = () => {
         setRole(response?.data?.data?.ProfileInfo[0].role || "");
         setPublicPost(response?.data?.data?.PublicPost);
         setPrivatePost(response?.data?.data?.PrivatePost);
-        setFollow(response?.data?.data?.FollowStatus);
         response?.data?.data?.FollowStatus === undefined
           ? setFollow([])
           : setFollow(response?.data?.data?.FollowStatus);
-        // console.log(response?.data?.data?.FollowStatus);
+        console.log(response?.data?.data?.FollowStatus);
         setFollowers(response?.data?.data?.Followers);
         setFollowing(response?.data?.data?.Followings);
         // console.log(CompleteProfileChecker);
@@ -211,6 +215,10 @@ export const Profile = () => {
         setLoading(false);
       } catch (error) {
         console.error(error);
+        showSnackbar(
+          error?.response?.data?.message,
+          error?.response?.data?.success
+        );
       }
     })();
   }, [user_name]);
@@ -237,35 +245,47 @@ export const Profile = () => {
       formdata.append("media", base64String);
     } else {
       console.error("No file selected");
+      showSnackbar("No file selcted", false);
+      return;
     }
 
     if (ProfileImage === "NO") {
       try {
         const response = await axios.post(SETPROFILE, formdata, {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
           },
         });
 
         // console.log(response?.data?.data);
         setProfileImage(response?.data?.data[0].profileimage);
+        showSnackbar(response?.data?.message, response?.data?.success);
       } catch (error) {
         console.error(error);
+        showSnackbar(
+          error?.response?.data?.message,
+          error?.response?.data?.success
+        );
       }
     } else {
       try {
         const response = await axios.put(SETPROFILE, formdata, {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
           },
         });
 
         // console.log(response?.data?.data);
         setProfileImage(response?.data?.data[0].profileimage);
+        showSnackbar(response?.data?.message, response?.data?.success);
       } catch (error) {
         console.error(error);
+        showSnackbar(
+          error?.response?.data?.message,
+          error?.response?.data?.success
+        );
       }
     }
   };
@@ -274,16 +294,15 @@ export const Profile = () => {
     console.log(coverShow);
     if (!coverShow) {
       console.error("No file selected");
+      showSnackbar("No file selected", false);
       return;
     }
 
     if (CoverImage === "NO") {
       try {
-        console.log(data);
         const response = await axios.post(
           SETCOVER,
           {
-            user_id: user.user_id,
             media: await readFileAsDataURL(coverShow),
           },
           {
@@ -295,16 +314,19 @@ export const Profile = () => {
         );
         // console.log(response?.data?.data);
         setCoverImage(response?.data?.data[0].coverimage);
+        showSnackbar(response?.data?.message, response?.data?.success);
       } catch (error) {
         console.error(error);
+        showSnackbar(
+          error?.response?.data?.message,
+          error?.response?.data?.success
+        );
       }
     } else {
       try {
-        console.log("This", data);
         const response = await axios.put(
           SETCOVER,
           {
-            user_id: user.user_id,
             media: await readFileAsDataURL(coverShow),
           },
           {
@@ -316,8 +338,13 @@ export const Profile = () => {
         );
         console.log(response?.data);
         setCoverImage(response?.data?.data[0].coverimage);
+        showSnackbar(response?.data?.message, response?.data?.success);
       } catch (error) {
         console.error(error);
+        showSnackbar(
+          error?.response?.data?.message,
+          error?.response?.data?.success
+        );
       }
     }
   };
@@ -519,14 +546,8 @@ export const Profile = () => {
 
   const PersonalDetails = async (ev) => {
     ev.preventDefault();
-    // console.log(typeof Object.keys(ProfileInfo).length);
 
     if (Object.keys(ProfileInfo).length === 0) {
-      // console.log(name);
-      // console.log(bio);
-      // console.log(birthDay);
-      // console.log(role);
-
       const data = {
         user_id: user.user_id,
         name: name,
@@ -536,25 +557,24 @@ export const Profile = () => {
       };
 
       try {
-        // console.log(localStorage.getItem("accessToken"));
         const response = await axios.post(SETPERSONALDETAILS, data, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        // console.log(response?.data?.data);
+        console.log(response?.data?.data);
         setProfileInfo(response?.data?.data[0]);
         setOpen(false);
+        showSnackbar(response?.data?.message, response?.data?.success);
       } catch (error) {
         console.error(error);
+        showSnackbar(
+          error?.response?.data?.message,
+          error?.response?.data?.success
+        );
       }
     } else {
-      // console.log(name);
-      // console.log(bio);
-      // console.log(birthDay);
-      // console.log(role);
-
       const data = {
         user_id: user.user_id,
         name: name,
@@ -570,11 +590,15 @@ export const Profile = () => {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        // console.log(response?.data?.data);
         setProfileInfo(response?.data?.data[0]);
         setOpen(false);
+        showSnackbar(response?.data?.message, response?.data?.success);
       } catch (error) {
         console.error(error);
+        showSnackbar(
+          error?.response?.data?.message,
+          error?.response?.data?.success
+        );
       }
     }
   };
@@ -586,19 +610,31 @@ export const Profile = () => {
     // console.log(post_id);
     try {
       const response = await axios.delete(
-        `/deletepost/${post_id + "." + user.user_name}`,
+        `/post/post/${post_id}/${user.user_id}`,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       );
-      // console.log(response?.data?.data);
-      setPublicPost(response?.data?.data?.PublicPost);
-      setPrivatePost(response?.data?.data?.PrivatePost);
+      if (response?.data?.success) {
+        showSnackbar(response?.data?.message, response?.data?.success);
+        setPublicPost((prev) => {
+          const newarray = prev.filter((blog) => blog.post_id !== post_id);
+          return newarray;
+        });
+        setPrivatePost((prev) => {
+          const newarray = prev.filter((blog) => blog.post_id !== post_id);
+          return newarray;
+        });
+      }
     } catch (error) {
       console.error(error);
+      showSnackbar(
+        error?.response?.data?.message,
+        error?.response?.data?.success
+      );
     }
     setOpenDelete(false);
   };
@@ -618,28 +654,26 @@ export const Profile = () => {
   const [ShowEditable, setShowEditable] = useState(false);
 
   const AddFollower = async () => {
-    const data = {};
-
     if (Object.keys(user).length === 0) {
       return navigate("/SignUp");
     }
 
     try {
-      const response = await axios.post(FOLLOW, {
-        data: {
-          user_id: user.user_id,
-          follower_name: user_name,
-        },
+      const response = await axios.post(`${FOLLOW}/${userDetails.user_id}`, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      // console.log(response?.data?.data);
-      // console.log(response?.data?.data[0]);
+      console.log(response?.data);
       setFollow(response?.data?.data[0]);
+      showSnackbar(response?.data?.message, response?.data?.success);
     } catch (error) {
       console.log(error);
+      showSnackbar(
+        error?.response?.data?.message,
+        error?.response?.data?.success
+      );
     }
   };
 
@@ -1213,12 +1247,12 @@ export const Profile = () => {
                         </time>
                       </div>
                       <div className="flex flex-row items-center justify-start mt-3 mb-3 text-gray-600 max-md:text-xs">
-                        <Link to={`/${user_name}/followers`}>
+                        <Link to={`/${user_name}/follows`}>
                           <p className="pr-2 hover:underline">
                             {followers.length} Followers
                           </p>
                         </Link>
-                        <Link to={`/${user_name}/followings`}>
+                        <Link to={`/${user_name}/follows`}>
                           <p className="pl-2 hover:underline">
                             {following.length} Followings
                           </p>
@@ -1441,23 +1475,7 @@ export const Profile = () => {
                                     }}
                                   ></div>
                                 </div>
-                                {/* <div
-                                  dangerouslySetInnerHTML={{
-                                    __html:
-                                      window.innerWidth >= 769
-                                        ? items.post_summary.length > 250
-                                          ? items.post_summary.substring(
-                                              0,
-                                              250
-                                            ) + "..."
-                                          : items.post_summary
-                                        : items.post_summary.length > 60
-                                        ? items.post_summary.substring(0, 60) +
-                                          "..."
-                                        : items.post_summary,
-                                  }}
-                                  className="mb-4 text-justify max-md:text-xs"
-                                ></div> */}
+                                
                               </div>
                               {user.user_name === userDetails.user_name && (
                                 <div className="flex flex-row items-center justify-center pl-5 max-md:pl-2">

@@ -3,13 +3,12 @@ import { Link } from "react-router-dom";
 import axios from "../../../api/axios";
 import ImageComponent from "../../../utils/ImageComponent";
 import useSearch from "../../../hooks/useSearch";
-import SearchVideo from "../../../public/Search.mp4"
-import img from "../../../public/Profile.jpeg"
+import SearchVideo from "../../../public/Search.mp4";
+import img from "../../../public/Profile.jpeg";
+import { Loader } from "lucide-react";
+import { useSnackbarContext } from "../../context/snackProvider";
 
-const ACCOUNTSEARCH = "/accountsearch";
-const CATEGORYSEARCH = "/categorysearch";
-const POSTSEARCH = "/postsearch";
-const TAGSEARCH = "/tagsearch";
+const SEARCH = "/search/search";
 
 export const FetchContinous = ({ keyword }) => {
   // console.log(keyword);
@@ -17,10 +16,15 @@ export const FetchContinous = ({ keyword }) => {
   const { searchOpen, setSearchOpen } = useSearch();
 
   const [loading, setLoading] = useState(true);
-  const [Accounts, setAccounts] = useState([]);
-  const [Posts, setPosts] = useState([]);
-  const [Category, setCategory] = useState([]);
-  const [Tags, setTags] = useState([]);
+  const [data, setData] = useState({
+    Accounts: [],
+    Posts: [],
+    Category: [],
+    Tags: [],
+  });
+
+  const { showSnackbar } = useSnackbarContext();
+
   const [userMore, setUserMore] = useState(false);
   const [postMore, setPostMore] = useState(false);
   const [categoryMore, setCategoryMore] = useState(false);
@@ -31,63 +35,64 @@ export const FetchContinous = ({ keyword }) => {
   const [categoryMaintainer, setCategoryMaintainer] = useState([]);
   const [tagMaintainer, setTagMaintainer] = useState([]);
 
-
-
-  const Search = {
-    val: keyword,
-  };
-
   useEffect(() => {
+    if (keyword.length !== 1) {
+      const tempuser = [...data.Accounts];
+      setUserMaintainer(() => {
+        const tempu = tempuser.filter((user) =>
+          user.user_name.includes(keyword)
+        );
+        return tempu;
+      });
+      const temppost = [...data.Posts];
+      setPostMaintainer(() => {
+        const tempp = temppost.filter((post) =>
+          post.post_title.includes(keyword)
+        );
+        return tempp;
+      });
+      const tempcategory = [...data.Category];
+      setCategoryMaintainer(() => {
+        const tempc = tempcategory.filter((cat) =>
+          cat.post_category.includes(keyword)
+        );
+        return tempc;
+      });
+      const temptags = [...data.Tags];
+      setTagMaintainer(() => {
+        const tempt = temptags.filter((tag) => tag.post_tags.includes(keyword));
+        return tempt;
+      });
+      return;
+    }
+
     (async () => {
-      setLoading(true)
+      setLoading(true);
       try {
-        const resposne = await axios.post(ACCOUNTSEARCH, Search);
-        // console.log(resposne?.data?.data);
-        setAccounts(resposne?.data?.data);
-        setUserMaintainer(resposne?.data?.data.slice(0, 4));
+        const response = await axios.get(`${SEARCH}/${keyword}`);
+        console.log(response?.data?.data);
+        const { accounts, posts, categorys, tags } = response?.data?.data;
+        setData((prev) => {
+          const newSearch = { ...prev };
+
+          newSearch.Accounts = accounts;
+          const tempuser = [...accounts];
+          setUserMaintainer(tempuser.splice(0, 4));
+          newSearch.Category = categorys;
+          const tempcategory = [...categorys];
+          setCategoryMaintainer(tempcategory.splice(0, 4));
+          newSearch.Posts = posts;
+          const temppost = [...posts];
+          setPostMaintainer(temppost.splice(0, 4));
+          newSearch.Tags = tags;
+          const temptags = [...tags];
+          setTagMaintainer(temptags.splice(0, 4));
+          return newSearch;
+        });
       } catch (error) {
-        console.error(error);
+        showSnackbar(error?.response?.data?.message, false);
       }
-
-      // Post Fetching
-
-      try {
-
-        const resposne = await axios.post(POSTSEARCH, Search);
-        // console.log(resposne?.data?.data);
-        setPosts(resposne?.data?.data);
-        setPostMaintainer(resposne?.data?.data.slice(0, 4));
-
-      } catch (error) {
-        console.error(error);
-      }
-
-      // Category Fetching
-
-      try {
-
-        const resposne = await axios.post(CATEGORYSEARCH, Search);
-        // console.log(resposne?.data?.data);
-        setCategory(resposne?.data?.data);
-        setCategoryMaintainer(resposne?.data?.data.slice(0, 4));
-
-      } catch (error) {
-        console.error(error);
-      }
-
-      // Tags Fetching
-
-      try {
-
-        const resposne = await axios.post(TAGSEARCH, Search);
-        // console.log(resposne?.data?.data);
-        setTags(resposne?.data?.data);
-        setTagMaintainer(resposne?.data?.data.slice(0, 4));
-
-      } catch (error) {
-        console.error(error);
-      }
-      setLoading(false)
+      setLoading(false);
     })();
   }, [keyword]);
 
@@ -108,106 +113,8 @@ export const FetchContinous = ({ keyword }) => {
             </video>
           </div>
         ) : loading ? (
-          // <div className="flex flex-row items-center justify-center w-full h-full">
-          //   <h1>loading...</h1>
-          // </div>
           <div className="flex flex-row items-center justify-center w-full h-full">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-              <circle
-                fill="#F97316"
-                stroke="#F97316"
-                stroke-width="28"
-                r="15"
-                cx="35"
-                cy="100"
-              >
-                <animate
-                  attributeName="cx"
-                  calcMode="spline"
-                  dur="1.5"
-                  values="35;165;165;35;35"
-                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                  repeatCount="indefinite"
-                  begin="0"
-                ></animate>
-              </circle>
-              <circle
-                fill="#F97316"
-                stroke="#F97316"
-                stroke-width="28"
-                opacity=".8"
-                r="15"
-                cx="35"
-                cy="100"
-              >
-                <animate
-                  attributeName="cx"
-                  calcMode="spline"
-                  dur="1.5"
-                  values="35;165;165;35;35"
-                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                  repeatCount="indefinite"
-                  begin="0.05"
-                ></animate>
-              </circle>
-              <circle
-                fill="#F97316"
-                stroke="#F97316"
-                stroke-width="28"
-                opacity=".6"
-                r="15"
-                cx="35"
-                cy="100"
-              >
-                <animate
-                  attributeName="cx"
-                  calcMode="spline"
-                  dur="1.5"
-                  values="35;165;165;35;35"
-                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                  repeatCount="indefinite"
-                  begin=".1"
-                ></animate>
-              </circle>
-              <circle
-                fill="#F97316"
-                stroke="#F97316"
-                stroke-width="28"
-                opacity=".4"
-                r="15"
-                cx="35"
-                cy="100"
-              >
-                <animate
-                  attributeName="cx"
-                  calcMode="spline"
-                  dur="1.5"
-                  values="35;165;165;35;35"
-                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                  repeatCount="indefinite"
-                  begin=".15"
-                ></animate>
-              </circle>
-              <circle
-                fill="#F97316"
-                stroke="#F97316"
-                stroke-width="28"
-                opacity=".2"
-                r="15"
-                cx="35"
-                cy="100"
-              >
-                <animate
-                  attributeName="cx"
-                  calcMode="spline"
-                  dur="1.5"
-                  values="35;165;165;35;35"
-                  keySplines="0 .1 .5 1;0 .1 .5 1;0 .1 .5 1;0 .1 .5 1"
-                  repeatCount="indefinite"
-                  begin=".2"
-                ></animate>
-              </circle>
-            </svg>
+            <Loader className="animate-spin" />
           </div>
         ) : (
           <>
@@ -216,7 +123,7 @@ export const FetchContinous = ({ keyword }) => {
                 <p className="text-base font-semibold text-center text-gray-400 max-md:text-start">
                   PEOPLE
                 </p>
-                {Accounts.length === 0 ? (
+                {data.Accounts.length === 0 ? (
                   <p className="mt-10 text-sm text-center text-orange-500">
                     No Users Found
                   </p>
@@ -235,10 +142,6 @@ export const FetchContinous = ({ keyword }) => {
                                 src={img}
                               />
                             ) : (
-                              // <img
-                              //   className="rounded-full min-w-16 max-w-16 min-h-16 max-h-16 max-md:min-w-10 max-md:max-w-10 max-md:min-h-10 max-md:max-h-10"
-                              //   src={`http://localhost:5000/${post.profileimage}`}
-                              //   />
                               <ImageComponent
                                 base64String={account.profileimage}
                                 features={
@@ -256,12 +159,12 @@ export const FetchContinous = ({ keyword }) => {
                     );
                   })
                 )}
-                {Accounts.length > 4 &&
+                {data.Accounts.length > 4 &&
                   (userMore ? (
                     <button
                       onClick={() => {
                         setUserMore(false);
-                        setUserMaintainer(Accounts.slice(0, 4));
+                        setUserMaintainer(data.Accounts.slice(0, 4));
                       }}
                       className="mt-5 text-xs text-center text-red-400 cursor-pointer hover:underline"
                     >
@@ -271,7 +174,7 @@ export const FetchContinous = ({ keyword }) => {
                     <button
                       onClick={() => {
                         setUserMore(true);
-                        setUserMaintainer(Accounts);
+                        setUserMaintainer(data.Accounts);
                       }}
                       className="mt-5 text-xs text-center text-blue-400 cursor-pointer hover:underline"
                     >
@@ -284,7 +187,7 @@ export const FetchContinous = ({ keyword }) => {
                 <p className="text-base font-semibold text-center text-gray-400 max-md:text-start">
                   POST
                 </p>
-                {Posts.length === 0 ? (
+                {data.Posts.length === 0 ? (
                   <p className="mt-10 text-sm text-center text-orange-500">
                     {" "}
                     No Results Found
@@ -343,12 +246,12 @@ export const FetchContinous = ({ keyword }) => {
                   })
                 )}
 
-                {Posts.length > 4 &&
+                {data.Posts.length > 4 &&
                   (postMore ? (
                     <button
                       onClick={() => {
                         setPostMore(false);
-                        setPostMaintainer(Posts.slice(0, 4));
+                        setPostMaintainer(data.Posts.slice(0, 4));
                       }}
                       className="mt-5 text-xs text-center text-red-400 cursor-pointer hover:underline"
                     >
@@ -358,7 +261,7 @@ export const FetchContinous = ({ keyword }) => {
                     <button
                       onClick={() => {
                         setPostMore(true);
-                        setPostMaintainer(Posts);
+                        setPostMaintainer(data.Posts);
                       }}
                       className="mt-5 text-xs text-center text-blue-400 cursor-pointer hover:underline"
                     >
@@ -370,7 +273,7 @@ export const FetchContinous = ({ keyword }) => {
                 <p className="text-base font-semibold text-center text-gray-400 max-md:text-start">
                   TOPIC
                 </p>
-                {Category.length === 0 ? (
+                {data.Category.length === 0 ? (
                   <p className="mt-10 text-sm text-center text-orange-500">
                     No Results Found
                   </p>
@@ -428,12 +331,12 @@ export const FetchContinous = ({ keyword }) => {
                     );
                   })
                 )}
-                {Category.length > 4 &&
+                {data.Category.length > 4 &&
                   (categoryMore ? (
                     <button
                       onClick={() => {
                         setCategoryMore(false);
-                        setCategoryMaintainer(Category.slice(0, 4));
+                        setCategoryMaintainer(data.Category.slice(0, 4));
                       }}
                       className="mt-5 text-xs text-center text-red-400 cursor-pointer hover:underline"
                     >
@@ -443,7 +346,7 @@ export const FetchContinous = ({ keyword }) => {
                     <button
                       onClick={() => {
                         setCategoryMore(true);
-                        setCategoryMaintainer(Category);
+                        setCategoryMaintainer(data.Category);
                       }}
                       className="mt-5 text-xs text-center text-blue-400 cursor-pointer hover:underline"
                     >
@@ -455,7 +358,7 @@ export const FetchContinous = ({ keyword }) => {
                 <p className="text-base font-semibold text-center text-gray-400 max-md:text-start">
                   TAGS
                 </p>
-                {Tags.length === 0 ? (
+                {data.Tags.length === 0 ? (
                   <p className="mt-10 text-sm text-center text-orange-500">
                     {" "}
                     No Results Found
@@ -470,10 +373,6 @@ export const FetchContinous = ({ keyword }) => {
                             to={`/Read/${tags.post_id}`}
                           >
                             <div className="flex flex-row items-center justify-center min-w-14 max-w-14 min-h-18 max-h-18">
-                              {/* <img
-                              className=" min-w-28 max-w-28 min-h-18 max-h-18 max-md:min-w-16 max-md:max-w-16 max-md:min-h-14 max-md:max-h-14"
-                              src={`http://localhost:5000/${post.post_images}`}
-                            /> */}
                               <ImageComponent
                                 features={
                                   "min-w-14 max-w-14 min-h-18 max-h-18 max-md:min-w-16 max-md:max-w-16 max-md:min-h-14 max-md:max-h-14"
@@ -513,12 +412,12 @@ export const FetchContinous = ({ keyword }) => {
                     );
                   })
                 )}
-                {Tags.length > 4 &&
+                {data.Tags.length > 4 &&
                   (tagMore ? (
                     <button
                       onClick={() => {
                         setTagMore(false);
-                        setTagMaintainer(Tags.slice(0, 4));
+                        setTagMaintainer(data.Tags.slice(0, 4));
                       }}
                       className="mt-5 text-xs text-center text-red-400 cursor-pointer hover:underline"
                     >
@@ -528,7 +427,7 @@ export const FetchContinous = ({ keyword }) => {
                     <button
                       onClick={() => {
                         setTagMore(true);
-                        setTagMaintainer(Tags);
+                        setTagMaintainer(data.Tags);
                       }}
                       className="mt-5 text-xs text-center text-blue-400 cursor-pointer hover:underline"
                     >

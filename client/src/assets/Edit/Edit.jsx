@@ -16,88 +16,63 @@ import { Navigate, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import ImageComponent from "../../../utils/ImageComponent";
+import { useSnackbarContext } from "../../context/snackProvider";
+
+const StyledReactQuill = styled(ReactQuill)({
+  "& .ql-toolbar": {
+    backgroundColor: "rgb(249 115 22)",
+    borderColor: "rgb(249 115 22)",
+    "& .ql-picker": {
+      color: "white",
+    },
+    "& .ql-stroke": {
+      stroke: "white",
+    },
+    "& .ql-fill": {
+      fill: "white",
+    },
+    "& button:hover .ql-stroke": {
+      stroke: "#f1f1f1",
+    },
+    "& button:hover .ql-fill": {
+      fill: "#f1f1f1",
+    },
+  },
+  "& .ql-container": {
+    minHeight: "200px",
+    fontSize: "16px",
+  },
+});
 
 const modules = {
-  // toolbar: [
-  //   [{ header: [1, 2, false] }],
-  //   ["bold", "italic", "underline", "strike"],
-  //   ["blockquote", "code-block"],
-  //   [{ list: "ordered" }, { list: "bullet" }],
-  //   [{ indent: "-1" }, { indent: "+1" }],
-  //   [{ font: ["Fira Code"] }],
-  //   [{ align: [] }][("link", "image")],
-  //   ["clean"],
-  // ],
   toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ size: [] }],
-    ["bold", "italic", "underline", "strike", "blockquote", "code-block"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
+    [{ header: [1, 2, 3, false] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ color: [] }, { background: [] }],
     ["link", "image", "video"],
     ["clean"],
+    [{ align: [] }],
+    ["code-block"],
   ],
 };
 
-const modulesSummary = {
-  toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ size: [] }],
-    ["bold", "italic", "underline", "strike", "blockquote", "code-block"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
-    ["clean"],
-  ],
-};
-
-const CREATE_POST = "/post";
-
-// const formats = [
-//   "header",
-//   "bold",
-//   "italic",
-//   "underline",
-//   "strike",
-//   "blockquote",
-//   "code-block",
-//   "list",
-//   "bullet",
-//   "indent",
-//   "link",
-//   "image",
-// ];
-
-/*
-Tool For Formating And Modules For React Quill
-
-var toolbarOptions = [
-  ["bold", "italic", "underline", "strike"], // toggled buttons
-  ["blockquote", "code-block"],
-
-  [{ header: 1 }, { header: 2 }], // custom button values
-  [{ list: "ordered" }, { list: "bullet" }],
-  [{ script: "sub" }, { script: "super" }], // superscript/subscript
-  [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-  [{ direction: "rtl" }], // text direction
-
-  [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-  [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-  [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-  [{ font: [] }],
-  [{ align: [] }],
-
-  ["clean"], // remove formatting button
+const formats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "list",
+  "bullet",
+  "color",
+  "background",
+  "link",
+  "image",
+  "video",
+  "align",
+  "code-block",
 ];
-*/
 
 export const Edit = ({ post_ids }) => {
   const navigate = useNavigate();
@@ -119,15 +94,15 @@ export const Edit = ({ post_ids }) => {
     setComments((prev) => !prev);
   };
 
-  const EDITREQUESTER = "/editresource";
-  const EDITUPDATER = "/edit";
+  const { showSnackbar } = useSnackbarContext();
+
+  const EDIT = "/post/post";
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.post(EDITREQUESTER, {
-          data: { post_ids: post_ids },
+        const response = await axios.post(`${EDIT}/${post_ids}`, {
           headers: {
-            "Content-Type": "multipart/form-data", // Adjust the content type as needed
+            "Content-Type": "application/json", // Adjust the content type as needed
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
           },
         });
@@ -156,17 +131,14 @@ export const Edit = ({ post_ids }) => {
         setLoading(false);
       } catch (error) {
         console.error(error);
+        showSnackbar(error?.response?.data?.message, false);
       }
     })();
   }, []);
 
-  const IMAGEUPDATER = "/imageupdate";
-
   const ImageHandler = (event) => {
     setMedia(Image.current.files[0]);
   };
-
-  const datas = new FormData();
 
   useEffect(() => {
     (async () => {
@@ -206,18 +178,8 @@ export const Edit = ({ post_ids }) => {
   };
 
   const SubmitHandler = async (ev) => {
-    setLoading(true)
+    setLoading(true);
     ev.preventDefault();
-    // const data = new FormData();
-    // data.set("title", title);
-    // data.set("content", content);
-    // data.set("media", currentImage);
-    // data.set("category", category);
-    // data.set("tags", tags);
-    // data.set("summary", summary);
-    // data.set("posttype", type), data.set("comments", comment);
-    // console.log(data);
-
     const data = {
       title: title,
       content: content,
@@ -230,19 +192,24 @@ export const Edit = ({ post_ids }) => {
       post_ids: post_ids,
     };
 
+    console.log(data);
+
     try {
-      const response = await axios.post(EDITUPDATER, {
-        data,
+      const response = await axios.put(`${EDIT}/${post_ids}`, data, {
         headers: {
-          "Content-Type": "multipart/form-data", // Adjust the content type as needed
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include any authentication tokens or other headers
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      // console.log(response?.data);
-      setLoading(false)
-      navigate("/");
+      console.log(response?.data);
+      setLoading(false);
+      if (response?.data?.success) {
+        showSnackbar(response?.data?.message, response?.data?.success);
+        navigate(`/read/${post_ids}`);
+      }
     } catch (error) {
       console.error(error.message);
+      showSnackbar(error?.response?.data?.message, false);
     }
   };
 
@@ -346,7 +313,7 @@ export const Edit = ({ post_ids }) => {
       </svg>
     </div>
   ) : (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center w-3/4">
       <h1 className="m-5 text-3xl font-bold">Editing Blog</h1>
       <div className="w-full">
         <form
@@ -373,10 +340,6 @@ export const Edit = ({ post_ids }) => {
             }}
             className="flex flex-row items-center justify-center"
           >
-            {/* <img
-              className="max-w-full min-w-full max-h-96 rounded-xl"
-              src={`http://localhost:5000/${currentImage}`}
-            /> */}
             <ImageComponent
               features={"max-w-full min-w-full max-h-96 rounded-xl"}
               base64String={currentImage}
@@ -390,16 +353,13 @@ export const Edit = ({ post_ids }) => {
             type="file"
             id="images"
           />
-          <ReactQuill
-            className="w-3/4 min-h-5"
-            modules={modules}
-            value={content}
+          <StyledReactQuill
             ref={contents}
-            onChange={(ev) => {
-              setContent(() => contents.current.value);
-              // console.log(content);
-            }}
-            style={{ fontFamily: "Space Mono" }}
+            value={content}
+            onChange={setContent}
+            modules={modules}
+            formats={formats}
+            placeholder="Write your post content here..."
           />
           <input
             className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg"
@@ -419,27 +379,19 @@ export const Edit = ({ post_ids }) => {
             type="text"
             placeholder="Tags"
           ></input>
-          {/* <input
-            className="m-5 w-3/4 border-2 border-#303030-7000 border-solid pt-2 pb-2 pl-5 pr-5 rounded-lg"
-            value={summary}
-            onChange={(ev) => {
-              setSummary(() => ev.target.value);
-            }}
-            type="summary"
-            placeholder="Summary"
-          ></input> */}
-
-          <ReactQuill
-            className="w-3/4 min-h-5"
-            modules={modulesSummary}
+          <label className="mt-4 font-semibold text-md" htmlFor="type">
+            Summary
+          </label>
+          <textarea
+            name=""
+            id=""
             value={summary}
             ref={summarys}
             onChange={() => {
               setSummary(summarys.current.value);
             }}
-            placeholder="Summary"
-            style={{ fontFamily: "Space Mono" }}
-          />
+            className="w-full mb-5 min-h-10"
+          ></textarea>
 
           <label className="font-semibold text-md" htmlFor="type">
             Select the post visibility

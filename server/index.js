@@ -2,75 +2,18 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import signUpRouter from "./routes/SignUp.js";
-import loginRouter from "./routes/Login.js";
-import postRouter from "./routes/post.js";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
-import reloadRouter from "./routes/reloaduser.js";
-import ReadBlog from "./routes/readblog.js";
 import path from "path";
 import session from "express-session";
-import passport, { Passport } from "passport";
+import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import PostDetails from "./routes/postdetails.js";
-import EditResource from "./routes/EditResource.js";
-import ImageUpdater from "./routes/imageupdater.js";
-import PostEditor from "./routes/EditPost.js";
-import Comment from "./routes/comment.js";
-import GetComments from "./routes/getcomments.js";
-import SetCoverImage from "./routes/coverimage.js";
-import SetProfileImage from "./routes/profileimage.js";
-import GetProfileIamge from "./routes/getprofileimages.js";
-import AddPersonalDetails from "./routes/addpersonaldetails.js";
-import DeletePost from "./routes/deletepost.js";
-import DeleteSinglepPost from "./routes/deletesinglepost.js";
-import EditComment from "./routes/updatecomment.js";
-import DeleteComment from "./routes/deletecomment.js";
-import AccountSearch from "./routes/accountsearch.js";
-import PostSearch from "./routes/postsearch.js";
-import TagSearch from "./routes/tagsearch.js";
-import CategorySearch from "./routes/categorysearch.js";
-import Follow from "./routes/follow.js";
-import Unfollow from "./routes/unfollow.js";
-import GetFollowers from "./routes/getfollowers.js";
-import GetFollowings from "./routes/getfollowings.js";
-import RemoveUser from "./routes/removeuser.js";
-import UnfollowUser from "./routes/unfollowuser.js";
-import AddFavorite from "./routes/addfavorite.js";
-import DeleteFavorite from "./routes/deletefavorite.js";
-import GetFavorite from "./routes/getfavorite.js";
-import Like from "./routes/like.js";
-import GetLike from "./routes/getlike.js";
-import DeleteLike from "./routes/deletelike.js";
-import DeleteDislike from "./routes/deletedislike.js";
-import Dislike from "./routes/dislike.js";
-import Account from "./routes/accountfetch.js";
-import UserNameCheck from "./routes/usernamecheck.js";
-import UserNameUpdate from "./routes/usernameupdate.js";
-import EmailCheck from "./routes/emailcheck.js";
-import EmailUpdate from "./routes/emailupdate.js";
-import PasswordVerify from "./routes/passwordverify.js";
-import PasswordUpdate from "./routes/passwordupdate.js";
-import DeleteAccount from "./routes/deleteaccount.js";
-import GetDashBoard from "./routes/getdashboard.js";
-import MoreFavorites from "./routes/loadfav.js";
-import MoreLike from "./routes/loadlike.js";
-import MoreDisLike from "./routes/loaddislike.js";
-import LandingData from "./routes/landingdata.js";
-import UserCheck from "./routes/uncheck.js";
-import UserECheck from "./routes/uecheck.js";
-import CheckFollow from "./routes/checkfollower.js";
-import AddFollowerInPost from "./routes/addfollowerinpost.js";
-import AddBookMark from "./routes/addbookmark.js";
-import RemoveBookMark from "./routes/removebookmark.js";
-import AddBookMarkSingle from "./routes/addbookmarksinglepost.js";
-import RemoveBookMarkSingle from "./routes/removebookmarkforsinglepost.js";
-import pool from "./db.js";
+import router from "./routes/index.js";
+import { pool } from "./db/db.js";
 import jwtToken from "./utils/jwtToken.js";
-import EmailVerify from "./routes/emailverify.js";
 import Authentication from "./middleware/authorization.js";
 import { sendResponse } from "./utils/responder.js";
+import { errorHandler } from "./utils/errorHandler.js";
 
 const Base_URL = "https://inkwellify.vercel.app";
 // const Base_URL = "http://localhost:5173";
@@ -88,9 +31,9 @@ const corsOptions = {
   allowedHeaders: ["Origin", "Content-Type", "Authorization"], // Allowed headers
 };
 app.use(cors(corsOptions));
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: "5mb" }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(
@@ -121,7 +64,9 @@ passport.use(
       // Custom function to fetch user details
       (async () => {
         try {
-          const users = await pool.query(queryuserexists, [profile._json.email]);
+          const users = await pool.query(queryuserexists, [
+            profile._json.email,
+          ]);
           console.log("This is new profile", profile);
           if (users.rows.length === 0) {
             await pool.query(querynewuser, [
@@ -203,72 +148,13 @@ app.get("/logouts", (req, res, next) => {
   });
 });
 
-app.use("/SignUp", signUpRouter);
-app.use("/login", loginRouter);
-app.use("/post", postRouter);
-app.use("/reloaduser", reloadRouter);
-app.use("/readblog", ReadBlog);
-app.use("/uploads", express.static(__dirname + "/uploads"));
-app.use("/coverimages", express.static(__dirname + "/coverimages"));
-app.use("/profileimages", express.static(__dirname + "/profileimages"));
-app.use("/postdetails", PostDetails);
-app.use("/editresource", EditResource);
-app.use("/imageupdate", ImageUpdater);
-app.use("/edit", PostEditor);
-app.use("/comment", Comment);
-app.use("/getcomment", GetComments);
-app.use("/setcoverimage", SetCoverImage);
-app.use("/setprofileimage", SetProfileImage);
-app.use("/getprofileimage", GetProfileIamge);
-app.use("/addpersonaldetails", AddPersonalDetails);
-app.use("/deletepost", DeletePost);
-app.use("/deletesinglepost", DeleteSinglepPost);
-app.use("/editcomment", EditComment);
-app.use("/deletecomment", DeleteComment);
-app.use("/accountsearch", AccountSearch);
-app.use("/postsearch", PostSearch);
-app.use("/tagsearch", TagSearch);
-app.use("/categorysearch", CategorySearch);
-app.use("/follow", Follow);
-app.use("/unfollow", Unfollow);
-app.use("/getfollowers", GetFollowers);
-app.use("/getfollowings", GetFollowings);
-app.use("/removeuser", RemoveUser);
-app.use("/unfollowuser", UnfollowUser);
-app.use("/addfavorite", AddFavorite);
-app.use("/deletefavorite", DeleteFavorite);
-app.use("/getfavorite", GetFavorite);
-app.use("/like", Like);
-app.use("/dislike", Dislike);
-app.use("/getlikes", GetLike);
-app.use("/deletelike", DeleteLike);
-app.use("/deletedislike", DeleteDislike);
-app.use("/account", Account);
-app.use("/usernamecheck", UserNameCheck);
-app.use("/usernameupdate", UserNameUpdate);
-app.use("/emailcheck", EmailCheck);
-app.use("/emailupdate", EmailUpdate);
-app.use("/passcodeverify", PasswordVerify);
-app.use("/passwordupdate", PasswordUpdate);
-app.use("/deleteaccount", DeleteAccount);
-app.use("/getdashboard", GetDashBoard);
-app.use("/favload", MoreFavorites);
-app.use("/likeload", MoreLike);
-app.use("/dislikeload", MoreDisLike);
-app.use("/landingdata", LandingData);
-app.use("/uncheck", UserCheck);
-app.use("/uecheck", UserECheck);
-app.use("/checkfollow", CheckFollow);
-app.use("/addfollowinpost", AddFollowerInPost);
-app.use("/addbookmark", AddBookMark);
-app.use("/removebookmark", RemoveBookMark);
-app.use("/addbookmarksingle", AddBookMarkSingle);
-app.use("/removebookmarksingle", RemoveBookMarkSingle);
-app.use("/emailverify", EmailVerify);
+app.use("/api", router);
 
 app.get("/", async (req, res) => {
   res.send(`<h2>Hello Boy </h2>`);
 });
+
+app.use(errorHandler);
 
 app.listen(5000, () => {
   console.log("Connected to postgres...");
