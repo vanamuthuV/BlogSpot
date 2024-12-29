@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/sitemap.xml",
+      "destination": "https://inkwellifyserver.vercel.app/sitemap.xml"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
