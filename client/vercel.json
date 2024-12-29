@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/sitemap.xml",
+      "source": "/mysites.xml",
       "destination": "https://inkwellifyserver.vercel.app/sitemap.xml"
     },
     {
