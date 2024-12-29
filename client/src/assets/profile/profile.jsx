@@ -1431,17 +1431,14 @@ export const Profile = () => {
                           return (
                             <div className="flex flex-row items-center pb-2 border-b border-gray-400">
                               <div className="flex flex-row items-center justify-center pr-5 max-md:pr-2 min-h-40 min-w-48 max-w-48 max-h-40 max-md:max-w-24 max-md:min-w-24 max-md:max-h-24 max-md:min-h-24">
-                                {/* <img
-                                  className="object-scale-down w-full h-full"
-                                  src={`http://localhost:5000/${items.post_images}`}
-                                /> */}
+
                                 <ImageComponent
                                   features={"object-scale-down w-full h-full"}
                                   base64String={items.post_images}
                                 />
                               </div>
                               <div className="flex flex-col justify-center pl-5 pr-5 max-md:pl-2 max-md:pr-2">
-                                <Link to={`/Read/${items.post_id}`}>
+                                <Link to={`/Read/${items.post_title.replace(/[^a-zA-Z0-9\s-]/g, '').replace(/\s+/g, '-')}/${items.post_id}`}>
                                   <p className="pb-1 text-xl font-semibold text-justify hover:underline max-md:text-xs">
                                     {window.innerWidth >= 769
                                       ? items.post_title.length > 100
@@ -1616,7 +1613,11 @@ export const Profile = () => {
                                   />
                                 </div>
                                 <div className="flex flex-col justify-center pl-5 pr-5 max-md:pl-2 max-md:pr-2">
-                                  <Link to={`/Read/${items.post_id}`}>
+                                  <Link
+                                    to={`/Read/${items.post_title
+                                      .replace(/[^a-zA-Z0-9\s-]/g, "")
+                                      .replace(/\s+/g, "-")}/${items.post_id}`}
+                                  >
                                     <p className="text-xl font-semibold text-justify hover:underline max-md:text-xs">
                                       {window.innerWidth >= 769
                                         ? items.post_title.length > 100

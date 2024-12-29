@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /createpost
+Disallow: /auth/google/callback
+Disallow: /SignUp/*
+Disallow: /forgetpassword/*
+Disallow: /Account
+Disallow: /Dashboard
+Disallow: /notification
+Disallow: /edit/*
+Disallow: /read/*
+Disallow: /*?query=
+Sitemap: https://inkwellify-server.vercel.app/sitemap.xml

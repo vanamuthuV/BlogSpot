@@ -14,6 +14,10 @@ import jwtToken from "./utils/jwtToken.js";
 import Authentication from "./middleware/authorization.js";
 import { sendResponse } from "./utils/responder.js";
 import { errorHandler } from "./utils/errorHandler.js";
+import { SitemapStream, streamToPromise } from "sitemap";
+import { asyncHandler } from "./utils/asyncHandler.js";
+import { getallpost } from "./db/query.js";
+import NodeCache from "node-cache";
 
 const Base_URL = "https://inkwellify.vercel.app";
 // const Base_URL = "http://localhost:5173";
@@ -146,6 +150,59 @@ app.get("/logouts", (req, res, next) => {
     }
     res.redirect("https://inkwellify.vercel.app/SignUp");
   });
+});
+
+const sitemapCache = new NodeCache({ stdTTL: 3600 });
+
+const getAllPost = async () => {
+  const posts = await pool.query(getallpost);
+  return posts.rows;
+};
+
+
+
+app.get("/sitemap.xml", async (req, res) => {
+  const cachedSitemap = sitemapCache.get("sitemap");
+
+  if (cachedSitemap) {
+    // If cached, send it as a response
+    console.log("Serving cached sitemap");
+    return res.header("Content-Type", "application/xml").send(cachedSitemap);
+  }
+  console.log("Generating new sitemap");
+  const smStream = new SitemapStream({
+    hostname: "https://inkwellify.vercel.app",
+  });
+
+    const staticRoutes = [
+      "/",
+      "/SignUp",
+      "/SignUp/login",
+      "/createpost",
+      "/Account",
+      "/Dashboard",
+      "/PageNotFound",
+    ];
+
+    staticRoutes.forEach((route) =>
+      smStream.write({ url: route, changefreq: "daily", priority: 0.8 })
+    );
+
+  const posts = await getAllPost();
+
+  posts.forEach((post) => {
+    const postUrl = `/Read/${post.post_title
+      .replace(/[^a-zA-Z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")}/${post.post_id}`;
+    smStream.write({ url: postUrl, changefreq: "daily", priority: 0.8 });
+  });
+
+  smStream.end();
+  const sitemap = await streamToPromise(smStream);
+
+  sitemapCache.set("sitemap", sitemap.toString());
+
+  res.header("Content-Type", "application/xml").send(sitemap.toString());
 });
 
 app.use("/api", router);

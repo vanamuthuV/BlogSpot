@@ -39,7 +39,7 @@ LIMIT 6`;
 export const createpostscript = `INSERT INTO posts values ($1, $2, $3, $4, $5, $6, $7, $8, current_timestamp, $9)`;
 
 export const postdetailwithuserscript = `
-SELECT users.*, profilepicture.*, posts.*, profileinformation.*, CASE 
+SELECT users.*, posts.post_title,posts.post_content,posts.post_category, posts.post_tags,posts.post_summary, posts.post_type,posts.post_comment_type, posts.post_upload_time,posts.post_id,  profileinformation.*, CASE 
         WHEN bookmark.bookmarkid IS NOT NULL THEN TRUE
         ELSE FALSE
     END AS is_bookmarked,
@@ -58,6 +58,15 @@ LEFT JOIN
         user_id = $1
     ) AS bookmark ON posts.post_id = bookmark.post_id
     where posts.post_id = $2
+`;
+
+export const postimagescript = `
+SELECT 
+    posts.post_images,  -- Select post_images from posts table
+    profilepicture.profileimage  -- Select profileimage from profilepicture table
+FROM posts
+    LEFT JOIN profilepicture ON profilepicture.user_id = posts.user_id  -- Join profilepicture using user_id from posts table
+WHERE posts.post_id = $1  -- Use post_id to filter the record
 `;
 
 export const postdetailwithoutuserscript = `
@@ -480,4 +489,8 @@ ON
   posts.user_id = users.user_id
 WHERE 
   UPPER(posts.post_title) LIKE UPPER('%' || $1 || '%');
+`;
+
+export const getallpost = `
+  select posts.post_id, posts.post_title from posts where post_type='public';
 `;

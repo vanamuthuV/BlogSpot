@@ -45,7 +45,7 @@ function App() {
             <Route path="/forgetpassword" element={<ForgetPasscode />} />
           </Route>
           <Route path="/read" element={<PostRequester />} />
-          <Route path="/read/:id" element={<PostDetails />} />
+          <Route path="/read/:slug/:id" element={<PostDetails />} />
           <Route path="/edit/:post_ids" element={<EditCaller />} />
           <Route path="/:user_name" element={<ProfileCaller />}></Route>
           <Route path="/:user_name/follows" element={<Follows />} />

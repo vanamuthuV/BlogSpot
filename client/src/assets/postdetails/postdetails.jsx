@@ -40,6 +40,7 @@ import img from "../../../public/Profile.jpeg";
 import { useSnackbarContext } from "../../context/snackProvider";
 import { Loader } from "lucide-react";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
+import { Helmet } from "react-helmet";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -60,6 +61,7 @@ const FAVORITE = "/favorite/favorite";
 const LIKE = "/likes/likes";
 const DISLIKE = "/likes/dislikes";
 const GETLIKES = "/likes/likes";
+const IMAGE = "/post/postimg";
 
 export const PostDetails = () => {
   const { id } = useParams();
@@ -73,7 +75,10 @@ export const PostDetails = () => {
   const [data, setData] = useState({});
   const navigate = useNavigate();
   const comment = useRef(null);
-
+  const [image, setImage] = useState({
+    post_images: undefined,
+    profileimage: undefined,
+  });
   const [favorite, setFavorite] = useState();
   const [favoriteDeatails, setFavoriteDetails] = useState({});
   const [follows, setFollows] = useState([]);
@@ -340,6 +345,8 @@ export const PostDetails = () => {
             .splice(1, response?.data?.post?.post_tags.split("#").length)
         );
         setLoading(false);
+        const img = await axios.get(`${IMAGE}/${id}`);
+        setImage(img.data?.data);
       } catch (error) {
         console.log(error.message);
         console.log(error.response);
@@ -700,6 +707,36 @@ export const PostDetails = () => {
           </div>
         ) : (
           <>
+            <Helmet>
+              <script type="application/ld+json">
+                {`
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "${data.post_title}",
+        "description": "${data.post_summary}",
+        "url": "https://inkwellify.vercel.app/Read/${data.post_title
+          .replace(/[^a-zA-Z0-9\s-]/g, "")
+          .replace(/\s+/g, "-")}/${data.post_id}",
+        "author": {
+          "@type": "Person",
+          "name": "${data.user_name}"
+        },
+        "datePublished": "${data.post_upload_time}",
+        "dateModified": "${data.post_upload_time}"
+      }
+    `}
+              </script>
+
+              <title>{data.post_title}</title>
+              <meta name="description" content={data.post_summary} />
+              <meta property="og:title" content={data.title} />
+              <meta property="og:description" content={data.description} />
+              <meta
+                property="og:image"
+                content={`data:image/png;base64,${data.post_images}`}
+              />
+            </Helmet>
             <div className="flex flex-row items-center justify-center">
               <div className="flex flex-col items-center w-7/12 justify-evenly max-md:w-11/12">
                 <div className="flex flex-col items-start w-full">
@@ -713,9 +750,9 @@ export const PostDetails = () => {
                     <div className="flex flex-row items-center justify-evenly">
                       <div className="flex flex-row items-center justify-center">
                         <div className="mr-2.5">
-                          {data.profileimage ? (
+                          {image.profileimage ? (
                             <ImageComponent
-                              base64String={data.profileimage}
+                              base64String={image.profileimage}
                               features={
                                 "rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
                               }
@@ -825,7 +862,9 @@ export const PostDetails = () => {
                               className="pl-2 pr-2"
                               onClick={() => setSocial((prev) => !prev)}
                               href={getWhatsAppUrl({
-                                url: `https://inkwellify.vercel.app/read/${data.post_id}`,
+                                url: `https://inkwellify.vercel.app/Read/${data.post_title
+                                  .replace(/[^a-zA-Z0-9\s-]/g, "")
+                                  .replace(/\s+/g, "-")}/${data.post_id}}`,
                                 text: `Hey check this amazing post - `,
                               })}
                             >
@@ -839,7 +878,9 @@ export const PostDetails = () => {
                               onClick={() => {
                                 setSocial((prev) => !prev);
                                 return copyToClipboard(
-                                  `https://inkwellify.vercel.app/read/${data.post_id}`
+                                  `https://inkwellify.vercel.app/Read/${data.post_title
+                                    .replace(/[^a-zA-Z0-9\s-]/g, "")
+                                    .replace(/\s+/g, "-")}/${data.post_id}`
                                 );
                               }}
                             >
@@ -852,7 +893,9 @@ export const PostDetails = () => {
                               onClick={() => setSocial((prev) => !prev)}
                               className="pl-2 pr-2"
                               href={getTwitterUrl({
-                                url: `https://inkwellify.vercel.app/read/${data.post_id}`,
+                                url: `https://inkwellify.vercel.app/Read/${data.post_title
+                                  .replace(/[^a-zA-Z0-9\s-]/g, "")
+                                  .replace(/\s+/g, "-")}/${data.post_id}`,
                                 text: `Hey check this amazing post from ${"https://inkwellify.vercel.app"}`,
                                 hashtags: data.post_tags,
                                 related: data.post_category,
@@ -867,7 +910,9 @@ export const PostDetails = () => {
                               onClick={() => setSocial((prev) => !prev)}
                               className="pl-2 pr-2"
                               href={getLinkedinUrl({
-                                url: `https://inkwellify.vercel.app/read/${data.post_id}`,
+                                url: `https://inkwellify.vercel.app/Read/${data.post_title
+                                  .replace(/[^a-zA-Z0-9\s-]/g, "")
+                                  .replace(/\s+/g, "-")}/${data.post_id}`,
                                 title: data.post_title,
                                 source: `${"https://inkwellify.vercel.app"}`,
                               })}
@@ -880,7 +925,9 @@ export const PostDetails = () => {
                             <a
                               className="pl-2 pr-2"
                               href={getFacebookUrl({
-                                url: `https://inkwellify.vercel.app/read/${data.post_id}`,
+                                url: `https://inkwellify.vercel.app/Read/${data.post_title
+                                  .replace(/[^a-zA-Z0-9\s-]/g, "")
+                                  .replace(/\s+/g, "-")}/${data.post_id}`,
                                 hashtag: data.post_tags,
                               })}
                             >
@@ -941,12 +988,18 @@ export const PostDetails = () => {
                 {/* <img src={`data:image/jpeg;base64,${base64String}`} alt="Image" /> */}
 
                 <div className="flex flex-row items-center justify-center w-full h-full mb-10 max-md:w-full">
-                  <ImageComponent
-                    features={
-                      "flex flex-row items-center justify-center w-full h-full max-md:w-full"
-                    }
-                    base64String={data.post_images}
-                  />
+                  {image.post_images ? (
+                    <ImageComponent
+                      features={
+                        "flex flex-row items-center justify-center w-full h-full max-md:w-full"
+                      }
+                      base64String={image.post_images}
+                    />
+                  ) : (
+                    <div class="w-full h-96 bg-white rounded-lg overflow-hidden">
+                      <div class="w-full h-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse"></div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="ql-snow">
@@ -1002,12 +1055,12 @@ export const PostDetails = () => {
                   <div className="flex flex-row flex-wrap items-center justify-between w-full mt-5 mb-10 max-md:justify-center">
                     <div className="flex flex-row items-center justify-center">
                       <div className="mr-2.5">
-                        {data.profileimage ? (
+                        {image.profileimage ? (
                           <ImageComponent
                             features={
                               "rounded-full min-w-11 min-h-11 max-h-11 max-w-11"
                             }
-                            base64String={data.profileimage}
+                            base64String={image.profileimage}
                           />
                         ) : (
                           <img

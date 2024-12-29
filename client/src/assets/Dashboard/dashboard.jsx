@@ -113,12 +113,12 @@ export const Dashboard = () => {
             Dashboard
           </h1>
         </div>
-     
+
         {loading ? (
           <div className="flex items-center justify-center w-full h-[calc(100vh-96px)]">
             <Loader className="animate-spin" />
           </div>
-        ) : (   
+        ) : (
           <div className="flex flex-col mt-10">
             <h1 className="pb-2 mb-6 text-xl font-semibold border-b">
               {preferences}
@@ -140,7 +140,12 @@ export const Dashboard = () => {
                         />
                       )}
                     </div>
-                    <Link to={`/Read/${favs.post_id}`} className="flex-grow">
+                    <Link
+                      to={`/Read/${favs.post_title
+                        .replace(/[^a-zA-Z0-9\s-]/g, "")
+                        .replace(/\s+/g, "-")}/${favs.post_id}`}
+                      className="flex-grow"
+                    >
                       <p className="hover:underline">{favs.post_title}</p>
                     </Link>
                   </div>

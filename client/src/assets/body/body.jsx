@@ -128,7 +128,12 @@ export const Post = ({
       <div className="flex flex-row items-center justify-between w-full max-md:flex-col-reverse">
         <div className="w-3/4 max-md:w-full">
           <div className="">
-            <Link to={`/read/${post_id}`}>
+            <Link
+                                  to={`/Read/${post_title
+                                    .replace(/[^a-zA-Z0-9\s-]/g, "")
+                                    .replace(/\s+/g, "-")}/${post_id}`}
+                                  className="flex-grow"
+                                >
               <h3 className="inline-block pb-1 font-bold text-md hover:opacity-80 max-md:text-xl">
                 {post_title}
               </h3>

@@ -205,7 +205,11 @@ export const Edit = ({ post_ids }) => {
       setLoading(false);
       if (response?.data?.success) {
         showSnackbar(response?.data?.message, response?.data?.success);
-        navigate(`/read/${post_ids}`);
+        navigate(
+          `/Read/${title
+            .replace(/[^a-zA-Z0-9\s-]/g, "")
+            .replace(/\s+/g, "-")}/${post_ids}`
+        );
       }
     } catch (error) {
       console.error(error.message);

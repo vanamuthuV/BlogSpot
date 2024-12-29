@@ -6,6 +6,7 @@ import {
   deletepost,
   getpostdetails,
   updatepost,
+  postimages,
 } from "../../controllers/post.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import Authentication from "../../middleware/authorization.js";
@@ -18,5 +19,6 @@ router.post("/post/:id", asyncHandler(postdetails));
 router.delete("/post/:id/:uid", Authentication, asyncHandler(deletepost));
 router.get("/post/:id", Authentication, asyncHandler(getpostdetails));
 router.put("/post/:id", Authentication, asyncHandler(updatepost));
+router.get("/postimg/:id", asyncHandler(postimages));
 
 export { router as PostRoute };

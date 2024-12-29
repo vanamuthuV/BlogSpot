@@ -266,8 +266,11 @@ export const LandingPage = () => {
                     <div className="flex flex-row items-center justify-between w-full mt-2 mb-2 max-md:mt-1 max-md:mb-1">
                       <Link
                         className="flex flex-row items-center justify-between w-full mt-2 mb-2"
-                        to={`/Read/${post.post_id}`}
+                        to={`/Read/${post.post_title
+                                .replace(/[^a-zA-Z0-9\s-]/g, "")
+                                .replace(/\s+/g, "-")}/${post.post_id}`}
                       >
+                       
                         <p className="pr-2 mt-3 mb-2 text-base font-bold max-md:text-sm">
                           {post.post_title.length > 40
                             ? post.post_title.substring(0, 60) + "..."

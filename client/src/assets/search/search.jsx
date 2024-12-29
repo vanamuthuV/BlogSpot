@@ -199,7 +199,9 @@ export const FetchContinous = ({ keyword }) => {
                         <div className="flex flex-row items-center mt-5">
                           <Link
                             onClick={() => setSearchOpen(false)}
-                            to={`/Read/${post.post_id}`}
+                            to={`/Read/${post.post_title
+                              .replace(/[^a-zA-Z0-9\s-]/g, "")
+                              .replace(/\s+/g, "-")}/${post.post_id}`}
                           >
                             <div className="flex flex-row items-center justify-center min-w-14 max-w-14 min-h-18 max-h-18">
                               {/* <img
@@ -218,7 +220,9 @@ export const FetchContinous = ({ keyword }) => {
                           <div className="flex flex-col justify-center pl-2 ">
                             <Link
                               onClick={() => setSearchOpen(false)}
-                              to={`/Read/${post.post_id}`}
+                              to={`/Read/${post.post_title
+                                .replace(/[^a-zA-Z0-9\s-]/g, "")
+                                .replace(/\s+/g, "-")}/${post.post_id}`}
                             >
                               <p className="text-xs">
                                 {post.post_title.length <= 40
@@ -284,7 +288,9 @@ export const FetchContinous = ({ keyword }) => {
                         <div className="flex flex-row items-center mt-5">
                           <Link
                             onClick={() => setSearchOpen(false)}
-                            to={`/Read/${category.post_id}`}
+                            to={`/Read/${category.post_title
+                              .replace(/[^a-zA-Z0-9\s-]/g, "")
+                              .replace(/\s+/g, "-")}/${category.post_id}`}
                           >
                             <div className="flex flex-row items-center justify-center min-w-14 max-w-14 min-h-18 max-h-18">
                               {/* <img
@@ -303,7 +309,9 @@ export const FetchContinous = ({ keyword }) => {
                           <div className="flex flex-col justify-center pl-2">
                             <Link
                               onClick={() => setSearchOpen(false)}
-                              to={`/Read/${category.post_id}`}
+                              to={`/Read/${category.post_title
+                                .replace(/[^a-zA-Z0-9\s-]/g, "")
+                                .replace(/\s+/g, "-")}/${category.post_id}`}
                             >
                               <p className="text-xs">
                                 {category.post_title.length <= 40
@@ -370,7 +378,9 @@ export const FetchContinous = ({ keyword }) => {
                         <div className="flex flex-row items-center mt-5">
                           <Link
                             onClick={() => setSearchOpen(false)}
-                            to={`/Read/${tags.post_id}`}
+                            to={`/Read/${tags.post_title
+                              .replace(/[^a-zA-Z0-9\s-]/g, "")
+                              .replace(/\s+/g, "-")}/${tags.post_id}`}
                           >
                             <div className="flex flex-row items-center justify-center min-w-14 max-w-14 min-h-18 max-h-18">
                               <ImageComponent
@@ -385,7 +395,9 @@ export const FetchContinous = ({ keyword }) => {
                           <div className="flex flex-col justify-center pl-2">
                             <Link
                               onClick={() => setSearchOpen(false)}
-                              to={`/Read/${tags.post_id}`}
+                              to={`/Read/${tags.post_title
+                                .replace(/[^a-zA-Z0-9\s-]/g, "")
+                                .replace(/\s+/g, "-")}/${tags.post_id}`}
                             >
                               <p className="text-xs ">
                                 {tags.post_title.length <= 40

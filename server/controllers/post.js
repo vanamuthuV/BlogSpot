@@ -8,6 +8,7 @@ import {
   deletepostscript,
   getpostdetailscript,
   updatepostscript,
+  postimagescript,
 } from "../db/query.js";
 
 const landingpagepost = async (req, res) => {
@@ -95,6 +96,29 @@ const postdetails = async (req, res) => {
   }
 };
 
+const postimages = async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return sendResponse({
+      code: 404,
+      message: "Cannot find ID",
+      res,
+      success: false,
+      data: null,
+    });
+  }
+
+  const images = await pool.query(postimagescript, [id]);
+  return sendResponse({
+    code: 200,
+    message: "Image fetch success",
+    res,
+    success: true,
+    data: images.rows[0],
+  });
+};
+
 const deletepost = async (req, res) => {
   const { user_id } = req.user;
   const { id, uid } = req.params;
@@ -147,7 +171,7 @@ const updatepost = async (req, res) => {
   const { id } = req.params;
   const { title, content, media, category, tags, summary, posttype, comments } =
     req?.body;
-  
+
   console.log(
     title,
     content,
@@ -197,4 +221,5 @@ export {
   deletepost,
   getpostdetails,
   updatepost,
+  postimages
 };
