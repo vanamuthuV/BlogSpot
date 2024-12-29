@@ -10,4 +10,4 @@ Disallow: /notification
 Disallow: /edit/*
 Disallow: /read/*
 Disallow: /*?query=
-Sitemap: https://inkwellify-server.vercel.app/sitemap.xml
+Sitemap: https://inkwellifyserver.vercel.app/sitemap.xml
