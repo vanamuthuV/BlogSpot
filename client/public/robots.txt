@@ -1,5 +1,8 @@
 User-agent: *
+Allow: /sitemap.xml
 Allow: /
+
+# Disallow sensitive or irrelevant pages
 Disallow: /createpost
 Disallow: /auth/google/callback
 Disallow: /SignUp/*
@@ -10,4 +13,6 @@ Disallow: /notification
 Disallow: /edit/*
 Disallow: /read/*
 Disallow: /*?query=
-Sitemap: https://inkwellifyserver.vercel.app/sitemap.xml
+
+# Sitemap location
+Sitemap: https://inkwellify.vercel.app/sitemap.xml
